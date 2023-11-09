@@ -20,6 +20,6 @@
     "key-spacing": ["error", { "afterColon": true }],
     "comma-spacing": ["error", { "after": true }],
     "space-in-parens": "error",
-    "no-unused-vars": "warn"
+    "no-unused-vars": "error"
   }
 }

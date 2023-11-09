@@ -1,0 +1,5 @@
+
+
+Método put para post: sempre que um usuário carrega um post com o get, o service faz um put que atualiza as views
+
+relacionamento post_likes: pk composta por user_id e post_id

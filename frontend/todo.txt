@@ -3,3 +3,9 @@ cookies
 login
 
 hamburger mobile do LayoutHeader
+
+ver como fazer lazy lading (primeiro página carrega as imagens, depois o usuário vê o conteúdo)
+
+fazer likes no post
+
+botar ícones na (calendar) data, views (eye) e (heart) likes do post
