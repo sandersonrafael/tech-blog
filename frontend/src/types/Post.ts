@@ -1,4 +1,5 @@
-type PostCard = {
+type Post = {
+  id: number;
   thumb: string;
   thumbAlt: string;
   tags: string[];
@@ -10,4 +11,4 @@ type PostCard = {
   likes: number;
 };
 
-export default PostCard;
+export default Post;

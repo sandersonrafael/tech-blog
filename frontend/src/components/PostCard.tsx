@@ -1,35 +1,25 @@
 import IconCalendar from '@/icons/IconCalendar';
 import IconEye from '@/icons/IconEye';
 import IconHeart from '@/icons/IconHeart';
-import PostCard from '@/types/PostCard';
+import PostCard from '@/types/Post';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const featuredImage: string = '/featured-post-temp-img.jpg';
-const imageTitle: string = 'Não sei o quê e num sei o quê mais lá';
-const tags: string[] = ['JavaScript', 'Front-end', 'React', 'TypeScript'];
-const title: string = 'Como fazer modificações no seu código JavaScript com o auxílio do ChatGPT para tirar o máximo proveito e aprendizado';
-const url: string = '/';
-const date: string = '06/01/2023';
-const views: number = 436;
-const description: string = 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Distinctio architecto voluptatibus id molestiae voluptate dicta dolorem ipsa corrupti animi placeat, quibusdam soluta, aspernatur sapiente facilis temporibus eos! Eligendi, sed perspiciatis.';
-const likes: number = 332;
-
 const maxLen = (description: string): number => {
-  return description ? 60 : 80;
+  return description ? 40 : 60;
 };
 
-const PostCard = ({}: PostCard) => {
+const PostCard = ({ thumb, thumbAlt, tags, title, description, postUrl, date, views, likes, className }: PostCard & { className?: string }) => {
   return (
-    <div className="
-      flex flex-col shadow-lg shadow-gray-300 rounded-2xl overflow-hidden
-      h-full transition hover:-translate-y-1 hover:shadow-2xl hover:shadow-gray-400 duration-300
-    ">
-      <Link href={url}>
+    <div className={`
+      flex flex-col shadow-lg shadow-gray-300 rounded-2xl overflow-hidden h-full ${className}
+      transition hover:-translate-y-1 hover:shadow-2xl hover:shadow-gray-400 duration-300
+    `}>
+      <Link href={postUrl}>
         <Image
           className="w-full"
-          src={featuredImage}
-          alt={imageTitle}
+          src={thumb}
+          alt={thumbAlt}
           width={640}
           height={360}
         />
@@ -41,9 +31,9 @@ const PostCard = ({}: PostCard) => {
           ))}
         </div>
 
-        <div className="flex">
-          <h3 className="text-lg font-black">
-            <Link href={url}>
+        <div className="flex my-auto">
+          <h3 className="text-base font-black">
+            <Link href={postUrl}>
               {title.length > maxLen(description)
                 ? title.slice(0, maxLen(description)) + '...'
                 : title}
@@ -52,12 +42,12 @@ const PostCard = ({}: PostCard) => {
         </div>
 
         {description &&
-          <div className="text-xs pt-2 pb-5">
+          <div className="text-xs pt-2">
             <p>{description.length > 200 ? description.slice(0, 200) + '...' : description}</p>
           </div>
         }
 
-        <div className="mt-auto flex gap-3 text-sm">
+        <div className="pt-5 mt-auto flex gap-3 text-xs">
           <span className="flex items-center gap-2">
             <IconCalendar />
             {date}
