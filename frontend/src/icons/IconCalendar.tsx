@@ -1,4 +1,4 @@
-function IconCalendar(props: React.SVGProps<SVGSVGElement>) {
+const IconCalendar = (props: React.SVGProps<SVGSVGElement>) => {
   return (
     <svg
       fill="currentColor"
@@ -11,6 +11,6 @@ function IconCalendar(props: React.SVGProps<SVGSVGElement>) {
       <path d="M6.5 7a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm-9 3a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm-9 3a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2z" />
     </svg>
   );
-}
+};
 
 export default IconCalendar;

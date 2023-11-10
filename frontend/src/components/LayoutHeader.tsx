@@ -1,6 +1,7 @@
 import logo from '@/imgs/temp-logo.jpg';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Github, Linkedin } from './Social';
 
 const LayoutHeader = () => {
   return (
@@ -42,10 +43,8 @@ const LayoutHeader = () => {
 
           <div>
             <ul className="flex gap-4">
-              <li><a href="/">LI</a></li>
-              <li><a href="/">GH</a></li>
-              <li><a href="/">IG</a></li>
-              <li><a href="/">FB</a></li>
+              <Linkedin className="my-auto" width={24} />
+              <Github className="my-auto" width={23} />
             </ul>
           </div>
         </div>

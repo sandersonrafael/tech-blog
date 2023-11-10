@@ -32,7 +32,7 @@ const PostCard = ({ thumb, thumbAlt, tags, title, description, postUrl, date, vi
         </div>
 
         <div className="flex my-auto">
-          <h3 className="text-base font-black hover:text-blue-400 transition-colors duration-300">
+          <h3 className="text-base font-bold text-gray-800 hover:text-blue-400 transition-colors duration-300">
             <Link href={postUrl}>
               {title.length > maxLen(description)
                 ? title.slice(0, maxLen(description)) + '...'

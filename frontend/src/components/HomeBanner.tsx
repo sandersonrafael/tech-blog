@@ -20,7 +20,12 @@ const HomeBanner = () => {
         </div>
 
         <div className="flex-1">
-          <Image src={stack} alt="Minha Stack de Desenvolvimento" className="max-w-xs sm:max-w-sm md:max-w-xs lg:max-w-sm mx-auto" />
+          <Image
+            src={stack}
+            alt="Minha Stack de Desenvolvimento"
+            className="max-w-xs sm:max-w-sm md:max-w-xs lg:max-w-sm mx-auto"
+            priority
+          />
         </div>
       </div>
     </section>

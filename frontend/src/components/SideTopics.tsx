@@ -1,7 +1,9 @@
+import AboutMe from './AboutMe';
+
 const SideTopics = ({ className }: { className?: string }) => {
   return (
     <aside className={className}>
-      ok
+      <AboutMe />
     </aside>
   );
 };
