@@ -3,8 +3,8 @@ import Image from 'next/image';
 
 const HomeBanner = () => {
   return (
-    <section className="py-10 md:pt-20 md:pb-16 bg-gray-100">
-      <div className="flex justify-between container mx-auto xl:max-w-6xl md:px-6 px-3">
+    <section className="py-10 md:pt-20 md:pb-16 bg-gray-100 w-full">
+      <div className="block md:flex justify-between container mx-auto xl:max-w-6xl md:px-6 px-3">
         <div className="flex-1">
           <div className="h-full flex flex-col justify-center">
             <p className="pb-4 text-sm font-normal text-gray-500">Full Stack Developer</p>
@@ -20,7 +20,7 @@ const HomeBanner = () => {
         </div>
 
         <div className="flex-1">
-          <Image src={stack} alt="Minha Stack de Desenvolvimento" className="max-w-sm mx-auto" />
+          <Image src={stack} alt="Minha Stack de Desenvolvimento" className="max-w-xs sm:max-w-sm md:max-w-xs lg:max-w-sm mx-auto" />
         </div>
       </div>
     </section>

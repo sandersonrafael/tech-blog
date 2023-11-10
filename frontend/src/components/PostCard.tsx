@@ -25,14 +25,14 @@ const PostCard = ({ thumb, thumbAlt, tags, title, description, postUrl, date, vi
         />
       </Link>
       <div className="flex flex-col bg-white p-6 gap-1 h-full">
-        <div className="flex text-xs pb-2">
+        <div className="text-xs pb-2">
           {tags.map((tag, index) => index <= 2 && (
-            <div key={tag}>{index > 0 && ', '}{tag}{index === 2 && '...'}</div>
+            <span key={tag}>{index > 0 && ', '}{tag}{index === 2 && '...'}</span>
           ))}
         </div>
 
         <div className="flex my-auto">
-          <h3 className="text-base font-black">
+          <h3 className="text-base font-black hover:text-blue-400 transition-colors duration-300">
             <Link href={postUrl}>
               {title.length > maxLen(description)
                 ? title.slice(0, maxLen(description)) + '...'
