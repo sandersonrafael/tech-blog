@@ -1,21 +1,14 @@
 import IconCalendar from '@/icons/IconCalendar';
 import IconEye from '@/icons/IconEye';
 import IconHeart from '@/icons/IconHeart';
+import Post from '@/types/Post';
 import Link from 'next/link';
 
-const featuredImage = '/featured-post-temp-img.jpg';
-const tags: string[] = ['JavaScript', 'Front-end', 'React', 'TypeScript'];
-const title: string = 'Como fazer modificações no seu código JavaScript com o auxílio do ChatGPT para tirar o máximo proveito e aprendizado';
-const url: string = '/';
-const date: string = '06/01/2023';
-const views: number = 436;
-const likes: number = 332;
-
-const FeaturedPost = ({ className }: { className: string}) => {
+const FeaturedPost = ({ thumb, tags, title, postUrl, date, views, likes, className }: Post & { className: string}) => {
   return (
-    <Link href={url} className={className}>
+    <Link href={postUrl} className={className}>
       <div
-        style={{ backgroundImage: `url(${featuredImage})`, backgroundSize: 'cover' }}
+        style={{ backgroundImage: `url(${thumb})`, backgroundSize: 'cover' }}
         className={`
           flex rounded-2xl text-white shadow-lg shadow-gray-300 h-full w-full
           transition hover:-translate-y-1 hover:shadow-2xl hover:shadow-gray-400 duration-300

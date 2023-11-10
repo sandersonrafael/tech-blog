@@ -1,4 +1,4 @@
-import AboutMe from './AboutMe';
+import AboutMe from '../AboutMe';
 
 const SideTopics = ({ className }: { className?: string }) => {
   return (

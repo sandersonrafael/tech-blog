@@ -1,6 +1,6 @@
-import FeaturedPosts from '@/components/FeaturedPosts';
-import HomeBanner from '@/components/HomeBanner';
-import HomeContent from '@/components/HomeContent';
+import FeaturedPosts from '@/components/home/FeaturedPosts';
+import HomeBanner from '@/components/home/HomeBanner';
+import HomeContent from '@/components/home/HomeContent';
 
 const Home = () => {
   return (

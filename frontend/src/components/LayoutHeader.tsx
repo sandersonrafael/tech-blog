@@ -1,7 +1,7 @@
 import logo from '@/imgs/temp-logo.jpg';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Github, Linkedin } from './Social';
+import { Github, Linkedin } from './SocialLinks';
 
 const LayoutHeader = () => {
   return (

@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Github, Linkedin } from './Social';
+import { Github, Linkedin } from './SocialLinks';
 
 const AboutMe = () => {
   return (
@@ -14,7 +14,7 @@ const AboutMe = () => {
       <h3 className="font-semibold text-xl mb-4 text-gray-800">Olá, me chamo Sanderson Rafael</h3>
       <p className="text-sm mb-4 text-gray-600">
         Apaixonado pelo desenvolvimento de sotfware desde 2022, desenvolvo principalmente com
-        Next + TypeScript no Front-end e Java + Spring Boot + MySQL no Back-end.
+        Next + TypeScript no Front-end e Java + Spring Boot no Back-end.
       </p>
       <div className="flex content-center gap-2">
         <span>Me siga: </span>
