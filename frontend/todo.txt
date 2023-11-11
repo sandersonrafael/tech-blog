@@ -9,3 +9,6 @@ ver como fazer lazy lading (primeiro página carrega as imagens, depois o usuár
 fazer likes no post
 
 botar ícones na (calendar) data, views (eye) e (heart) likes do post
+
+page 404
+
