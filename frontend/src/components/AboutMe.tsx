@@ -3,7 +3,7 @@ import { Github, Linkedin } from './SocialLinks';
 
 const AboutMe = () => {
   return (
-    <div className="bg-white rounded-lg border shadow-sm p-7 lg:ml-4">
+    <div className="bg-white rounded-lg border shadow-sm p-7">
       <Image
         src="/profile.jpg"
         alt="Sanderson Rafael"

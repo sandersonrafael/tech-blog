@@ -17,7 +17,7 @@ const HorizontalPostCard = ({ thumb, thumbAlt, tags, title, postUrl, date, views
           alt={thumbAlt}
           width={640}
           height={360}
-          className="transition-all hover:scale-105 rounded-md"
+          className="transition-all hover:scale-105 rounded-md duration-300"
         />
       </Link>
 
@@ -60,7 +60,6 @@ const HorizontalPostCard = ({ thumb, thumbAlt, tags, title, postUrl, date, views
             {likes}
           </span>
         </div>
-
       </div>
     </div>
   );
