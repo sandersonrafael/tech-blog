@@ -2,6 +2,7 @@ import IconCalendar from '@/icons/IconCalendar';
 import IconEye from '@/icons/IconEye';
 import IconHeart from '@/icons/IconHeart';
 import Post from '@/types/Post';
+import dateFormatter from '@/utils/dateFormatter';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -43,7 +44,7 @@ const HorizontalPostCard = ({ thumb, thumbAlt, tags, title, postUrl, date, views
         <div className="flex gap-3 text-xs">
           <span className="flex items-center gap-2">
             <IconCalendar />
-            {date}
+            {dateFormatter.ddMMyyyy(date)}
           </span>
 
           <span>|</span>

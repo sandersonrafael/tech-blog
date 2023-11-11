@@ -1,6 +1,7 @@
 import IconCalendar from '@/icons/IconCalendar';
 import IconEye from '@/icons/IconEye';
 import Post from '@/types/Post';
+import dateFormatter from '@/utils/dateFormatter';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -40,7 +41,7 @@ const MiniaturePostCard = ({
 
         <div className="flex text-xs gap-2 items-center">
           <span><IconCalendar /></span>
-          <span>{date}</span>
+          <span>{dateFormatter.ddMMyyyy(date)}</span>
           <span>|</span>
           <span><IconEye /></span>
           <span>{views}</span>

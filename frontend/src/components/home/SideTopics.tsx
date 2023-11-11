@@ -21,7 +21,7 @@ const SideTopics = ({ className }: { className?: string }) => {
     <aside className={`${className} lg:ml-4`}>
       <AboutMe />
 
-      <h2 className="mt-12 pb-1">Mais Populares</h2>
+      <h2 className="mt-12 pb-1">Posts Populares</h2>
       <hr className="bg-gray-600 mb-7" />
 
       <div className="grid my-6 gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-1">

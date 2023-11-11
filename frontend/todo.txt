@@ -17,3 +17,9 @@ Se o usuário tiver logado, preenche o localStorage sempre que ele entra no site
 Se ele curtir, salva no localStorage o post id e se ele descutir, remove do localStorage e manda requisição de remover o like
 
 remover todos comentários do tipo // temp algumaCoisa -> need to remove...
+
+ver se vale a pena reestruturar o CommentCard para se adequart aos comentários em página de posts também
+
+Verificar como estão ficandos as datas, se o mês está vindo de 0 a 11 ou de 1 a 12 da base de dados
+
+fazer email de contato no zohoo mail

@@ -2,6 +2,7 @@ import IconCalendar from '@/icons/IconCalendar';
 import IconEye from '@/icons/IconEye';
 import IconHeart from '@/icons/IconHeart';
 import Post from '@/types/Post';
+import dateFormatter from '@/utils/dateFormatter';
 import Link from 'next/link';
 
 const FeaturedPost = ({ thumb, tags, title, postUrl, date, views, likes, className }: Post & { className: string}) => {
@@ -32,7 +33,7 @@ const FeaturedPost = ({ thumb, tags, title, postUrl, date, views, likes, classNa
           <div className="pt-1 flex gap-4 text-2xs sm:text-xs md:text-sm text-gray-100">
             <span className="flex items-center gap-2">
               <IconCalendar />
-              {date}
+              {dateFormatter.ddMMyyyy(date)}
             </span>
 
             <span>|</span>

@@ -7,7 +7,7 @@ type Post = {
   title: string;
   description: string;
   postUrl: string;
-  date: string;
+  date: Date;
   views: number;
   likes: number;
 };

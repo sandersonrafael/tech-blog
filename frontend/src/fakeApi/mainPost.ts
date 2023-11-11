@@ -9,7 +9,7 @@ const mainPost: Post = {
   title: 'Como fazer modificações no seu código JavaScript com o auxílio do ChatGPT para tirar o máximo proveito e aprendizado',
   description: '',
   postUrl: '/',
-  date: '06/01/2023',
+  date: new Date(2023, 0, 6),
   views: 436,
   likes: 35,
 };
