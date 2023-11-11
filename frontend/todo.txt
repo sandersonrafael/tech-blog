@@ -15,3 +15,5 @@ page 404
 Ver a possibilidade de salvar os likes no localStorage do usuário para que ele possa dar like sem se logar
 Se o usuário tiver logado, preenche o localStorage sempre que ele entra no site com os posts que ele curtiu
 Se ele curtir, salva no localStorage o post id e se ele descutir, remove do localStorage e manda requisição de remover o like
+
+remover todos comentários do tipo // temp algumaCoisa -> need to remove...

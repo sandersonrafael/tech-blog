@@ -16,7 +16,7 @@ const FeaturedPost = ({ thumb, tags, title, postUrl, date, views, likes, classNa
       >
         <div style={{ paddingBottom: '56.25%' }}></div>
 
-        <div className="mt-auto flex flex-col gap-3 px-7 py-5 text-xs sm:text-sm text-gray-100">
+        <div className="mt-auto flex flex-col gap-2 sm:gap-3 px-7 py-5 text-2xs sm:text-sm text-gray-100">
           <div className="flex">
             {tags.map((tag, index) => index <= 2 && (
               <div key={tag}>{index > 0 ? ', ' : 'Tags: '}{tag}{index === 2 && '...'}</div>
@@ -24,12 +24,12 @@ const FeaturedPost = ({ thumb, tags, title, postUrl, date, views, likes, classNa
           </div>
 
           <div className="flex">
-            <h3 className="text-base sm:text-2xl font-black">
-              {title.length > 100 ? title.slice(0, 100) + '...' : title}
+            <h3 className="text-xs sm:text-base md:text-2xl font-black">
+              {title.length > 80 ? title.slice(0, 80) + '...' : title}
             </h3>
           </div>
 
-          <div className="pt-1 flex gap-4 text-xs sm:text-sm text-gray-100">
+          <div className="pt-1 flex gap-4 text-2xs sm:text-xs md:text-sm text-gray-100">
             <span className="flex items-center gap-2">
               <IconCalendar />
               {date}

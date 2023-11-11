@@ -7,8 +7,8 @@ const AboutMe = () => {
       <Image
         src="/imgs/profile.jpg"
         alt="Sanderson Rafael"
-        width={400}
-        height={400}
+        width={240}
+        height={240}
         className="rounded-full w-16 mb-4"
       />
       <h3 className="font-semibold text-xl mb-4 text-gray-800">Olá, me chamo Sanderson Rafael</h3>
