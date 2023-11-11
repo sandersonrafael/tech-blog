@@ -5,7 +5,7 @@ const AboutMe = () => {
   return (
     <div className="bg-white rounded-lg border shadow-sm p-7">
       <Image
-        src="/profile.jpg"
+        src="/imgs/profile.jpg"
         alt="Sanderson Rafael"
         width={400}
         height={400}
