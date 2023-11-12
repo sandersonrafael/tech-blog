@@ -22,4 +22,6 @@ ver se vale a pena reestruturar o CommentCard para se adequart aos comentários 
 
 Verificar como estão ficandos as datas, se o mês está vindo de 0 a 11 ou de 1 a 12 da base de dados
 
-fazer email de contato no zohoo mail
+fazer email de contato no zohoo mail alltech@mystack.site
+
+fazer o form do footer enviar uma requisição para o backend e avisar com modal que usuário foi inscrito

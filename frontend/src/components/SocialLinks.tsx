@@ -12,7 +12,12 @@ export const Linkedin = ({ className, width }: SocialIcon) => {
       target="_blank"
       rel="noopener noreferrer"
     >
-      <IconLinkedin className={className} color="#0a66c2" width={width} height={width} />
+      <IconLinkedin
+        className={className + 'transition-all duration-300 hover:scale-110'}
+        color="#0a66c2"
+        width={width}
+        height={width}
+      />
     </a>
   );
 };
@@ -23,7 +28,11 @@ export const Github = ({ className, width }: SocialIcon) => {
       target="_blank"
       rel="noopener noreferrer"
     >
-      <IconGithub className={className} width={width} height={width} />
+      <IconGithub
+        className={className + 'transition-all duration-300 hover:scale-110'}
+        width={width}
+        height={width}
+      />
     </a>
   );
 };

@@ -2,6 +2,8 @@ import logo from '@/imgs/temp-logo.jpg';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Github, Linkedin } from './SocialLinks';
+import headerLinks from '@/static/headerLinks';
+import IconHamburgerMenu from '@/icons/IconHamburgerMenu';
 
 const LayoutHeader = () => {
   return (
@@ -27,24 +29,30 @@ const LayoutHeader = () => {
         <hr className="bg-gray-100 -mx-1 md:-mx-3" />
 
         <div className="flex content-center justify-between py-3">
-          <div>
-            {/* <div>hamburger mobile</div> */}
-
+          <button className="
+              inline-block sm:hidden transition-all hover:scale-110 hover:text-blue-400 duration-300
+            "
+          >
+            <IconHamburgerMenu width={28} height={28} />
+          </button>
+          <div className="hidden sm:block my-auto">
             <ul className="flex gap-4">
-              <li><Link href="/" className="md:mr-4">Home</Link></li>
-              <li><Link href="/front-end">Front-end</Link></li>
-              <li><Link href="/back-end">Back-end</Link></li>
-              <li><Link href="/vps">VPS</Link></li>
-              <li><Link href="/security">Segurança</Link></li>
-              <li><Link href="/javascript">JavaScript</Link></li>
-              <li><Link href="/java">Java</Link></li>
+              <li className="hover:text-blue-400 transition-colors duration-300 my-auto">
+                <Link href="/" className="sm:mr-6">Home</Link>
+              </li>
+
+              {headerLinks.map(({ name, url }) => (
+                <li key={name} className="hover:text-blue-400 transition-colors duration-300 my-auto">
+                  <Link href={url}>{name}</Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          <div>
+          <div className="my-auto">
             <ul className="flex gap-4">
-              <Linkedin className="my-auto" width={24} />
-              <Github className="my-auto" width={23} />
+              <Linkedin className="" width={26} />
+              <Github className="" width={25} />
             </ul>
           </div>
         </div>
