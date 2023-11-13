@@ -29,3 +29,11 @@ fazer o form do footer enviar uma requisição para o backend e avisar com modal
 colocar fundo semi-transparente para o mobile menu aberto
 
 configurar o eslint para aceitar o -left-full e left-0 do componente HeaderNav que insere class dinamicamente
+
+botar logo no top-0 left-0 do menu mobile
+
+componente de searchBar
+
+componente de login
+
+componente de modo claro/escuro

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Github, Linkedin } from '../SocialLinks';
 import { MouseEvent, useRef, useState } from 'react';
 import HeaderHamburgerBtn from './HeaderHamburgerBtn';
+import Image from 'next/image';
 
 const HeaderNav = () => {
   const [menuVisibility, setMenuVisibility] = useState<string>('max-sm:-left-full');
@@ -28,18 +29,33 @@ const HeaderNav = () => {
 
   return (
     <div className="flex content-center justify-between py-3">
-      <HeaderHamburgerBtn handleClick={handleMenuView} />
+      <HeaderHamburgerBtn handleClick={handleMenuView} btnType="hamburger" />
       <div className={`
-          max-sm:fixed max-sm:top-0 max-sm:bottom-0 max-sm:right-0 max-sm:w-full
+          max-sm:fixed max-sm:top-0 max-sm:-bottom-20 max-sm:right-0 max-sm:w-full
           max-sm:bg-opacity-70 ${menuVisibility} ${navBg} transition-all duration-500
         `}
       ref={div}
       onClick={(e) => handleClickOutside(e)}
       >
         <ul className="flex gap-4 flex-row h-full items-center relative
-          max-sm:flex-col max-sm:text-xl max-sm:bg-white max-sm:pt-16 max-sm:gap-8 max-sm:max-w-sm
+          max-sm:flex-col max-sm:text-xl max-sm:bg-white max-sm:pt-24 max-sm:gap-8 max-sm:max-w-xs
         ">
-          <HeaderHamburgerBtn handleClick={handleMenuView} className="absolute top-0 right-0 pt-6 pr-6" />
+          <Link href="/" className="">
+            <Image
+              className="w-28 absolute top-0 left-0 mt-6 ml-6 sm:hidden"
+              src="/imgs/logo.png"
+              alt="All Tech Blog"
+              width={260}
+              height={100}
+              priority
+            />
+          </Link>
+
+          <HeaderHamburgerBtn
+            handleClick={handleMenuView}
+            className="absolute top-0 right-0 p-2 m-4"
+            btnType="close"
+          />
           <li className="hover:text-blue-400 transition-colors duration-300 sm:mr-6">
             <Link href="/">Home</Link>
           </li>
@@ -54,8 +70,8 @@ const HeaderNav = () => {
 
       <div className="my-auto">
         <ul className="flex gap-4">
-          <Linkedin className="" width={26} />
-          <Github className="" width={25} />
+          <Linkedin className="" width={28} />
+          <Github className="" width={28} />
         </ul>
       </div>
     </div>

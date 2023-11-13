@@ -1,6 +1,13 @@
+import IconClose from '@/icons/IconClose';
 import IconHamburgerMenu from '@/icons/IconHamburgerMenu';
 
-const HeaderHamburgerBtn = ({ handleClick, className }: { handleClick: () => void, className?: string }) => {
+type IconHamburger = {
+  handleClick: () => void;
+  className?: string;
+  btnType: 'hamburger' | 'close';
+};
+
+const HeaderHamburgerBtn = ({ handleClick, className, btnType }: IconHamburger) => {
   return (
     <button
       onClick={handleClick}
@@ -8,7 +15,12 @@ const HeaderHamburgerBtn = ({ handleClick, className }: { handleClick: () => voi
           inline-block sm:hidden transition-all hover:scale-110 hover:text-blue-400 duration-300
         `}
     >
-      <IconHamburgerMenu width={28} height={28} />
+      {btnType === 'hamburger' &&
+        <IconHamburgerMenu width={36} height={36} />
+      }
+      {btnType === 'close' &&
+        <IconClose width={36} height={36} />
+      }
     </button>
   );
 };

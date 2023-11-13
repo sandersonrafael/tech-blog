@@ -1,26 +1,43 @@
-import logo from '@/imgs/temp-logo.jpg';
 import Image from 'next/image';
 import Link from 'next/link';
 import HeaderNav from './HeaderNav';
+import IconMoon from '@/icons/IconMoon';
+import IconSearch from '@/icons/IconSearch';
+import IconPerson from '@/icons/IconPerson';
 
 const LayoutHeader = () => {
   return (
     <header>
       <nav className="container mx-auto xl:max-w-6xl px-3 md:px-6 text-sm">
         <div className="flex content-center justify-between py-5">
-          <Link href="/" className="my-auto">
-            <Image src={logo} alt="temp logo" className="w-28" priority />
+          <Link href="/" className="my-auto shrink-0">
+            <Image src="/imgs/logo.png" alt="All Tech Blog" width={260} height={100} className="w-28" priority />
           </Link>
 
-          <div className="my-auto flex gap-4">
-            <label className="flex content-center justify-center">
-              <input type="text" className="border border-r-0 border-gray-300 rounded-s-md px-2 py-1 w-40 text-xs" placeholder="O que você procura?" />
-              <button className="border border-gray-300 rounded-e-md px-2 py-1 my-auto">botao</button>
-            </label>
+          <div className="my-auto flex gap-6">
+            <form className="flex content-center justify-center  max-sm:hidden">
+              <input
+                type="text"
+                className="px-3 py-1 w-40 text-xs outline-none border-b"
+                placeholder="O que você procura?"
+                required
+              />
+              <button className="ml-2 mr-1 -scale-x-100 hover:-scale-110 hover:scale-y-110 duration-300">
+                <IconSearch width={22} height={22} />
+              </button>
+            </form>
 
-            <button>claro/escuro</button>
+            <button>
+              <IconMoon
+                className="hover:scale-110 transition-all duration-300"
+                width={20}
+                height={20}
+              />
+            </button>
 
-            <button>Entrar</button>
+            <button>
+              <IconPerson width={24} height={24} className="hover:scale-110 transition-all duration-300" />
+            </button>
           </div>
         </div>
 
