@@ -1,4 +1,4 @@
-import { Github, Linkedin } from './SocialLinks';
+import { Github, Linkedin } from '../SocialLinks';
 import Link from 'next/link';
 
 import quickLinks from '@/static/quickLinks';

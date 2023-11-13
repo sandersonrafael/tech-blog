@@ -25,3 +25,7 @@ Verificar como estão ficandos as datas, se o mês está vindo de 0 a 11 ou de 1
 fazer email de contato no zohoo mail alltech@mystack.site
 
 fazer o form do footer enviar uma requisição para o backend e avisar com modal que usuário foi inscrito
+
+colocar fundo semi-transparente para o mobile menu aberto
+
+configurar o eslint para aceitar o -left-full e left-0 do componente HeaderNav que insere class dinamicamente

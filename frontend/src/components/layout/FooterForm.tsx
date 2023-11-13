@@ -14,6 +14,7 @@ const FooterForm = () => {
         type="email"
         name="email"
         placeholder="Seu melhor e-mail..."
+        required
       />
       <button
         className="
