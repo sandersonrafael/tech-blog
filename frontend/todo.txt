@@ -2,13 +2,7 @@ cookies
 
 login
 
-hamburger mobile do LayoutHeader
-
-ver como fazer lazy lading (primeiro página carrega as imagens, depois o usuário vê o conteúdo)
-
-fazer likes no post
-
-botar ícones na (calendar) data, views (eye) e (heart) likes do post
+ver como fazer lazy loading (primeiro página carrega as imagens, depois o usuário vê o conteúdo)
 
 page 404
 
@@ -18,24 +12,14 @@ Se ele curtir, salva no localStorage o post id e se ele descutir, remove do loca
 
 remover todos comentários do tipo // temp algumaCoisa -> need to remove...
 
-ver se vale a pena reestruturar o CommentCard para se adequart aos comentários em página de posts também
-
 Verificar como estão ficandos as datas, se o mês está vindo de 0 a 11 ou de 1 a 12 da base de dados
 
 fazer email de contato no zohoo mail alltech@mystack.site
 
 fazer o form do footer enviar uma requisição para o backend e avisar com modal que usuário foi inscrito
 
-colocar fundo semi-transparente para o mobile menu aberto
-
-configurar o eslint para aceitar o -left-full e left-0 do componente HeaderNav que insere class dinamicamente
-
-botar logo no top-0 left-0 do menu mobile
-
-componente de searchBar visível no mobile menu
-
 componente de login
 
 componente de modo claro/escuro
 
-FAZER PAGINAÇÃO QUE ESTÁ COM OS NÚMEROS BUGADOS NA HOME
+FICAR ATENTO À PAGINAÇÃO QUE PARECE ESTAR BUGADO NO DEPLOY DA VERCEL

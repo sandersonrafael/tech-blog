@@ -19,7 +19,7 @@ const Pagination = (
       {pages.map((currentPage) => (
         <div
           className={`
-            flex items-center justify-center rounded-full hover:shadow-lg transition-all duration-300
+            flex items-center justify-center rounded-full hover:drop-shadow-xl transition-all duration-300
             shadow-md ${selectedPage === currentPage ? 'bg-blue-400 text-white' : 'bg-white'}
           `}
           key={currentPage}

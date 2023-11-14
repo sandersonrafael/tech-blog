@@ -8,7 +8,7 @@ import { useState } from 'react';
 const LatestPosts = ({ latestPosts }: { latestPosts: Post[] }) => {
   const [selectedPage, setSelectedPage] = useState<number>(1);
   const [interval] = useState<number>(4);
-  const [showablePosts] = useState<Post[]>(latestPosts.splice(0, 24));
+  const [showablePosts] = useState<Post[]>(latestPosts.filter((_, i) => i < 24));
 
   return (
     <div className="mt-12 w-full">
