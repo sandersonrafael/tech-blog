@@ -6,6 +6,7 @@ import { Github, Linkedin } from '../SocialLinks';
 import { MouseEvent, useRef, useState } from 'react';
 import HeaderHamburgerBtn from './HeaderHamburgerBtn';
 import Image from 'next/image';
+import SearchBar from './SearchBar';
 
 const HeaderNav = () => {
   const [menuVisibility, setMenuVisibility] = useState<string>('max-sm:-left-full');
@@ -32,13 +33,13 @@ const HeaderNav = () => {
       <HeaderHamburgerBtn handleClick={handleMenuView} btnType="hamburger" />
       <div className={`
           max-sm:fixed max-sm:top-0 max-sm:-bottom-20 max-sm:right-0 max-sm:w-full
-          max-sm:bg-opacity-70 ${menuVisibility} ${navBg} transition-all duration-500
+          max-sm:bg-opacity-80 ${menuVisibility} ${navBg} transition-all duration-500
         `}
       ref={div}
       onClick={(e) => handleClickOutside(e)}
       >
         <ul className="flex gap-4 flex-row h-full items-center relative
-          max-sm:flex-col max-sm:text-xl max-sm:bg-white max-sm:pt-24 max-sm:gap-8 max-sm:max-w-xs
+          max-sm:flex-col max-sm:text-xl max-sm:bg-white max-sm:pt-16 max-sm:gap-8 max-sm:max-w-xs
         ">
           <Link href="/" className="">
             <Image
@@ -56,6 +57,9 @@ const HeaderNav = () => {
             className="absolute top-0 right-0 p-2 m-4"
             btnType="close"
           />
+
+          <SearchBar className="sm:hidden text-md mx-6" />
+
           <li className="hover:text-blue-400 transition-colors duration-300 sm:mr-6">
             <Link href="/">Home</Link>
           </li>

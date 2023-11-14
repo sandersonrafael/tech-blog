@@ -23,7 +23,7 @@ const HomeBanner = () => {
           <Image
             src={stack}
             alt="Minha Stack de Desenvolvimento"
-            className="max-w-xs sm:max-w-sm md:max-w-xs lg:max-w-sm mx-auto"
+            className="max-w-xs sm:max-w-sm md:max-w-xs lg:max-w-sm mx-auto w-full"
             priority
           />
         </div>

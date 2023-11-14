@@ -32,8 +32,10 @@ configurar o eslint para aceitar o -left-full e left-0 do componente HeaderNav q
 
 botar logo no top-0 left-0 do menu mobile
 
-componente de searchBar
+componente de searchBar visível no mobile menu
 
 componente de login
 
 componente de modo claro/escuro
+
+FAZER PAGINAÇÃO QUE ESTÁ COM OS NÚMEROS BUGADOS NA HOME

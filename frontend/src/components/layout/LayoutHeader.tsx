@@ -2,8 +2,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import HeaderNav from './HeaderNav';
 import IconMoon from '@/icons/IconMoon';
-import IconSearch from '@/icons/IconSearch';
 import IconPerson from '@/icons/IconPerson';
+import SearchBar from './SearchBar';
 
 const LayoutHeader = () => {
   return (
@@ -15,17 +15,7 @@ const LayoutHeader = () => {
           </Link>
 
           <div className="my-auto flex gap-6">
-            <form className="flex content-center justify-center  max-sm:hidden">
-              <input
-                type="text"
-                className="px-3 py-1 w-40 text-xs outline-none border-b"
-                placeholder="O que você procura?"
-                required
-              />
-              <button className="ml-2 mr-1 -scale-x-100 hover:-scale-110 hover:scale-y-110 duration-300">
-                <IconSearch width={22} height={22} />
-              </button>
-            </form>
+            <SearchBar className="max-sm:hidden text-xs w-44" />
 
             <button>
               <IconMoon
