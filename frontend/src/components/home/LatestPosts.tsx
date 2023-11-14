@@ -1,29 +1,26 @@
+'use client';
+
 import Post from '@/types/Post';
 import HorizontalPostCard from '../HorizontalPostCard';
+import Pagination from '../Pagination';
+import { useState } from 'react';
 
 const LatestPosts = ({ latestPosts }: { latestPosts: Post[] }) => {
+  const [selectedPage, setSelectedPage] = useState<number>(1);
+  const [interval] = useState<number>(4);
+  const [showablePosts] = useState<Post[]>(latestPosts.splice(0, 24));
+
   return (
     <div className="mt-12 w-full">
       <h2 className="pb-1">Posts Recentes</h2>
 
       <hr className="bg-gray-600 mb-7" />
 
-      {latestPosts.map((post, index) => index <= 3 && (
+      {showablePosts.map((post, index) => ((selectedPage - 1) * 4 <= index && index < selectedPage * 4) && (
         <HorizontalPostCard key={post.id} {...post} />
       ))}
 
-      <div>
-        <span>{'<'}</span>
-        <span> 1 </span>
-        <span> 2 </span>
-        <span> 3 </span>
-        <span> 4 </span>
-        <span> 5 </span>
-        <span> 6 </span>
-        <span> 7 </span>
-        <span> 8 </span>
-        <span>{'>'}</span>
-      </div>
+      <Pagination anyArray={showablePosts} interval={interval} selectPage={setSelectedPage} selectedPage={selectedPage} />
     </div>
   );
 };
