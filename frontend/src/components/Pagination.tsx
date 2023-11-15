@@ -1,6 +1,6 @@
 'use client';
 
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 const getPages = (arrLength: number, interval: number): number[] => {
   const pagesArray: number[] = [];
@@ -12,7 +12,11 @@ const Pagination = (
   { anyArray, interval, selectedPage, selectPage }:
   { anyArray: unknown[], interval: number, selectedPage: number, selectPage: Dispatch<SetStateAction<number>> }
 ) => {
-  const [pages] = useState<number[]>(getPages(anyArray.length, interval));
+  const [pages, setPages] = useState<number[]>([]);
+
+  useEffect(() => {
+    setPages(getPages(anyArray.length, interval));
+  }, [anyArray, interval]);
 
   return (
     <div className="flex gap-2 sm:gap-3 justify-center mb-6">

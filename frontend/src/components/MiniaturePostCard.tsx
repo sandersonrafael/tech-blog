@@ -10,7 +10,7 @@ const MiniaturePostCard = ({
   miniature,
   thumbAlt,
   postUrl,
-  date,
+  createdAt,
   views,
   miniatureType,
 }: Post & { miniatureType: 1 | 2 }) => {
@@ -41,7 +41,7 @@ const MiniaturePostCard = ({
 
         <div className="flex text-xs gap-2 items-center">
           <span><IconCalendar /></span>
-          <span>{dateFormatter.ddMMyyyy(date)}</span>
+          <span>{dateFormatter.ddMMyyyy(createdAt)}</span>
           <span>|</span>
           <span><IconEye /></span>
           <span>{views}</span>

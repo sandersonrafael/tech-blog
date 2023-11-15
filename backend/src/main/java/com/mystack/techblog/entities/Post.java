@@ -29,7 +29,7 @@ public class Post implements Serializable {
 
     private String thumbAlt;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String postUrl;
 
     @Column(nullable = false)
@@ -38,20 +38,20 @@ public class Post implements Serializable {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", nullable = false)
     private Date createdAt;
+    private Date updatedAt;
 
-    @Column(columnDefinition = "BIGINT UNSIGNED DEFAULT 0")
+    @Column(columnDefinition = "BIGINT UNSIGNED")
     private Long views;
 
-    @Column(columnDefinition = "BIGINT UNSIGNED DEFAULT 0")
+    @Column(columnDefinition = "BIGINT UNSIGNED")
     private Long likes;
 
     public Post() {
     }
 
     public Post(Long id, String title, String thumb, String miniature, String thumbAlt, String postUrl,
-            String description, String content, Date createdAt, Long views, Long likes) {
+            String description, String content, Date createdAt, Date updatedAt, Long views, Long likes) {
         this.id = id;
         this.title = title;
         this.thumb = thumb;
@@ -61,6 +61,7 @@ public class Post implements Serializable {
         this.description = description;
         this.content = content;
         this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
         this.views = views;
         this.likes = likes;
     }
@@ -137,6 +138,14 @@ public class Post implements Serializable {
         this.createdAt = createdAt;
     }
 
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
     public Long getViews() {
         return views;
     }
@@ -166,6 +175,7 @@ public class Post implements Serializable {
         result = prime * result + ((description == null) ? 0 : description.hashCode());
         result = prime * result + ((content == null) ? 0 : content.hashCode());
         result = prime * result + ((createdAt == null) ? 0 : createdAt.hashCode());
+        result = prime * result + ((updatedAt == null) ? 0 : updatedAt.hashCode());
         result = prime * result + ((views == null) ? 0 : views.hashCode());
         result = prime * result + ((likes == null) ? 0 : likes.hashCode());
         return result;
@@ -224,6 +234,11 @@ public class Post implements Serializable {
             if (other.createdAt != null)
                 return false;
         } else if (!createdAt.equals(other.createdAt))
+            return false;
+        if (updatedAt == null) {
+            if (other.updatedAt != null)
+                return false;
+        } else if (!updatedAt.equals(other.updatedAt))
             return false;
         if (views == null) {
             if (other.views != null)

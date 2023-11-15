@@ -1,5 +1,13 @@
-
-
 Método put para post: sempre que um usuário carrega um post com o get, o service faz um put que atualiza as views
 
 relacionamento post_likes: pk composta por user_id e post_id
+
+Fazer exceptions personalizadas e lembrar de adicionar nos findById e update para erro 404 (não encontrado)
+
+implementar o CORS (CrossOrigin) para ser acessado somente pela url https://alltech.mystack.site
+
+implementar os likes após criar os usuários
+
+implementar o JsonWebToken
+
+implementar o Bcrypt para hash de password

@@ -1,14 +1,16 @@
-'use client';
-
 import Post from '@/types/Post';
 import HorizontalPostCard from '../HorizontalPostCard';
 import Pagination from '../Pagination';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const LatestPosts = ({ latestPosts }: { latestPosts: Post[] }) => {
   const [selectedPage, setSelectedPage] = useState<number>(1);
   const [interval] = useState<number>(4);
-  const [showablePosts] = useState<Post[]>(latestPosts.filter((_, i) => i < 24));
+  const [showablePosts, setShowablePosts] = useState<Post[]>([]);
+
+  useEffect(() => {
+    setShowablePosts(latestPosts.filter((_, i) => i < 24));
+  }, [latestPosts]);
 
   return (
     <div className="mt-12 w-full">

@@ -10,7 +10,7 @@ const maxLen = (description: string): number => {
   return description ? 40 : 60;
 };
 
-const PostCard = ({ thumb, thumbAlt, tags, title, description, postUrl, date, views, likes, className }: PostCard & { className?: string }) => {
+const PostCard = ({ thumb, thumbAlt, tags, title, description, postUrl, createdAt, views, likes, className }: PostCard & { className?: string }) => {
   return (
     <div className={`
       flex flex-col shadow-lg shadow-gray-300 rounded-2xl overflow-hidden h-full ${className}
@@ -51,7 +51,7 @@ const PostCard = ({ thumb, thumbAlt, tags, title, description, postUrl, date, vi
         <div className="pt-5 mt-auto flex gap-3 text-xs">
           <span className="flex items-center gap-2">
             <IconCalendar />
-            {dateFormatter.ddMMyyyy(date)}
+            {dateFormatter.ddMMyyyy(createdAt)}
           </span>
 
           <span>|</span>

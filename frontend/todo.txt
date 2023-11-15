@@ -24,6 +24,8 @@ componente de modo claro/escuro
 
 FICAR ATENTO À PAGINAÇÃO QUE PARECE ESTAR BUGADO NO DEPLOY DA VERCEL
 
+ADICIONAR URL DO DEPLOY BACKEND COMO VARIÁVEL DE AMBIENTE .env.local
+
 
 REGRAS DE NEGÓCIO: {
   -> Campo de comentário do usuário deve ser limitado a 1000 caracteres (exibir caracteres restantes e cortar o que passar de 1000)
