@@ -15,35 +15,35 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mystack.techblog.entities.Post;
-import com.mystack.techblog.services.PostService;
+import com.mystack.techblog.entities.Comment;
+import com.mystack.techblog.services.CommentService;
 
 @RestController
-@RequestMapping("/api/posts")
+@RequestMapping("/api/comments")
 @CrossOrigin(origins = {"http://localhost:3000"})
-public class PostController {
+public class CommentController {
 
     @Autowired
-    private PostService service;
+    private CommentService service;
 
     @GetMapping
-    public ResponseEntity<List<Post>> findAll() {
+    public ResponseEntity<List<Comment>> findAll() {
         return ResponseEntity.ok(service.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Post> findById(@PathVariable Long id) {
+    public ResponseEntity<Comment> findById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Post> create(@RequestBody Post post) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(post));
+    public ResponseEntity<Comment> create(@RequestBody Comment comment) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(comment));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Post> update(@PathVariable Long id, @RequestBody Post post) {
-        return ResponseEntity.ok(service.update(id, post));
+    public ResponseEntity<Comment> update(@PathVariable Long id, @RequestBody Comment comment) {
+        return ResponseEntity.ok(service.update(id, comment));
     }
 
     @DeleteMapping("/{id}")

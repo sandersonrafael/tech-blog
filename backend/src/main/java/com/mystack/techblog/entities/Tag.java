@@ -27,6 +27,22 @@ public class Tag implements Serializable {
         this.tag = tag;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;

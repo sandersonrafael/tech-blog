@@ -15,35 +15,35 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mystack.techblog.entities.Post;
-import com.mystack.techblog.services.PostService;
+import com.mystack.techblog.entities.Tag;
+import com.mystack.techblog.services.TagService;
 
 @RestController
-@RequestMapping("/api/posts")
+@RequestMapping("/api/tags")
 @CrossOrigin(origins = {"http://localhost:3000"})
-public class PostController {
+public class TagController {
 
     @Autowired
-    private PostService service;
+    private TagService service;
 
     @GetMapping
-    public ResponseEntity<List<Post>> findAll() {
+    public ResponseEntity<List<Tag>> findAll() {
         return ResponseEntity.ok(service.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Post> findById(@PathVariable Long id) {
+    public ResponseEntity<Tag> findByid(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Post> create(@RequestBody Post post) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(post));
+    public ResponseEntity<Tag> create(@RequestBody Tag tag) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(tag));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Post> update(@PathVariable Long id, @RequestBody Post post) {
-        return ResponseEntity.ok(service.update(id, post));
+    public ResponseEntity<Tag> update(@PathVariable Long id, @RequestBody Tag tag) {
+        return ResponseEntity.ok(service.update(id, tag));
     }
 
     @DeleteMapping("/{id}")

@@ -11,3 +11,8 @@ implementar os likes após criar os usuários
 implementar o JsonWebToken
 
 implementar o Bcrypt para hash de password
+
+implementar método para like e dislike do comment, onde ambos são metodos Patch e dão um like se o usuário
+    não tem likes e remove um like se o usuário já tem like
+
+remover os CrossOrigins do localhost:3000
