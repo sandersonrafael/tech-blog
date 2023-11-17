@@ -1,53 +1,31 @@
-package com.mystack.techblog.entities;
+package com.mystack.techblog.entities.dtos;
 
 import java.io.Serializable;
 import java.util.Date;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-
-@Entity
-public class Comment implements Serializable {
+public class CommentDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "BIGINT UNSIGNED")
     private Long id;
-
-    @Column(length = 1000, nullable = false)
     private String content;
-
     private Date createdAt;
     private Date updatedAt;
-
-    @Column(columnDefinition = "INT UNSIGNED DEFAULT 0")
     private Integer likes;
-
-    @Column(columnDefinition = "INT UNSIGNED DEFAULT 0")
     private Integer dislikes;
+    private Long postId;
 
-    @ManyToOne
-    @JoinColumn(name = "post_id")
-    private Post post;
-
-    public Comment() {
+    public CommentDTO() {
     }
 
-    public Comment(Long id, String content, Date createdAt, Date updatedAt, Integer likes, Integer dislikes,
-            Post post) {
+    public CommentDTO(Long id, String content, Date createdAt, Date updatedAt, Integer likes, Integer dislikes,
+            Long postId) {
         this.id = id;
         this.content = content;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.likes = likes;
         this.dislikes = dislikes;
-        this.post = post;
+        this.postId = postId;
     }
 
     public Long getId() {
@@ -98,12 +76,12 @@ public class Comment implements Serializable {
         this.dislikes = dislikes;
     }
 
-    public Post getPost() {
-        return post;
+    public Long getPostId() {
+        return postId;
     }
 
-    public void setPost(Post post) {
-        this.post = post;
+    public void setPostId(Long postId) {
+        this.postId = postId;
     }
 
     @Override
@@ -116,6 +94,7 @@ public class Comment implements Serializable {
         result = prime * result + ((updatedAt == null) ? 0 : updatedAt.hashCode());
         result = prime * result + ((likes == null) ? 0 : likes.hashCode());
         result = prime * result + ((dislikes == null) ? 0 : dislikes.hashCode());
+        result = prime * result + ((postId == null) ? 0 : postId.hashCode());
         return result;
     }
 
@@ -127,7 +106,7 @@ public class Comment implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Comment other = (Comment) obj;
+        CommentDTO other = (CommentDTO) obj;
         if (id == null) {
             if (other.id != null)
                 return false;
@@ -157,6 +136,11 @@ public class Comment implements Serializable {
             if (other.dislikes != null)
                 return false;
         } else if (!dislikes.equals(other.dislikes))
+            return false;
+        if (postId == null) {
+            if (other.postId != null)
+                return false;
+        } else if (!postId.equals(other.postId))
             return false;
         return true;
     }

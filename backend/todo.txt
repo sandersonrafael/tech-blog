@@ -21,8 +21,7 @@ fazer um user permision para somente admin conseguir editar conteúdo e demais u
 
 fazer esquema para delete de tags onde primeiro busca todos posts que já tem tags e desassocia através de um método findPostsByTagName e depois dá um saveAll(List<Post>) com todos tendo removido a tag deletada
 
-
-
+fazer mappers estáticos dentro dos DTOS para usar nos services. Por ex: TagDTO.convertToTagDTO(Tag tag); TagDTO.convertToTag(TagDTO tag);
 
 
 

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mystack.techblog.entities.Comment;
+import com.mystack.techblog.entities.dtos.CommentDTO;
 import com.mystack.techblog.services.CommentService;
 
 @RestController
@@ -27,23 +27,23 @@ public class CommentController {
     private CommentService service;
 
     @GetMapping
-    public ResponseEntity<List<Comment>> findAll() {
+    public ResponseEntity<List<CommentDTO>> findAll() {
         return ResponseEntity.ok(service.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Comment> findById(@PathVariable Long id) {
+    public ResponseEntity<CommentDTO> findById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Comment> create(@RequestBody Comment comment) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(comment));
+    public ResponseEntity<CommentDTO> create(@RequestBody CommentDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Comment> update(@PathVariable Long id, @RequestBody Comment comment) {
-        return ResponseEntity.ok(service.update(id, comment));
+    public ResponseEntity<CommentDTO> update(@PathVariable Long id, @RequestBody CommentDTO dto) {
+        return ResponseEntity.ok(service.update(id, dto));
     }
 
     @DeleteMapping("/{id}")

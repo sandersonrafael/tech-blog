@@ -3,8 +3,12 @@ package com.mystack.techblog.entities;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.mystack.techblog.entities.enums.Role;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -38,6 +42,9 @@ public class User implements Serializable {
     @Column(columnDefinition = "BOOLEAN DEFAULT 1")
     private Boolean enabled;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     public User() {
     }
 
@@ -51,6 +58,7 @@ public class User implements Serializable {
         this.passwordHash = passwordHash;
         this.createdAt = createdAt;
         this.enabled = enabled;
+        this.role = Role.DEFAULT;
     }
 
     public Long getId() {
@@ -117,6 +125,14 @@ public class User implements Serializable {
         this.enabled = enabled;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -129,6 +145,7 @@ public class User implements Serializable {
         result = prime * result + ((passwordHash == null) ? 0 : passwordHash.hashCode());
         result = prime * result + ((createdAt == null) ? 0 : createdAt.hashCode());
         result = prime * result + ((enabled == null) ? 0 : enabled.hashCode());
+        result = prime * result + ((role == null) ? 0 : role.hashCode());
         return result;
     }
 
@@ -180,6 +197,8 @@ public class User implements Serializable {
             if (other.enabled != null)
                 return false;
         } else if (!enabled.equals(other.enabled))
+            return false;
+        if (role != other.role)
             return false;
         return true;
     }

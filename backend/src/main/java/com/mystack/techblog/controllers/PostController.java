@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mystack.techblog.entities.Post;
+import com.mystack.techblog.entities.dtos.PostDTO;
 import com.mystack.techblog.services.PostService;
 
 @RestController
@@ -27,23 +27,23 @@ public class PostController {
     private PostService service;
 
     @GetMapping
-    public ResponseEntity<List<Post>> findAll() {
+    public ResponseEntity<List<PostDTO>> findAll() {
         return ResponseEntity.ok(service.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Post> findById(@PathVariable Long id) {
+    public ResponseEntity<PostDTO> findById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Post> create(@RequestBody Post post) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(post));
+    public ResponseEntity<PostDTO> create(@RequestBody PostDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Post> update(@PathVariable Long id, @RequestBody Post post) {
-        return ResponseEntity.ok(service.update(id, post));
+    public ResponseEntity<PostDTO> update(@PathVariable Long id, @RequestBody PostDTO dto) {
+        return ResponseEntity.ok(service.update(id, dto));
     }
 
     @DeleteMapping("/{id}")

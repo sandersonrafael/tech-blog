@@ -1,4 +1,4 @@
-package com.mystack.techblog.entities;
+package com.mystack.techblog.entities.dtos;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -7,72 +7,31 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
-
-@Entity
-public class Post implements Serializable {
+public class PostDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "BIGINT UNSIGNED")
     private Long id;
-
-    @Column(length = 255, nullable = false)
     private String title;
-
-    @Column(columnDefinition = "TEXT", nullable = false)
     private String thumb;
-
-    @Column(columnDefinition = "TEXT")
     private String miniature;
-
     private String thumbAlt;
-
-    @Column(nullable = false, unique = true)
     private String postUrl;
-
-    @Column(nullable = false)
     private String description;
-
-    @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
-
     private Date createdAt;
     private Date updatedAt;
-
-    @Column(columnDefinition = "BIGINT UNSIGNED")
     private Long views;
-
-    @Column(columnDefinition = "BIGINT UNSIGNED")
     private Long likes;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    private List<Comment> comments = new ArrayList<>();
+    private Set<TagDTO> tags = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "post_tag",
-        joinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id")
-    )
-    private Set<Tag> tags = new HashSet<>();
+    private List<CommentDTO> comments = new ArrayList<>();
 
-    public Post() {
+    public PostDTO() {
     }
 
-    public Post(Long id, String title, String thumb, String miniature, String thumbAlt, String postUrl,
-            String description, String content, Date createdAt, Date updatedAt, Long views, Long likes) {
+    public PostDTO(Long id, String title, String thumb, String miniature, String thumbAlt, String postUrl, String description,
+            String content, Date createdAt, Date updatedAt, Long views, Long likes) {
         this.id = id;
         this.title = title;
         this.thumb = thumb;
@@ -183,20 +142,20 @@ public class Post implements Serializable {
         this.likes = likes;
     }
 
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
-
-    public Set<Tag> getTags() {
+    public Set<TagDTO> getTags() {
         return tags;
     }
 
-    public void setTags(Set<Tag> tags) {
+    public void setTags(Set<TagDTO> tags) {
         this.tags = tags;
+    }
+
+    public List<CommentDTO> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentDTO> comments) {
+        this.comments = comments;
     }
 
     @Override
@@ -226,7 +185,7 @@ public class Post implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Post other = (Post) obj;
+        PostDTO other = (PostDTO) obj;
         if (id == null) {
             if (other.id != null)
                 return false;

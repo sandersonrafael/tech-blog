@@ -4,12 +4,15 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mystack.techblog.entities.Post;
 import com.mystack.techblog.entities.Tag;
+import com.mystack.techblog.entities.dtos.PostDTO;
+import com.mystack.techblog.mapper.Mapper;
 import com.mystack.techblog.repositories.PostRepository;
 import com.mystack.techblog.repositories.TagRepository;
 
@@ -22,61 +25,66 @@ public class PostService {
     @Autowired
     private TagRepository tagRepository;
 
-    public List<Post> findAll() {
-        repository.findAll().stream().forEach(x -> x.getTags().stream().forEach(y -> System.out.println(y.getTag())));
-        return repository.findAll();
+    public List<PostDTO> findAll() {
+        List<Post> dbPosts = repository.findAll();
+        return dbPosts.stream().map(post -> Mapper.postToDto(post))
+            .collect(Collectors.toList());
     }
 
-    public Post findById(Long id) {
-        Post post = repository.findById(id)
-            .orElseThrow();
-        post.setViews(post.getViews() + 1);
-        update(post.getId(), post);
-        System.out.println(post.getTags());
-        return post;
+    public PostDTO findById(Long id) {
+        Post dbPost = repository.findById(id).orElse(null);
+        if (dbPost == null) return null;
+
+        PostDTO dto = Mapper.postToDto(dbPost);
+
+        dto.setViews(dbPost.getViews() + 1);
+
+        update(dto.getId(), dto);
+        return dto;
     }
 
-    public Post create(Post post) {
+    public PostDTO create(PostDTO dto) {
         Date now = new Date();
-        post.setCreatedAt(now);
-        post.setUpdatedAt(now);
-        post.setViews(0l);
-        post.setLikes(0L);
+        dto.setCreatedAt(now);
+        dto.setUpdatedAt(now);
+        dto.setViews(0L);
+        dto.setLikes(0L);
 
-        Set<Tag> tagsReceived = new HashSet<>();
-        post.getTags().forEach(t -> {
-            Tag checkTag = tagRepository.findByName(t.getTag());
-            tagsReceived.add(checkTag == null ? t : checkTag);
-        });
-
-        post.getTags().removeIf(t -> t != null);
-
-        Post persisted = repository.save(post);
-        persisted.setTags(tagsReceived);
-        return repository.save(persisted);
-    }
-
-    public Post update(Long id, Post post) {
-        Post entity;
-        try {
-            entity = repository.findById(id)
-            .orElseThrow(() -> new Exception("Resource not found"));
-        post.setId(id);
-        } catch (Exception e) {
-            return null;
+        if (dto.getTags().size() == 0) {
+            Post persisted = repository.save(Mapper.dtoToPost(dto));
+            return Mapper.postToDto(persisted);
         }
 
-        if (post.getTitle() != null) entity.setTitle(post.getTitle());
-        if (post.getThumb() != null) entity.setThumb(post.getThumb());
-        if (post.getMiniature() != null) entity.setMiniature(post.getMiniature());
-        if (post.getThumbAlt() != null) entity.setThumbAlt(post.getThumbAlt());
-        if (post.getPostUrl() != null) entity.setPostUrl(post.getPostUrl());
-        if (post.getDescription() != null) entity.setDescription(post.getDescription());
-        if (post.getContent() != null) entity.setContent(post.getContent());
+        Set<Tag> tagsReceived = new HashSet<>();
+        dto.getTags().forEach(tagDto -> {
+            Tag checkTag = tagRepository.findByName(tagDto.getTag());
+            tagsReceived.add(checkTag == null ? Mapper.dtoToTag(tagDto) : checkTag);
+        });
 
-        entity.setUpdatedAt(new Date());
+        Post persisted = repository.save(Mapper.dtoToPost(dto));
+        persisted.setTags(tagsReceived);
+        repository.save(persisted);
 
-        return repository.save(entity);
+        return Mapper.postToDto(persisted);
+    }
+
+    public PostDTO update(Long id, PostDTO dto) {
+        Post dbPost = repository.findById(id).orElse(null);
+
+        if (dbPost == null) return null;
+
+        if (dto.getTitle() != null) dbPost.setTitle(dto.getTitle());
+        if (dto.getThumb() != null) dbPost.setThumb(dto.getThumb());
+        if (dto.getMiniature() != null) dbPost.setMiniature(dto.getMiniature());
+        if (dto.getThumbAlt() != null) dbPost.setThumbAlt(dto.getThumbAlt());
+        if (dto.getPostUrl() != null) dbPost.setPostUrl(dto.getPostUrl());
+        if (dto.getDescription() != null) dbPost.setDescription(dto.getDescription());
+        if (dto.getContent() != null) dbPost.setContent(dto.getContent());
+
+        dbPost.setUpdatedAt(new Date());
+
+        dbPost = repository.save(dbPost);
+        return Mapper.postToDto(dbPost);
     }
 
     public void delete(Long id) {
