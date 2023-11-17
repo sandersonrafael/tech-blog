@@ -1,9 +1,11 @@
+import Tag from './Tag';
+
 type Post = {
   id: number;
   thumb: string;
   thumbAlt: string;
   miniature: string;
-  tags: string[];
+  tags: Tag[];
   title: string;
   description: string;
   postUrl: string;

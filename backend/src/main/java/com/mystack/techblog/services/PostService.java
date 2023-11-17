@@ -1,13 +1,17 @@
 package com.mystack.techblog.services;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mystack.techblog.entities.Post;
+import com.mystack.techblog.entities.Tag;
 import com.mystack.techblog.repositories.PostRepository;
+import com.mystack.techblog.repositories.TagRepository;
 
 @Service
 public class PostService {
@@ -15,7 +19,11 @@ public class PostService {
     @Autowired
     private PostRepository repository;
 
+    @Autowired
+    private TagRepository tagRepository;
+
     public List<Post> findAll() {
+        repository.findAll().stream().forEach(x -> x.getTags().stream().forEach(y -> System.out.println(y.getTag())));
         return repository.findAll();
     }
 
@@ -24,6 +32,7 @@ public class PostService {
             .orElseThrow();
         post.setViews(post.getViews() + 1);
         update(post.getId(), post);
+        System.out.println(post.getTags());
         return post;
     }
 
@@ -31,9 +40,20 @@ public class PostService {
         Date now = new Date();
         post.setCreatedAt(now);
         post.setUpdatedAt(now);
-        post.setViews(0L);
+        post.setViews(0l);
         post.setLikes(0L);
-        return repository.save(post);
+
+        Set<Tag> tagsReceived = new HashSet<>();
+        post.getTags().forEach(t -> {
+            Tag checkTag = tagRepository.findByName(t.getTag());
+            tagsReceived.add(checkTag == null ? t : checkTag);
+        });
+
+        post.getTags().removeIf(t -> t != null);
+
+        Post persisted = repository.save(post);
+        persisted.setTags(tagsReceived);
+        return repository.save(persisted);
     }
 
     public Post update(Long id, Post post) {

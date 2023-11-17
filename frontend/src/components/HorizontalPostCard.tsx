@@ -25,8 +25,8 @@ const HorizontalPostCard = ({ thumb, thumbAlt, tags, title, postUrl, createdAt, 
       <div className="flex flex-col justify-center gap-2 sm:col-span-2">
         <div className="text-xs">
           Tags:{' '}
-          {tags.map((tag, index) => index <= 2 && (
-            <span key={tag}>{index > 0 && ', '}{tag}{index === 2 && '...'}</span>
+          {tags.map(({ id, tag }, index) => index <= 2 && (
+            <span key={id}>{index > 0 && ', '}{tag}{index === 2 && '...'}</span>
           ))}
         </div>
 

@@ -5,7 +5,7 @@ const mainPost: Post = {
   thumb: '/imgs/featured-post-temp-img.jpg',
   thumbAlt: 'Imagem de thumb',
   miniature: '/imgs/temp-miniature.jpg',
-  tags: ['JavaScript', 'Front-end', 'React', 'TypeScript'],
+  tags: [{ id: 1, tag: 'JavaScript' }, { id: 2, tag: 'Front-end' }, { id: 3, tag: 'React' }, { id: 4, tag: 'TypeScript' }],
   title: 'Como fazer modificações no seu código JavaScript com o auxílio do ChatGPT para tirar o máximo proveito e aprendizado',
   description: '',
   postUrl: '/',

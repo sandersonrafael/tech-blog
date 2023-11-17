@@ -2,12 +2,19 @@ package com.mystack.techblog.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 
 @Entity
 public class Post implements Serializable {
@@ -46,6 +53,14 @@ public class Post implements Serializable {
 
     @Column(columnDefinition = "BIGINT UNSIGNED")
     private Long likes;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "post_tag",
+        joinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id")
+    )
+    private Set<Tag> tags = new HashSet<>();
 
     public Post() {
     }
@@ -160,6 +175,14 @@ public class Post implements Serializable {
 
     public void setLikes(Long likes) {
         this.likes = likes;
+    }
+
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
     }
 
     @Override

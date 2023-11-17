@@ -7,13 +7,15 @@ import { sortLast } from '@/utils/sort';
 
 // temp data -> need to remove after backend implementation
 
-import comments from '@/fakeApi/comments';
+// import comments from '@/fakeApi/comments';
 import featuredPosts from '@/fakeApi/featuredPosts';
 import users from '@/fakeApi/users';
 import User from '@/types/User';
 import Post from '@/types/Post';
 import { useEffect, useState } from 'react';
 import fetchPosts from '@/utils/fetchPosts';
+import comment from '@/types/Comment';
+import fetchComments from '@/utils/fetchComments';
 
 // temp function -> need to remove after backend implementation
 const getAuthor = (authorId: number) => (users as User[]).find(({ id }) => id === authorId) as User;
@@ -21,11 +23,14 @@ const getPost = (postId: number) => (featuredPosts as Post[]).find(({ id }) => i
 
 const SideTopics = ({ className }: { className?: string }) => {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [lastComments, setLastComments] = useState<comment[]>([]);
 
   useEffect(() => {
     const fetchData = async() => {
       const loadedPosts = await fetchPosts('http://localhost:8080/api/posts');
+      const loadComments = await fetchComments('http://localhost:8080/api/comments');
       setPosts([...loadedPosts]);
+      setLastComments([...loadComments]);
     };
 
     fetchData();
@@ -46,7 +51,7 @@ const SideTopics = ({ className }: { className?: string }) => {
       <h2 className="mt-12 pb-1">Últimos Comentários</h2>
       <hr className="bg-gray-600 mb-7" />
 
-      {sortLast(comments, 'createdAt').map((comment, index) => index <= 2 && (
+      {sortLast(lastComments, 'createdAt').map((comment, index) => index <= 2 && (
         <CommentCard
           key={comment.id}
           {...comment}

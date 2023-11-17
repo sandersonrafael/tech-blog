@@ -6,7 +6,7 @@ const fetchPosts = async(url: string): Promise<Post[]> => {
 
   // temp
   posts.forEach((post) => {
-    post.tags = ['Temp1', 'Temp2', 'Temp3', 'Temp4'];
+    // post.tags = ['Temp1', 'Temp2', 'Temp3', 'Temp4'];
     post.createdAt = new Date(post.createdAt);
   });
 

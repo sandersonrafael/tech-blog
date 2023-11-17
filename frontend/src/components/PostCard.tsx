@@ -27,8 +27,8 @@ const PostCard = ({ thumb, thumbAlt, tags, title, description, postUrl, createdA
       </Link>
       <div className="flex flex-col bg-white p-6 gap-1 h-full">
         <div className="text-xs pb-2">
-          {tags.map((tag, index) => index <= 2 && (
-            <span key={tag}>{index > 0 && ', '}{tag}{index === 2 && '...'}</span>
+          {tags.map(({ id, tag }, index) => index <= 2 && (
+            <span key={id}>{index > 0 && ', '}{tag}{index === 2 && '...'}</span>
           ))}
         </div>
 
