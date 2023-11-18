@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import com.mystack.techblog.entities.User;
+import com.mystack.techblog.entities.auth.LoginRequest;
 import com.mystack.techblog.entities.auth.RegisterRequest;
 import com.mystack.techblog.entities.auth.UserData;
 import com.mystack.techblog.entities.dtos.UserDTO;
@@ -45,8 +46,14 @@ public class UserService {
     }
 
     // fazer
-    public UserDTO login() {
-        return new UserDTO();
+    public UserData login(LoginRequest req) {
+        User user = repository.findByEmail(req.getEmail()).orElse(null);
+        if (user == null) return null;
+
+        boolean passwordMatches = BCrypt.checkpw(req.getPassword(), user.getPasswordHash());
+
+        if (passwordMatches) return Mapper.userToUserData(user);
+        return null;
     }
 
     // public UserDTO accessWithToken() {}

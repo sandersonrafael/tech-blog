@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mystack.techblog.entities.auth.LoginRequest;
 import com.mystack.techblog.entities.auth.RegisterRequest;
 import com.mystack.techblog.entities.auth.UserData;
 import com.mystack.techblog.entities.dtos.UserDTO;
@@ -35,8 +36,8 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.register(req));
     }
 
-    // @PostMapping("/auth/login")
-    // public ResponseEntity<UserData> login(@RequestBody LoginRequest req) {
-    //     return ResponseEntity.ok(service.login(req));
-    // }
+    @PostMapping("/auth/login")
+    public ResponseEntity<UserData> login(@RequestBody LoginRequest req) {
+        return ResponseEntity.ok(service.login(req));
+    }
 }
