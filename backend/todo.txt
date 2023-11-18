@@ -31,6 +31,11 @@ Fazer método de Delete user deletando antes todos os posts que possuem o id do 
 
 Fazer UserDTO receber o JsonWebToken no Body
 
+fazer tabela user_posts_likes e relações
+fazer tabela user_comments_likes e relações
+
+Fazer lógica para adicionar e remover tags a um post através de um novo método no PostService (addTags && removeTags)
+
 backup temporario:
 
 [

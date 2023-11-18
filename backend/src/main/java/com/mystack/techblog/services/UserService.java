@@ -1,6 +1,8 @@
 package com.mystack.techblog.services;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +20,16 @@ import com.mystack.techblog.repositories.UserRepository;
 @Service
 public class UserService {
 
-    ModelMapper modelMapper = new ModelMapper();
+    private ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
     private UserRepository repository;
+
+    public List<UserDTO> findAll() {
+        List<User> dbUsers = repository.findAll();
+        return dbUsers.stream().map(user -> modelMapper.map(user, UserDTO.class)).collect(Collectors.toList());
+    }
+
     public UserData register(RegisterRequest req) {
         User user = modelMapper.map(req, User.class);
 

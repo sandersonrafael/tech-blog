@@ -58,7 +58,7 @@ public class PostService {
         Set<Tag> tagsReceived = new HashSet<>();
         dto.getTags().forEach(tagDto -> {
             Tag checkTag = tagRepository.findByName(tagDto.getTag());
-            tagsReceived.add(checkTag == null ? Mapper.dtoToTag(tagDto) : checkTag);
+            tagsReceived.add(checkTag == null ? tagRepository.save(Mapper.dtoToTag(tagDto)) : checkTag);
         });
 
         Post persisted = repository.save(Mapper.dtoToPost(dto));
