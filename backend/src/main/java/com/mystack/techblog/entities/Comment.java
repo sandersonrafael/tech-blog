@@ -26,15 +26,19 @@ public class Comment implements Serializable {
     private Date createdAt;
     private Date updatedAt;
 
-    @Column(columnDefinition = "INT UNSIGNED DEFAULT 0")
+    @Column(columnDefinition = "INT UNSIGNED default 0")
     private Integer likes;
 
-    @Column(columnDefinition = "INT UNSIGNED DEFAULT 0")
+    @Column(columnDefinition = "INT UNSIGNED default 0")
     private Integer dislikes;
 
     @ManyToOne
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "post_id", columnDefinition = "BIGINT UNSIGNED", nullable = false)
     private Post post;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", columnDefinition = "BIGINT UNSIGNED", nullable = false)
+    private User user;
 
     public Comment() {
     }
@@ -104,6 +108,14 @@ public class Comment implements Serializable {
 
     public void setPost(Post post) {
         this.post = post;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

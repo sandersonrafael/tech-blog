@@ -1,6 +1,7 @@
 package com.mystack.techblog.entities.enums;
 
 public enum Role {
-    DEFAULT,
+    USER,
+    MODERATOR,
     ADMIN;
 }

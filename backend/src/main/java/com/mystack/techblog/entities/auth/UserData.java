@@ -1,4 +1,4 @@
-package com.mystack.techblog.entities;
+package com.mystack.techblog.entities.auth;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -7,61 +7,28 @@ import java.util.List;
 
 import com.mystack.techblog.entities.enums.Role;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-
-@Entity
-public class User implements Serializable {
+public class UserData implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "BIGINT UNSIGNED")
     private Long id;
-
-    @Column(nullable = false)
     private String firstName;
-
-    @Column(nullable = false)
     private String lastName;
-
     private String profileImg;
-
-    @Column(nullable = false, unique = true)
-    private String email;
-
-    @Column(nullable = false)
-    private String passwordHash;
-
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Date createdAt;
-
-    @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Comment> comments = new ArrayList<>();
+    private List<Long> commentsIds = new ArrayList<>();
 
-    public User() {
+    public UserData() {
     }
 
-    public User(Long id, String firstName, String lastName, String profileImg, String email, String passwordHash,
-            Date createdAt) {
+    public UserData(Long id, String firstName, String lastName, String profileImg, Date createdAt, Role role) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.profileImg = profileImg;
-        this.email = email;
-        this.passwordHash = passwordHash;
         this.createdAt = createdAt;
-        this.role = Role.USER;
+        this.role = role;
     }
 
     public Long getId() {
@@ -96,22 +63,6 @@ public class User implements Serializable {
         this.profileImg = profileImg;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPasswordHash() {
-        return passwordHash;
-    }
-
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
-    }
-
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -128,12 +79,12 @@ public class User implements Serializable {
         this.role = role;
     }
 
-    public List<Comment> getComments() {
-        return comments;
+    public List<Long> getCommentsIds() {
+        return commentsIds;
     }
 
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
+    public void setCommentsIds(List<Long> commentsIds) {
+        this.commentsIds = commentsIds;
     }
 
     @Override
@@ -144,9 +95,9 @@ public class User implements Serializable {
         result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
         result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
         result = prime * result + ((profileImg == null) ? 0 : profileImg.hashCode());
-        result = prime * result + ((email == null) ? 0 : email.hashCode());
-        result = prime * result + ((passwordHash == null) ? 0 : passwordHash.hashCode());
         result = prime * result + ((createdAt == null) ? 0 : createdAt.hashCode());
+        result = prime * result + ((role == null) ? 0 : role.hashCode());
+        result = prime * result + ((commentsIds == null) ? 0 : commentsIds.hashCode());
         return result;
     }
 
@@ -158,7 +109,7 @@ public class User implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        User other = (User) obj;
+        UserData other = (UserData) obj;
         if (id == null) {
             if (other.id != null)
                 return false;
@@ -179,20 +130,17 @@ public class User implements Serializable {
                 return false;
         } else if (!profileImg.equals(other.profileImg))
             return false;
-        if (email == null) {
-            if (other.email != null)
-                return false;
-        } else if (!email.equals(other.email))
-            return false;
-        if (passwordHash == null) {
-            if (other.passwordHash != null)
-                return false;
-        } else if (!passwordHash.equals(other.passwordHash))
-            return false;
         if (createdAt == null) {
             if (other.createdAt != null)
                 return false;
         } else if (!createdAt.equals(other.createdAt))
+            return false;
+        if (role != other.role)
+            return false;
+        if (commentsIds == null) {
+            if (other.commentsIds != null)
+                return false;
+        } else if (!commentsIds.equals(other.commentsIds))
             return false;
         return true;
     }

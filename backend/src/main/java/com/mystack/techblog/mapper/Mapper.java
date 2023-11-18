@@ -8,6 +8,8 @@ import java.util.Set;
 import com.mystack.techblog.entities.Comment;
 import com.mystack.techblog.entities.Post;
 import com.mystack.techblog.entities.Tag;
+import com.mystack.techblog.entities.User;
+import com.mystack.techblog.entities.auth.UserData;
 import com.mystack.techblog.entities.dtos.CommentDTO;
 import com.mystack.techblog.entities.dtos.PostDTO;
 import com.mystack.techblog.entities.dtos.TagDTO;
@@ -106,5 +108,18 @@ public class Mapper {
         TagDTO dto = new TagDTO(tag.getId(), tag.getTag());
         tag.getPosts().forEach(post -> dto.getPostsIds().add(post.getId()));
         return dto;
+    }
+
+    public static UserData userToUserData(User user) {
+        UserData data = new UserData(
+            user.getId(),
+            user.getFirstName(),
+            user.getLastName(),
+            user.getProfileImg(),
+            user.getCreatedAt(),
+            user.getRole()
+        );
+        user.getComments().forEach(comment -> data.getCommentsIds().add(comment.getId()));
+        return data;
     }
 }
