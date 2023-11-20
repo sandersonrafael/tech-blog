@@ -89,7 +89,8 @@ public class Mapper {
             comment.getUpdatedAt(),
             comment.getLikes(),
             comment.getDislikes(),
-            comment.getPost().getId()
+            comment.getPost().getId(),
+            comment.getUser().getId()
         );
         return dto;
     }

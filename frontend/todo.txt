@@ -32,3 +32,5 @@ REGRAS DE NEGÓCIO: {
 }
 
 adicionar foto do usuário em vez de bonequinho quando usuário logar e ao clicar, abre menu lateral de login em vez de enviar a uma página
+
+ordenar posts populares pela quantidade de views geral

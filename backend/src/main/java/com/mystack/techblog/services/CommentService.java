@@ -12,7 +12,7 @@ import com.mystack.techblog.entities.dtos.CommentDTO;
 import com.mystack.techblog.repositories.CommentRepository;
 import com.mystack.techblog.repositories.PostRepository;
 
-@Service
+@Service // TODO -> refactorar tudo envolvendo os Mappers para os Mappers personalizados e ModelMapper
 public class CommentService {
 
     @Autowired
@@ -32,7 +32,8 @@ public class CommentService {
                 comment.getUpdatedAt(),
                 comment.getLikes(),
                 comment.getDislikes(),
-                comment.getPost().getId()
+                comment.getPost().getId(),
+                comment.getUser().getId()
             );
             return dto;
         }).toList();
@@ -52,7 +53,8 @@ public class CommentService {
             comment.getUpdatedAt(),
             comment.getLikes(),
             comment.getDislikes(),
-            comment.getPost().getId()
+            comment.getPost().getId(),
+            comment.getUser().getId()
         );
         return dto;
     }
@@ -101,7 +103,8 @@ public class CommentService {
             persisted.getUpdatedAt(),
             persisted.getLikes(),
             persisted.getDislikes(),
-            persisted.getPost().getId()
+            persisted.getPost().getId(),
+            persisted.getUser().getId()
         );
         return newDto;
     }

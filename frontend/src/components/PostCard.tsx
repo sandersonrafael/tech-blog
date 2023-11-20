@@ -23,6 +23,7 @@ const PostCard = ({ thumb, thumbAlt, tags, title, description, postUrl, createdA
           alt={thumbAlt}
           width={640}
           height={360}
+          priority
         />
       </Link>
       <div className="flex flex-col bg-white p-6 gap-1 h-full">

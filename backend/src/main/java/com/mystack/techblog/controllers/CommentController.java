@@ -36,7 +36,7 @@ public class CommentController {
         return ResponseEntity.ok(service.findById(id));
     }
 
-    @PostMapping
+    @PostMapping // TODO -> Organizar para receber um UserID e relacionar o usuário ao comentário
     public ResponseEntity<CommentDTO> create(@RequestBody CommentDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.create(dto));
     }

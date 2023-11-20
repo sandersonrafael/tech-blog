@@ -36,11 +36,28 @@ fazer tabela user_comments_likes e relações
 
 Fazer lógica para adicionar e remover tags a um post através de um novo método no PostService (addTags && removeTags)
 
+Configurar pasta estática que suporta as imagens e que pode ser acessada por qualquer endpoint
+Configurar tabela que comporta imagens e seus relacionamentos, onde cada usuário só pode ter uma imagem de perfil e esta é apagada assim que
+    uma nova é salva para o id do User
+
+Fazer controller de LOGIN separado
+
+User chama o CommentService para criar comentário, editar e deletar.
+
+Lombok para adicionar @Getters @Setters e construtores vazios ou com todos itens
+
+instalar Validation
+Validações com o Spring boot https://youtu.be/cP2x9zD9wDc?si=tRvZZGtcwqPQ5Atj
+refatorar a aplicação em relação aos ifs que validam manualmente e deixar o @Valid tomar de conta sempre para os DTOs
+e-mail salva e confere toLowerCase()
+Retornar mensagens de erro da validação: https://youtu.be/15XMEG-14mA?si=_cabANumKJ9jE2lB
+
+
 backup temporario:
 
 [
 	{
-		"id": 30,
+		"id": 1,
 		"title": "Últimas Atualizações do Java 8 ao Java 17: Um Vislumbre das Inovações",
 		"thumb": "https://s2-techtudo.glbimg.com/89WluPJgFV1lLimz5kV_w0Ic5mM=/0x0:695x393/1000x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_08fbf48bc0524877943fe86e43087e7a/internal_photos/bs/2021/P/f/y52r4ySZWLkJjEhKLhgw/2014-11-14-java-logo.jpg",
 		"miniature": "https://blog.geekhunter.com.br/wp-content/uploads/2020/07/pngwing.com_.png.webp",
@@ -48,13 +65,17 @@ backup temporario:
 		"postUrl": "/java-8-ao-java-17",
 		"description": "Explore as evoluções notáveis do Java ao longo das versões 8 a 17, destacando melhorias cruciais, novas funcionalidades e aprimoramentos de desempenho que impulsionaram a linguagem para o futuro.",
 		"content": "<h1>Java: Uma Jornada de Inovação</h1><p>O Java tem passado por uma evolução significativa desde a introdução do Java 8 até as últimas implementações no Java 17. Vamos explorar as atualizações mais relevantes que moldaram a linguagem ao longo dessas versões.</p><h2>Java 8: Streams e Lambdas</h2><p>O Java 8 introduziu expressões lambda e streams, revolucionando a forma como lidamos com operações de coleções. Isso proporcionou um código mais conciso e funcional.</p><h2>Java 9: Módulos</h2><p>A versão 9 trouxe a modularidade para o Java, permitindo uma melhor organização e encapsulamento de código, melhorando a manutenibilidade e a escalabilidade de grandes sistemas.</p><h2>Java 10 e 11: Var e HTTP Client</h2><p>O Java 10 apresentou a palavra-chave 'var' para inferência de tipo, simplificando declarações de variáveis. Além disso, o Java 11 trouxe um cliente HTTP nativo, aprimorando a comunicação em aplicativos Java.</p><h2>Java 12 a 17: Novas Funcionalidades e Melhorias</h2><p>Nas versões mais recentes, o Java continuou a inovar com recursos como switch expressions, record classes, melhorias na API de String, melhorias de desempenho e suporte a padrões mais modernos.</p><p>Essas atualizações não apenas aprimoram a produtividade dos desenvolvedores, mas também mantêm o Java relevante e competitivo no cenário de desenvolvimento de software.</p><p>Descubra mais sobre essas atualizações explorando a documentação oficial do Java e experimentando as versões mais recentes para tirar o máximo proveito das inovações oferecidas.</p>",
-		"createdAt": "2023-11-15T21:48:14.550+00:00",
+        "tags": [
+            { "tag": "Java" },
+            { "tag": "Back-end" }
+        ],
+        "createdAt": "2023-11-15T21:48:14.550+00:00",
 		"updatedAt": "2023-11-15T22:12:57.869+00:00",
 		"views": 2,
 		"likes": 0
 	},
 	{
-		"id": 31,
+		"id": 2,
 		"title": "Evolução do JavaScript nos Últimos 10 Anos",
 		"thumb": "https://miro.medium.com/v2/resize:fit:1100/0*bQ2s1lDGEYzGjWVU",
 		"miniature": "https://vegibit.com/wp-content/uploads/2014/04/Javascript-JS.png",
@@ -62,13 +83,17 @@ backup temporario:
 		"postUrl": "/javascript-e-suas-novidades-nos-ultimos-10-anos",
 		"description": "Explore as principais inovações e melhorias no JavaScript ao longo da última década, desde ECMAScript 5 até as últimas features do ECMAScript 2022.",
 		"content": "<h1>Evolução do JavaScript nos Últimos 10 Anos</h1><p>O JavaScript passou por uma incrível evolução nas últimas décadas, trazendo inovações significativas para o desenvolvimento web. Vamos destacar as principais novidades desde ECMAScript 5 até as últimas features do ECMAScript 2022.</p><h2>ECMAScript 5: Introdução de Strict Mode</h2><p>Em 2009, o ECMAScript 5 trouxe o modo estrito (strict mode), melhorando a robustez do código e reduzindo erros com a introdução de regras mais rigorosas.</p><h2>ECMAScript 6 (ES2015): Arrow Functions e Destructuring</h2><p>O ES6 introduziu recursos poderosos como arrow functions, destructuring, e let/const para declaração de variáveis, simplificando a sintaxe e tornando o código mais legível.</p><h2>ECMAScript 7 a 10: Async/Await e Operador de Pipeline</h2><p>As versões seguintes trouxeram melhorias significativas, como async/await para lidar com operações assíncronas de forma mais elegante, e o operador de pipeline (|>) para facilitar a composição de funções.</p><h2>ECMAScript 2022: Recursos Mais Recentes</h2><p>Nos últimos anos, o JavaScript continua evoluindo. O ECMAScript 2022 trouxe recursos como record and tuple, melhorias em promises, e updates na manipulação de strings e arrays.</p><p>Essas inovações refletem o compromisso contínuo da comunidade em tornar o JavaScript uma linguagem moderna e eficiente para o desenvolvimento web.</p><p>Explore a documentação oficial e atualize suas práticas de desenvolvimento para aproveitar ao máximo as capacidades mais recentes do JavaScript.</p>",
+        "tags": [
+            { "tag": "JavaScript" },
+            { "tag": "Front-end" }
+        ],
 		"createdAt": "2023-11-15T21:53:21.467+00:00",
 		"updatedAt": "2023-11-15T22:13:06.087+00:00",
 		"views": 1,
 		"likes": 0
 	},
 	{
-		"id": 32,
+		"id": 3,
 		"title": "A Importância do HTML na Web",
 		"thumb": "https://anastasionico.uk/img/blog/html-elements.jpg",
 		"miniature": "https://img.freepik.com/icones-gratis/html-5_318-674282.jpg",
@@ -76,13 +101,17 @@ backup temporario:
 		"postUrl": "/html-5-e-sua-importancia",
 		"description": "Explore o papel fundamental do HTML (Hypertext Markup Language) como a espinha dorsal da World Wide Web, moldando a experiência de navegação online desde o seu início.",
 		"content": "<h1>A Importância do HTML na Web</h1><p>O HTML, ou Hypertext Markup Language, é a linguagem fundamental que constitui a espinha dorsal da World Wide Web. Desde os primeiros dias da web até o cenário digital contemporâneo, o HTML desempenha um papel crucial na construção e exibição de conteúdo online.</p><h2>A Estrutura da Informação</h2><p>O HTML fornece a estrutura básica para organizar e apresentar informações na web. Com tags semânticas como &lt;head&gt;, &lt;body&gt;, &lt;article&gt;, &lt;section&gt;, entre outras, o HTML permite uma organização lógica e compreensível do conteúdo.</p><h2>A Base para Outras Tecnologias</h2><p>Além de ser a base para a estrutura de uma página web, o HTML trabalha em conjunto com outras tecnologias, como CSS (Cascading Style Sheets) para estilização e JavaScript para interatividade. Essa tríade forma o alicerce para a criação de experiências web dinâmicas e atraentes.</p><h2>Acessibilidade e SEO</h2><p>Utilizando corretamente as tags semânticas, o HTML contribui para a acessibilidade, tornando o conteúdo mais compreensível para leitores de tela e outras tecnologias assistivas. Além disso, motores de busca usam a estrutura HTML para indexar e entender o conteúdo, impactando diretamente a otimização para mecanismos de busca (SEO).</p><h2>Evolução Constante</h2><p>A linguagem HTML está em constante evolução para atender às demandas do ambiente online em evolução. Novas versões introduzem elementos e atributos que refletem as necessidades emergentes, mantendo o HTML como uma linguagem relevante e adaptável.</p><p>Em resumo, o HTML é mais do que um simples conjunto de tags; é a linguagem que possibilita a expressão digital, a acessibilidade, a interatividade e a estética na web. Compreender e utilizar efetivamente o HTML é essencial para qualquer desenvolvedor web comprometido em criar experiências online impactantes e acessíveis.</p>",
+        "tags": [
+            { "tag": "HTML" },
+            { "tag": "Front-end" }
+        ],
 		"createdAt": "2023-11-15T21:59:37.874+00:00",
 		"updatedAt": "2023-11-16T04:39:43.806+00:00",
 		"views": 2,
 		"likes": 0
 	},
 	{
-		"id": 33,
+		"id": 4,
 		"title": "O Papel Crucial do MySQL no Mercado Atual",
 		"thumb": "https://1000marcas.net/wp-content/uploads/2020/11/MySQL-logo.jpg",
 		"miniature": "https://upload.wikimedia.org/wikipedia/commons/7/7b/MySQL_Dolphin.jpg",
@@ -90,6 +119,11 @@ backup temporario:
 		"postUrl": "/mysql-e-seu-papel-na-web",
 		"description": "Explore a importância do MySQL como um dos sistemas de gerenciamento de banco de dados mais amplamente utilizados, impulsionando aplicações, websites e soluções empresariais em todo o mundo.",
 		"content": "<h1>O Papel Crucial do MySQL no Mercado Atual</h1><p>O MySQL é, sem dúvida, um dos sistemas de gerenciamento de banco de dados (SGBD) mais influentes e amplamente adotados no mercado de tecnologia. Sua importância é evidente em diversos setores, impulsionando aplicações, websites e soluções empresariais em todo o mundo.</p><h2>Confiabilidade e Desempenho</h2><p>Uma das razões fundamentais para a popularidade do MySQL é sua confiabilidade comprovada e desempenho sólido. Empresas confiam no MySQL para lidar com grandes volumes de dados de forma eficiente, garantindo a integridade e disponibilidade necessárias para operações críticas.</p><h2>Comunidade Ativa e Suporte</h2><p>O MySQL é de código aberto, mantido por uma comunidade ativa de desenvolvedores. Isso não apenas resulta em atualizações regulares e melhorias contínuas, mas também proporciona um amplo suporte através de fóruns e recursos online. Empresas têm a tranquilidade de contar com uma comunidade robusta, além de opções para suporte profissional, se necessário.</p><h2>Escalabilidade e Flexibilidade</h2><p>Outro fator-chave é a capacidade do MySQL de escalar conforme as necessidades do negócio crescem. Desde startups até grandes corporações, o MySQL oferece opções de escalabilidade que podem acompanhar o crescimento orgânico das operações. Sua flexibilidade permite a adaptação a uma variedade de cenários de uso, desde sistemas embutidos até ambientes de data center.</p><h2>Integração com Tecnologias Modernas</h2><p>O MySQL não apenas se destaca por suas capacidades autônomas, mas também por sua capacidade de integrar-se facilmente a outras tecnologias. Sua compatibilidade com linguagens de programação populares e a capacidade de suportar arquiteturas modernas, como microservices, o tornam uma escolha estratégica para desenvolvedores e arquitetos de sistemas contemporâneos.</p><h2>Segurança e Conformidade</h2><p>Em um ambiente digital cada vez mais regulamentado, a segurança e conformidade dos dados são críticas. O MySQL oferece recursos avançados de segurança, incluindo criptografia, controle de acesso granular e auditoria, permitindo que as organizações atendam aos padrões de conformidade de maneira eficaz.</p><p>Em resumo, o MySQL continua desempenhando um papel crucial no mercado atual, fornecendo uma base sólida para o armazenamento e recuperação de dados em uma variedade de cenários. Sua confiabilidade, suporte ativo da comunidade, escalabilidade e integração com tecnologias modernas o tornam uma escolha estratégica para organizações em busca de soluções de gerenciamento de banco de dados robustas e flexíveis.</p>",
+        "tags": [
+            { "tag": "MySQL" },
+            { "tag": "Back-end" },
+            { "tag": "Banco de Dados" }
+        ],
 		"createdAt": "2023-11-15T22:03:31.707+00:00",
 		"updatedAt": "2023-11-15T22:03:31.707+00:00",
 		"views": 0,
