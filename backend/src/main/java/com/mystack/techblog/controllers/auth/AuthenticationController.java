@@ -25,7 +25,7 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest data) {
         ValidationErrors errors = ApplicationValidator.validateRegisterRequest(data);
-        if (errors != null) return ResponseEntity.badRequest().body(errors.getErrors());
+        if (errors != null) return ResponseEntity.badRequest().body(errors);
 
         String token = service.register(data);
         AuthenticationResponse auth = new AuthenticationResponse(token);
@@ -36,7 +36,7 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<?> postMethodName(@RequestBody LoginRequest data) {
         ValidationErrors errors = ApplicationValidator.validateLoginRequest(data);
-        if (errors != null) return ResponseEntity.badRequest().body(errors.getErrors());
+        if (errors != null) return ResponseEntity.badRequest().body(errors);
 
         String token = service.login(data);
         AuthenticationResponse auth = new AuthenticationResponse(token);

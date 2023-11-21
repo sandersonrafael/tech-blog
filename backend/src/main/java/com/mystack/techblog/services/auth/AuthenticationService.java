@@ -20,7 +20,7 @@ public class AuthenticationService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private PasswordEncoder bcrypt;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private TokenService tokenService;
@@ -31,7 +31,7 @@ public class AuthenticationService {
     public String register(RegisterRequest request) {
         if (repository.findByEmail(request.email()) != null) return null;
 
-        String passwordHash = bcrypt.encode(request.password().trim());
+        String passwordHash = passwordEncoder.encode(request.password().trim());
         String profileImg = request.profileImg().isBlank() || request.profileImg() == null
             ? "/imgs/default-profile-img.png"
             : request.profileImg().trim();
@@ -52,14 +52,6 @@ public class AuthenticationService {
     }
 
     public String login(LoginRequest request) {
-        // TODO -> apagar se funcionar normalmente
-        // var userDetails = repository.findByEmail(request.email().toLowerCase());
-        // if (userDetails == null) return null;
-
-        // boolean checkHash = bcrypt.matches(request.password(), userDetails.getPassword());
-
-        // if (!checkHash) return null;
-
         var usernamePassword = new UsernamePasswordAuthenticationToken(request.email().toLowerCase(), request.password());
 
         var auth = authenticationManager.authenticate(usernamePassword);

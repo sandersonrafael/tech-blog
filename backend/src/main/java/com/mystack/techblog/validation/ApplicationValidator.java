@@ -83,7 +83,7 @@ public class ApplicationValidator {
         }
         if (password.indexOf(" ") != -1) passwordErrors.add("Senha não pode conter espaços em branco");
         if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*\\W).*$")) {
-            passwordErrors.add("Senha precisa ter maiúsculas, minúsculas, números e símbolos");
+            passwordErrors.add("Senha precisa conter maiúsculas, minúsculas, números e símbolos");
         }
 
         return passwordErrors.size() != 0 ? passwordErrors : null;

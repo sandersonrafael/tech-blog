@@ -54,6 +54,8 @@ Retornar mensagens de erro da validação: https://youtu.be/15XMEG-14mA?si=_cabA
 
 refatorar o Mapper da aplicação com o ModelMapper para economizar no código e atualizar só o que faltar, como os relacionamentos, fks, etc
 
+fazer exceptions e adicionar TokenExpiredException
+
 backup temporario:
 
 [
