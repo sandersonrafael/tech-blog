@@ -52,6 +52,7 @@ refatorar a aplicação em relação aos ifs que validam manualmente e deixar o 
 e-mail salva e confere toLowerCase()
 Retornar mensagens de erro da validação: https://youtu.be/15XMEG-14mA?si=_cabANumKJ9jE2lB
 
+refatorar o Mapper da aplicação com o ModelMapper para economizar no código e atualizar só o que faltar, como os relacionamentos, fks, etc
 
 backup temporario:
 
