@@ -3,16 +3,16 @@ package com.mystack.techblog.entities.dtos;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
@@ -30,25 +30,10 @@ public class PostDTO implements Serializable {
     private Date createdAt;
     private Date updatedAt;
     private Long views;
-    private Long likes;
 
-    private Set<TagDTO> tags = new HashSet<>();
+    private List<TagDTO> tags = new ArrayList<>();
 
     private List<CommentDTO> comments = new ArrayList<>();
 
-    public PostDTO(Long id, String title, String thumb, String miniature, String thumbAlt, String postUrl, String description,
-            String content, Date createdAt, Date updatedAt, Long views, Long likes) {
-        this.id = id;
-        this.title = title;
-        this.thumb = thumb;
-        this.miniature = miniature;
-        this.thumbAlt = thumbAlt;
-        this.postUrl = postUrl;
-        this.description = description;
-        this.content = content;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.views = views;
-        this.likes = likes;
-    }
+    private List<UserDTO> usersLikes = new ArrayList<>();
 }

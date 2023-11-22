@@ -1,3 +1,5 @@
+modificar a estrutura de comentários e posts para os likes e deslikes que agora receberão listas de usersIds e não números inteiros
+
 cookies
 
 login

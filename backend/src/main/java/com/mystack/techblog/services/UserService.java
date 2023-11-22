@@ -15,8 +15,6 @@ import com.mystack.techblog.services.auth.TokenService;
 
 @Service
 public class UserService {
-    // TODO -> Fazer os services relacionados com comments, onde se recebe um post id e se cria um comentário relacionado ao user e ao post
-    // TODO -> Além das edições e etc
 
     private ModelMapper mapper = new ModelMapper();
 

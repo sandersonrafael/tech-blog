@@ -19,11 +19,6 @@ public class UserController {
     @Autowired
     private UserService service;
 
-    // @GetMapping
-    // public ResponseEntity<List<UserDTO>> findAll() {
-    //     return service.findAll();
-    // }
-
     @GetMapping
     public ResponseEntity<List<UserDTO>> findAll() {
         return ResponseEntity.ok(service.findAll());

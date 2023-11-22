@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mystack.techblog.entities.Comment;
-import com.mystack.techblog.entities.Post;
 import com.mystack.techblog.entities.User;
 import com.mystack.techblog.entities.dtos.CommentDTO;
 import com.mystack.techblog.mapper.Mapper;
@@ -16,7 +15,7 @@ import com.mystack.techblog.repositories.PostRepository;
 import com.mystack.techblog.repositories.UserRepository;
 import com.mystack.techblog.services.auth.TokenService;
 
-@Service // TODO -> refactorar tudo envolvendo os Mappers para os Mappers personalizados e ModelMapper
+@Service
 public class CommentService {
 
     @Autowired

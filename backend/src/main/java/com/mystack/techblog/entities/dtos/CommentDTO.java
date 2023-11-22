@@ -13,7 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(of = "id") // TODO -> fazer a lógica para receber o userId e relacionar no DB
+@EqualsAndHashCode(of = "id")
 public class CommentDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 

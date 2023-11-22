@@ -33,6 +33,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/posts/**", "/api/tags/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/api/posts/**", "/api/tags/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/posts/**", "/api/tags/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PATCH, "/api/posts/**").hasRole("USER")
                 .requestMatchers(HttpMethod.GET, "/api/users/**", "/api/comments/**").hasRole("USER")
                 .requestMatchers(HttpMethod.PUT, "/api/users/**", "/api/comments/**").hasRole("USER")
                 .requestMatchers(HttpMethod.DELETE, "/api/users/**", "/api/comments/**").hasRole("USER")

@@ -37,10 +37,10 @@ public class Comment implements Serializable {
     private Date updatedAt;
 
     @Column(columnDefinition = "INT UNSIGNED default 0")
-    private Integer likes;
+    private Integer likes; // TODO -> Substituir por um HashSet de usersLikes com outros users, fazer dto com usersLikesIds e fazer lógica dos services/controllers para só poder ter like ou dislike por user
 
     @Column(columnDefinition = "INT UNSIGNED default 0")
-    private Integer dislikes;
+    private Integer dislikes; // TODO -> Substituir por um HashSet de usersDislikes com outros users, fazer dto com usersDislikesIds e fazer lógica dos services/controllers para só poder ter like ou dislike por user
 
     @ManyToOne
     @JoinColumn(name = "post_id", columnDefinition = "BIGINT UNSIGNED", nullable = false)

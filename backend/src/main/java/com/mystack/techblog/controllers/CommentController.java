@@ -56,4 +56,6 @@ public class CommentController {
         service.delete(id, token);
         return ResponseEntity.noContent().build();
     }
+
+    // TODO -> Fazer o like e o dislike comment e os seus services também
 }

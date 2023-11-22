@@ -1,3 +1,6 @@
+PROBLEMA -> USUÁRIO PODE TER MAIS DE UM COMENTÁRIO NO MESMO POST
+
+
 Método put para post: sempre que um usuário carrega um post com o get, o service faz um put que atualiza as views
 
 relacionamento post_likes: pk composta por user_id e post_id
@@ -7,10 +10,6 @@ Fazer exceptions personalizadas e lembrar de adicionar nos findById e update par
 implementar o CORS (CrossOrigin) para ser acessado somente pela url https://alltech.mystack.site
 
 implementar os likes após criar os usuários
-
-implementar o JsonWebToken
-
-implementar o Bcrypt para hash de password
 
 Fazer service de e-mail para enviar link ao usuário e ele acessar para confirmar cadastro, acessando rota dinâmica com hash dele mesmo
 

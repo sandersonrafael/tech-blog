@@ -16,7 +16,7 @@ import com.mystack.techblog.entities.dtos.UserDTO;
 
 public class Mapper {
 
-    public static Post dtoToPost(PostDTO dto, Set<Tag> tags, List<Comment> comments) {
+    public static Post dtoToPost(PostDTO dto, Set<Tag> tags, List<Comment> comments, Set<User> usersLikes) {
         Post post = new Post(
             dto.getId(),
             dto.getTitle(),
@@ -29,7 +29,9 @@ public class Mapper {
             dto.getCreatedAt(),
             dto.getUpdatedAt(),
             dto.getViews(),
-            dto.getLikes()
+            comments,
+            tags,
+            usersLikes
         );
         post.setTags(tags);
         post.setComments(comments);
@@ -38,7 +40,7 @@ public class Mapper {
     }
 
     public static Post dtoToPost(PostDTO dto) {
-        return dtoToPost(dto, new HashSet<>(), new ArrayList<>());
+        return dtoToPost(dto, new HashSet<>(), new ArrayList<>(), new HashSet<>());
     }
 
     public static PostDTO postToDto(Post post) {
@@ -54,12 +56,10 @@ public class Mapper {
             post.getCreatedAt(),
             post.getUpdatedAt(),
             post.getViews(),
-            post.getLikes()
+            post.getTags().stream().map(tag -> tagToDTO(tag)).toList(),
+            post.getComments().stream().map(comment -> commentToDto(comment)).toList(),
+            post.getUsersLikes().stream().map(user -> userToDto(user)).toList()
         );
-
-        post.getComments().forEach(comment -> dto.getComments().add(commentToDto(comment)));
-
-        post.getTags().forEach(tag -> dto.getTags().add(tagToDTO(tag)));
 
         return dto;
     }
