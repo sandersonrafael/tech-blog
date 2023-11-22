@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.mystack.techblog.entities.User;
 import com.mystack.techblog.entities.auth.LoginRequest;
 import com.mystack.techblog.entities.auth.RegisterRequest;
+import com.mystack.techblog.entities.enums.Role;
 import com.mystack.techblog.repositories.UserRepository;
 
 @Service
@@ -43,7 +44,12 @@ public class AuthenticationService {
             profileImg,
             request.email().toLowerCase(),
             passwordHash,
-            new Date()
+            new Date(),
+            Role.USER,
+            null,
+            null,
+            null,
+            null
         );
 
         user = repository.save(user);

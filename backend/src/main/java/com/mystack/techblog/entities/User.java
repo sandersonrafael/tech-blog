@@ -22,6 +22,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,7 @@ import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
@@ -66,17 +68,11 @@ public class User implements UserDetails {
     @ManyToMany(mappedBy = "usersLikes", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Post> postsLikes = new ArrayList<>();
 
-    public User(Long id, String firstName, String lastName, String profileImg, String email, String passwordHash,
-            Date createdAt) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.profileImg = profileImg;
-        this.email = email;
-        this.passwordHash = passwordHash;
-        this.createdAt = createdAt;
-        this.role = Role.USER;
-    }
+    @ManyToMany(mappedBy = "usersLikes", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Comment> commentsLikes = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "usersDislikes", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Comment> commentsDislikes = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

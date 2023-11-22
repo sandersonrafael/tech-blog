@@ -64,14 +64,17 @@ public class Mapper {
         return dto;
     }
 
-    public static Comment dtoToComment(CommentDTO dto, Post post, User user) {
+    public static Comment dtoToComment(CommentDTO dto, Post post, User user, Set<User> usersLikes, Set<User> usersDislikes) {
+        if (usersLikes == null) usersLikes = new HashSet<>();
+        if (usersDislikes == null) usersDislikes = new HashSet<>();
+
         Comment comment = new Comment(
             dto.getId(),
             dto.getContent(),
             dto.getCreatedAt(),
             dto.getUpdatedAt(),
-            dto.getLikes(),
-            dto.getDislikes(),
+            usersLikes,
+            usersDislikes,
             post,
             user
         );
@@ -84,10 +87,10 @@ public class Mapper {
             comment.getContent(),
             comment.getCreatedAt(),
             comment.getUpdatedAt(),
-            comment.getLikes(),
-            comment.getDislikes(),
+            comment.getUsersLikes().stream().map(user -> user.getId()).toList(),
+            comment.getUsersDislikes().stream().map(user -> user.getId()).toList(),
             comment.getPost().getId(),
-            comment.getUser().getId()
+            userToDto(comment.getUser())
         );
         return dto;
     }

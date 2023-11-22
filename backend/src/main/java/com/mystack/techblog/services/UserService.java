@@ -38,6 +38,9 @@ public class UserService {
 
         UserDetailsDTO dto = mapper.map(user, UserDetailsDTO.class);
         dto.setCommentsIds(user.getComments().stream().map(c -> c.getId()).toList());
+        dto.setPostsLikesIds(user.getPostsLikes().stream().map(p -> p.getId()).toList());
+        dto.setCommentsLikesIds(user.getCommentsLikes().stream().map(c -> c.getId()).toList());
+        dto.setCommentsDislikesIds(user.getCommentsDislikes().stream().map(c -> c.getId()).toList());
 
         return dto;
     }

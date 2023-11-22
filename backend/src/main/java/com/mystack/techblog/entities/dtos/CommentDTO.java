@@ -1,7 +1,9 @@
 package com.mystack.techblog.entities.dtos;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -21,8 +23,8 @@ public class CommentDTO implements Serializable {
     private String content;
     private Date createdAt;
     private Date updatedAt;
-    private Integer likes;
-    private Integer dislikes;
+    private List<Long> usersLikesIds = new ArrayList<>();
+    private List<Long> usersDislikesIds = new ArrayList<>();
     private Long postId;
-    private Long userId;
+    private UserDTO author;
 }

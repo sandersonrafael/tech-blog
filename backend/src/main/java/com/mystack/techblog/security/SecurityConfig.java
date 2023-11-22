@@ -38,6 +38,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.PUT, "/api/users/**", "/api/comments/**").hasRole("USER")
                 .requestMatchers(HttpMethod.DELETE, "/api/users/**", "/api/comments/**").hasRole("USER")
                 .requestMatchers(HttpMethod.POST, "/api/comments/**").hasRole("USER")
+                .requestMatchers(HttpMethod.PATCH, "/api/comments/**").hasRole("USER")
                 .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
                 .anyRequest().denyAll()
             ).addFilterBefore(securityTokenFilter, UsernamePasswordAuthenticationFilter.class);

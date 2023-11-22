@@ -31,4 +31,8 @@ public class UserDetailsDTO implements Serializable {
     private List<Long> commentsIds = new ArrayList<>();
 
     private List<Long> postsLikesIds = new ArrayList<>();
+
+    private List<Long> commentsLikesIds = new ArrayList<>();
+
+    private List<Long> commentsDislikesIds = new ArrayList<>();
 }

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -57,5 +58,13 @@ public class CommentController {
         return ResponseEntity.noContent().build();
     }
 
-    // TODO -> Fazer o like e o dislike comment e os seus services também
+    @PatchMapping("/like/{id}")
+    public ResponseEntity<?> likeComment(@PathVariable Long id, @RequestHeader("Authorization") String token) {
+        return ResponseEntity.ok(service.likeComment(id, token));
+    }
+
+    @PatchMapping("/dislike/{id}")
+    public ResponseEntity<?> dislikeComment(@PathVariable Long id, @RequestHeader("Authorization") String token) {
+        return ResponseEntity.ok(service.dislikeComment(id, token));
+    }
 }
