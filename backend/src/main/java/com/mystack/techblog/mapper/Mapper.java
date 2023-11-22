@@ -12,7 +12,7 @@ import com.mystack.techblog.entities.User;
 import com.mystack.techblog.entities.dtos.CommentDTO;
 import com.mystack.techblog.entities.dtos.PostDTO;
 import com.mystack.techblog.entities.dtos.TagDTO;
-import com.mystack.techblog.entities.dtos.UserDetailsDTO;
+import com.mystack.techblog.entities.dtos.UserDTO;
 
 public class Mapper {
 
@@ -64,7 +64,7 @@ public class Mapper {
         return dto;
     }
 
-    public static Comment dtoToComment(CommentDTO dto, Post post) {
+    public static Comment dtoToComment(CommentDTO dto, Post post, User user) {
         Comment comment = new Comment(
             dto.getId(),
             dto.getContent(),
@@ -72,13 +72,10 @@ public class Mapper {
             dto.getUpdatedAt(),
             dto.getLikes(),
             dto.getDislikes(),
-            post
+            post,
+            user
         );
         return comment;
-    }
-
-    public static Comment dtoToComment(CommentDTO dto) {
-        return dtoToComment(dto, null);
     }
 
     public static CommentDTO commentToDto(Comment comment) {
@@ -111,17 +108,13 @@ public class Mapper {
         return dto;
     }
 
-    public static UserDetailsDTO userToUserDetails(User user) {
-        UserDetailsDTO data = new UserDetailsDTO(
+    public static UserDTO userToDto(User user) {
+        UserDTO dto = new UserDTO(
             user.getId(),
             user.getFirstName(),
             user.getLastName(),
-            user.getProfileImg(),
-            user.getCreatedAt(),
-            user.getRole(),
-            new ArrayList<>()
+            user.getProfileImg()
         );
-        user.getComments().forEach(comment -> data.getCommentsIds().add(comment.getId()));
-        return data;
+        return dto;
     }
 }

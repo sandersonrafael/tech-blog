@@ -1,0 +1,46 @@
+package com.mystack.techblog.services;
+
+import java.util.List;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.mystack.techblog.entities.User;
+import com.mystack.techblog.entities.dtos.UserDTO;
+import com.mystack.techblog.entities.dtos.UserDetailsDTO;
+import com.mystack.techblog.mapper.Mapper;
+import com.mystack.techblog.repositories.UserRepository;
+import com.mystack.techblog.services.auth.TokenService;
+
+@Service
+public class UserService {
+    // TODO -> Fazer os services relacionados com comments, onde se recebe um post id e se cria um comentário relacionado ao user e ao post
+    // TODO -> Além das edições e etc
+
+    private ModelMapper mapper = new ModelMapper();
+
+    @Autowired
+    private UserRepository repository;
+
+    @Autowired
+    private TokenService tokenService;
+
+    public List<UserDTO> findAll() {
+        var users = repository.findAll();
+        return users.stream().map(user -> Mapper.userToDto(user)).toList();
+    }
+
+    public UserDetailsDTO findByToken(String token) {
+        token = token.replace("Bearer ", "");
+        String userEmail = tokenService.validateToken(token);
+
+        User user = repository.findUserByEmail(userEmail).orElse(null);
+        if (user == null) return null;
+
+        UserDetailsDTO dto = mapper.map(user, UserDetailsDTO.class);
+        dto.setCommentsIds(user.getComments().stream().map(c -> c.getId()).toList());
+
+        return dto;
+    }
+}

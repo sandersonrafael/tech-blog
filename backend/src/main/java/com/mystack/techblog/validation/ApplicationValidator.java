@@ -8,6 +8,7 @@ import com.mystack.techblog.entities.auth.RegisterRequest;
 import com.mystack.techblog.entities.messages.ValidationErrors;
 
 public class ApplicationValidator {
+    // TODO -> Fazer validações dos demais DTOS - Comment, Tags e Posts
 
     public static ValidationErrors validateRegisterRequest(RegisterRequest data) {
         ValidationErrors errors = new ValidationErrors();

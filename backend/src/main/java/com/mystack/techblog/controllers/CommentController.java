@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,19 +37,23 @@ public class CommentController {
         return ResponseEntity.ok(service.findById(id));
     }
 
-    @PostMapping // TODO -> Organizar para receber um UserID e relacionar o usuário ao comentário
-    public ResponseEntity<CommentDTO> create(@RequestBody CommentDTO dto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(dto));
+    @PostMapping
+    public ResponseEntity<CommentDTO> create(@RequestBody CommentDTO dto, @RequestHeader("Authorization") String token) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(dto, token));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CommentDTO> update(@PathVariable Long id, @RequestBody CommentDTO dto) {
-        return ResponseEntity.ok(service.update(id, dto));
+    public ResponseEntity<CommentDTO> update(
+        @PathVariable Long id,
+        @RequestBody CommentDTO dto,
+        @RequestHeader("Authorization") String token
+    ) {
+        return ResponseEntity.ok(service.update(id, dto, token));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
-        service.delete(id);
+    public ResponseEntity<?> delete(@PathVariable Long id, @RequestHeader("Authorization") String token) {
+        service.delete(id, token);
         return ResponseEntity.noContent().build();
     }
 }
