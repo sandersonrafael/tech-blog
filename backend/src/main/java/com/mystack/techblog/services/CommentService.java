@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import com.mystack.techblog.entities.Comment;
 import com.mystack.techblog.entities.User;
 import com.mystack.techblog.entities.dtos.CommentDTO;
+import com.mystack.techblog.exceptions.BadRequestException;
+import com.mystack.techblog.exceptions.ResourceNotFoundException;
+import com.mystack.techblog.exceptions.UnauthorizedException;
 import com.mystack.techblog.mapper.Mapper;
 import com.mystack.techblog.repositories.CommentRepository;
 import com.mystack.techblog.repositories.PostRepository;
@@ -38,9 +41,9 @@ public class CommentService {
     }
 
     public CommentDTO findById(Long id) {
-        Comment comment = repository.findById(id)
-            .orElse(null);
-        if (comment == null) return null;
+        Comment comment = repository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException("Comentário não encontrado")
+        );
 
         CommentDTO dto = Mapper.commentToDto(comment);
         return dto;
@@ -48,10 +51,9 @@ public class CommentService {
 
     public CommentDTO create(CommentDTO dto, String token) {
         User dbUser = validateTokenReceived(token);
-        if (dbUser == null) return null;
 
         var post = postRepository.findById(dto.getPostId()).orElse(null);
-        if (post == null) return null;
+        if (post == null) throw new ResourceNotFoundException("Post não encontrado");
 
         Date now = new Date();
         dto.setCreatedAt(now);
@@ -65,13 +67,14 @@ public class CommentService {
     }
 
     public CommentDTO update(Long id, CommentDTO dto, String token) {
-        Comment dbComment = repository.findById(id).orElse(null);
-        if (dbComment == null) return null;
+        Comment dbComment = repository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException("Comentário não encontrado")
+        );
 
         User dbUser = validateTokenReceived(token);
-        if (dbUser == null) return null;
 
-        if (dbComment.getUser().getId() != dbUser.getId()) return null;
+        if (dbComment.getUser().getId() != dbUser.getId())
+            throw new BadRequestException("Comentário não pertence ao usuário");
 
         if (dto.getContent() != null && !dto.getContent().isBlank()) {
             dbComment.setContent(dto.getContent());
@@ -81,36 +84,35 @@ public class CommentService {
             return Mapper.commentToDto(dbComment);
         }
 
-        return null;
+        throw new BadRequestException("Campo content não pode estar vazio");
     }
 
-    public Void delete(Long id, String token) {
+    public void delete(Long id, String token) {
         User dbUser = validateTokenReceived(token);
-        if (dbUser == null) return null;
 
-        Comment dbComment = repository.findById(id).orElse(null);
-        if (dbComment == null) return null;
+        Comment dbComment = repository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException("Comentário não encontrado")
+        );
 
         if (dbComment.getUser().getId() == dbUser.getId()) {
             repository.deleteById(id);
-            return null;
+            return;
         }
-
-        return null;
+        throw new UnauthorizedException("Comentário não pertence ao usuário");
     }
 
-    public String likeComment(Long id, String token) {
+    public void likeComment(Long id, String token) {
         User dbUser = validateTokenReceived(token);
-        if (dbUser == null) return null;
 
-        Comment dbComment = repository.findById(id).orElse(null);
-        if (dbComment == null) return null;
+        Comment dbComment = repository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException("Comentário não encontrado")
+        );
 
         if (dbComment.getUsersLikes().contains(dbUser)) {
             dbComment.getUsersLikes().remove(dbUser);
 
             repository.save(dbComment);
-            return "Curtida removida com sucesso do comentário";
+            return;
         }
 
         if (dbComment.getUsersDislikes().contains(dbUser)) {
@@ -119,21 +121,20 @@ public class CommentService {
 
         dbComment.getUsersLikes().add(dbUser);
         repository.save(dbComment);
-        return "Curtida adicionada com sucesso ao comentário";
     }
 
-    public String dislikeComment(Long id, String token) {
+    public void dislikeComment(Long id, String token) {
         User dbUser = validateTokenReceived(token);
-        if (dbUser == null) return null;
 
-        Comment dbComment = repository.findById(id).orElse(null);
-        if (dbComment == null) return null;
+        Comment dbComment = repository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException("Comentário não encontrado")
+        );
 
         if (dbComment.getUsersDislikes().contains(dbUser)) {
             dbComment.getUsersDislikes().remove(dbUser);
 
             repository.save(dbComment);
-            return "Descurtida removida com sucesso do comentário";
+            return;
         }
 
         if (dbComment.getUsersLikes().contains(dbUser)) {
@@ -142,14 +143,14 @@ public class CommentService {
 
         dbComment.getUsersDislikes().add(dbUser);
         repository.save(dbComment);
-        return "Descurtida adicionada com sucesso ao comentário";
     }
 
     private User validateTokenReceived(String token) {
         token = token.replace("Bearer ", "");
         String email = tokenService.validateToken(token);
-        User user = userRepository.findUserByEmail(email).orElse(null);
-        if (user == null) return null;
+        User user = userRepository.findUserByEmail(email).orElseThrow(
+            () -> new ResourceNotFoundException("Usuário não encontrado")
+        );
         return user;
     }
 }

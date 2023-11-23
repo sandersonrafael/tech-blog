@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.mystack.techblog.entities.Tag;
 import com.mystack.techblog.entities.dtos.TagDTO;
+import com.mystack.techblog.exceptions.ResourceNotFoundException;
 import com.mystack.techblog.mapper.Mapper;
 import com.mystack.techblog.repositories.PostRepository;
 import com.mystack.techblog.repositories.TagRepository;
@@ -26,9 +27,9 @@ public class TagService {
     }
 
     public TagDTO findById(Long id) {
-        Tag dbTag = repository.findById(id)
-            .orElse(null);
-        if (dbTag == null) return null;
+        Tag dbTag = repository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException("Tag não encontrada")
+        );
 
         return Mapper.tagToDTO(dbTag);
     }
@@ -39,17 +40,18 @@ public class TagService {
     }
 
     public TagDTO update(Long id, TagDTO dto) {
-        Tag dbTag = repository.findById(id)
-            .orElse(null);
-        if (dbTag == null) return null;
+        Tag dbTag = repository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException("Tag não encontrada")
+        );
 
         dbTag.setTag(dto.getTag());
         return Mapper.tagToDTO(repository.save(dbTag));
     }
 
-    public Void delete(Long id) {
-        Tag tag = repository.findById(id).orElse(null);
-        if (tag == null) return null;
+    public void delete(Long id) {
+        Tag tag = repository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException("Tag não encontrada")
+        );
 
         tag.getPosts().forEach(post -> {
             post.getTags().remove(tag);
@@ -59,6 +61,5 @@ public class TagService {
         tag.getPosts().forEach(post -> tag.getPosts().remove(post));
 
         repository.delete(tag);
-        return null;
     }
 }

@@ -12,6 +12,8 @@ import com.mystack.techblog.entities.Post;
 import com.mystack.techblog.entities.Tag;
 import com.mystack.techblog.entities.User;
 import com.mystack.techblog.entities.dtos.PostDTO;
+import com.mystack.techblog.exceptions.BadRequestException;
+import com.mystack.techblog.exceptions.ResourceNotFoundException;
 import com.mystack.techblog.mapper.Mapper;
 import com.mystack.techblog.repositories.PostRepository;
 import com.mystack.techblog.repositories.TagRepository;
@@ -39,8 +41,9 @@ public class PostService {
     }
 
     public PostDTO findById(Long id) {
-        Post dbPost = repository.findById(id).orElse(null);
-        if (dbPost == null) return null;
+        Post dbPost = repository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException("Post não encontrado")
+        );
 
         dbPost.setViews(dbPost.getViews() + 1);
         dbPost = repository.save(dbPost);
@@ -61,20 +64,28 @@ public class PostService {
 
         Set<Tag> tagsReceived = new HashSet<>();
         dto.getTags().forEach(tagDto -> {
-            Tag checkTag = tagRepository.findByName(tagDto.getTag());
+            Tag checkTag = tagRepository.findByName(tagDto.getTag()).orElse(null);
             tagsReceived.add(checkTag == null ? tagRepository.save(Mapper.dtoToTag(tagDto)) : checkTag);
         });
 
-        Post persisted = repository.save(Mapper.dtoToPost(dto));
-        persisted.setTags(tagsReceived);
-        repository.save(persisted);
+        Post persisted;
+        try {
+            persisted = repository.save(Mapper.dtoToPost(dto));
+            persisted.setTags(tagsReceived);
+            repository.save(persisted);
+        } catch(RuntimeException e) {
+            if (e.getMessage().contains("Duplicate entry"))
+                throw new BadRequestException("Entrada duplicada. Reveja os campos duplicados na base de dados");
+            throw new BadRequestException(e.getMessage());
+        }
 
         return Mapper.postToDto(persisted);
     }
 
     public PostDTO update(Long id, PostDTO dto) {
-        Post dbPost = repository.findById(id).orElse(null);
-        if (dbPost == null) return null;
+        Post dbPost = repository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException("Post não encontrado")
+        );
 
         if (dto.getTitle() != null) dbPost.setTitle(dto.getTitle());
         if (dto.getThumb() != null) dbPost.setThumb(dto.getThumb());
@@ -86,7 +97,7 @@ public class PostService {
         if (dto.getTags() != null) {
             Set<Tag> tagsReceived = new HashSet<>();
             dto.getTags().forEach(tagDto -> {
-                Tag checkTag = tagRepository.findByName(tagDto.getTag());
+                Tag checkTag = tagRepository.findByName(tagDto.getTag()).orElse(null);
                 tagsReceived.add(checkTag == null ? tagRepository.save(Mapper.dtoToTag(tagDto)) : checkTag);
             });
 
@@ -95,32 +106,43 @@ public class PostService {
 
         dbPost.setUpdatedAt(new Date());
 
-        dbPost = repository.save(dbPost);
+        try {
+            dbPost = repository.save(dbPost);
+        } catch(RuntimeException e) {
+            if (e.getMessage().contains("Duplicate entry"))
+                throw new BadRequestException("Entrada duplicada. Reveja os campos duplicados na base de dados");
+            throw new BadRequestException(e.getMessage());
+        }
         return Mapper.postToDto(dbPost);
     }
 
     public void delete(Long id) {
+        repository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException("Post não encontrado")
+        );
+
         repository.deleteById(id);
     }
 
-    public String likePost(Long id, String token) {
+    public void likePost(Long id, String token) {
         token = token.replace("Bearer ", "");
         String userEmail = tokenService.validateToken(token);
 
-        User user = userRepository.findUserByEmail(userEmail).orElse(null);
-        if (user == null) return null;
+        User user = userRepository.findUserByEmail(userEmail).orElseThrow(
+            () -> new ResourceNotFoundException("Usuário fornecido não encontrado")
+        );
 
-        Post post = repository.findById(id).orElse(null);
-        if (post == null) return null;
+        Post post = repository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException("Post fornecido não encontrado")
+        );
 
         if (post.getUsersLikes().contains(user)) {
             post.getUsersLikes().remove(user);
             repository.save(post);
-            return "Curtida removida com sucesso";
+            return;
         }
 
         post.getUsersLikes().add(user);
         repository.save(post);
-        return "Curtida adicionada com sucesso";
     }
 }

@@ -20,7 +20,7 @@ public class SecurityConfig {
 
     @Autowired
     private SecurityTokenFilter securityTokenFilter;
-
+    // TODO -> Implementar exception handler para o securityFilterChain... Url: https://www.baeldung.com/spring-security-exceptionhandler
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http

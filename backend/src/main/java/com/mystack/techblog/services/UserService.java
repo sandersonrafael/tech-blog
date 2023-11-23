@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.mystack.techblog.entities.User;
 import com.mystack.techblog.entities.dtos.UserDTO;
 import com.mystack.techblog.entities.dtos.UserDetailsDTO;
+import com.mystack.techblog.exceptions.ResourceNotFoundException;
 import com.mystack.techblog.mapper.Mapper;
 import com.mystack.techblog.repositories.UserRepository;
 import com.mystack.techblog.services.auth.TokenService;
@@ -33,8 +34,9 @@ public class UserService {
         token = token.replace("Bearer ", "");
         String userEmail = tokenService.validateToken(token);
 
-        User user = repository.findUserByEmail(userEmail).orElse(null);
-        if (user == null) return null;
+        User user = repository.findUserByEmail(userEmail).orElseThrow(
+            () -> new ResourceNotFoundException("Usuário não encontado")
+        );
 
         UserDetailsDTO dto = mapper.map(user, UserDetailsDTO.class);
         dto.setCommentsIds(user.getComments().stream().map(c -> c.getId()).toList());

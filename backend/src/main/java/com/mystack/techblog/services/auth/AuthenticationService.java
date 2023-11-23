@@ -5,6 +5,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,8 @@ import com.mystack.techblog.entities.User;
 import com.mystack.techblog.entities.auth.LoginRequest;
 import com.mystack.techblog.entities.auth.RegisterRequest;
 import com.mystack.techblog.entities.enums.Role;
+import com.mystack.techblog.exceptions.BadRequestException;
+import com.mystack.techblog.exceptions.UnauthorizedException;
 import com.mystack.techblog.repositories.UserRepository;
 
 @Service
@@ -30,7 +33,7 @@ public class AuthenticationService {
     private UserRepository repository;
 
     public String register(RegisterRequest request) {
-        if (repository.findByEmail(request.email()) != null) return null;
+        if (repository.findByEmail(request.email()) != null) throw new BadRequestException("E-mail indisponível para cadastro");
 
         String passwordHash = passwordEncoder.encode(request.password().trim());
         String profileImg = request.profileImg().isBlank() || request.profileImg() == null
@@ -60,7 +63,12 @@ public class AuthenticationService {
     public String login(LoginRequest request) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(request.email().toLowerCase(), request.password());
 
-        var auth = authenticationManager.authenticate(usernamePassword);
+        Authentication auth;
+        try {
+            auth = authenticationManager.authenticate(usernamePassword);
+        } catch (RuntimeException e) {
+            throw new UnauthorizedException("Credenciais inválidas");
+        }
 
         var token = tokenService.generateToken((User) auth.getPrincipal());
 

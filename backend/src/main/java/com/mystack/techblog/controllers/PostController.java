@@ -56,7 +56,7 @@ public class PostController {
 
     @PatchMapping("/{postId}")
     public ResponseEntity<?> likePost(@PathVariable Long postId, @RequestHeader("Authorization") String token) {
-        String action = service.likePost(postId, token);
-        return ResponseEntity.ok(action);
+        service.likePost(postId, token);
+        return ResponseEntity.noContent().build();
     }
 }

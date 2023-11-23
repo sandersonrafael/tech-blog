@@ -12,10 +12,10 @@ public class ApplicationValidator {
     public static ValidationErrors validateRegisterRequest(RegisterRequest data) {
         ValidationErrors errors = new ValidationErrors();
 
-        var emailErrors = validateEmail(data.email());
-        var firstNameErrors = validateName(data.firstName());
-        var lastNameErrors = validateName(data.lastName());
-        var passwordErrors = validatePassword(data.password());
+        List<String> emailErrors = validateEmail(data.email());
+        List<String> firstNameErrors = validateName(data.firstName());
+        List<String> lastNameErrors = validateName(data.lastName());
+        List<String> passwordErrors = validatePassword(data.password());
 
         if (emailErrors != null) errors.addErrors("emailErrors", emailErrors);
         if (firstNameErrors != null) errors.addErrors("firstNameErrors", firstNameErrors);
@@ -28,8 +28,8 @@ public class ApplicationValidator {
     public static ValidationErrors validateLoginRequest(LoginRequest data) {
         ValidationErrors errors = new ValidationErrors();
 
-        var emailErrors = validateEmail(data.email());
-        var passwordErrors = validatePassword(data.password());
+        List<String> emailErrors = validateEmail(data.email());
+        List<String> passwordErrors = validatePassword(data.password());
 
         if (emailErrors != null) errors.addErrors("emailErrors", emailErrors);
         if (passwordErrors != null) errors.addErrors("passwordErrors", passwordErrors);

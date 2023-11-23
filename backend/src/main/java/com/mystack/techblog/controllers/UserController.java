@@ -28,4 +28,8 @@ public class UserController {
     public ResponseEntity<?> findByToken(@RequestHeader("Authorization") String authorization) {
         return ResponseEntity.ok(service.findByToken(authorization));
     }
+
+    // TODO -> Fazer o Put mapping para atualizar as infos do usuário, validando com o ApplicationValidator
+
+    // TODO -> Ver a melhor maneira de implementar o User Delete e como irá deletar tudo em cascade (fazer deleções manuais para não apagar outras entidades)
 }

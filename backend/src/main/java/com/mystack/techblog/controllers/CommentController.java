@@ -60,11 +60,13 @@ public class CommentController {
 
     @PatchMapping("/like/{id}")
     public ResponseEntity<?> likeComment(@PathVariable Long id, @RequestHeader("Authorization") String token) {
-        return ResponseEntity.ok(service.likeComment(id, token));
+        service.likeComment(id, token);
+        return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/dislike/{id}")
     public ResponseEntity<?> dislikeComment(@PathVariable Long id, @RequestHeader("Authorization") String token) {
-        return ResponseEntity.ok(service.dislikeComment(id, token));
+        service.dislikeComment(id, token);
+        return ResponseEntity.noContent().build();
     }
 }
