@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.mystack.techblog.entities.Tag;
 import com.mystack.techblog.entities.dtos.TagDTO;
 import com.mystack.techblog.mapper.Mapper;
+import com.mystack.techblog.repositories.PostRepository;
 import com.mystack.techblog.repositories.TagRepository;
 
 @Service
@@ -15,6 +16,9 @@ public class TagService {
 
     @Autowired
     private TagRepository repository;
+
+    @Autowired
+    private PostRepository postRepository;
 
     public List<TagDTO> findAll() {
         List<Tag> dbTags = repository.findAll();
@@ -43,7 +47,18 @@ public class TagService {
         return Mapper.tagToDTO(repository.save(dbTag));
     }
 
-    public void delete(Long id) {
-        repository.deleteById(id);
+    public Void delete(Long id) {
+        Tag tag = repository.findById(id).orElse(null);
+        if (tag == null) return null;
+
+        tag.getPosts().forEach(post -> {
+            post.getTags().remove(tag);
+            postRepository.save(post);
+        });
+
+        tag.getPosts().forEach(post -> tag.getPosts().remove(post));
+
+        repository.delete(tag);
+        return null;
     }
 }

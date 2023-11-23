@@ -1,8 +1,8 @@
 package com.mystack.techblog.entities.dtos;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -18,7 +18,7 @@ public class TagDTO implements Serializable {
 
     private Long id;
     private String tag;
-    private Set<Long> postsIds = new HashSet<>();
+    private List<Long> postsIds = new ArrayList<>();
 
     public TagDTO(Long id, String tag) {
         this.id = id;

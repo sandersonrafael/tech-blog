@@ -74,7 +74,6 @@ public class PostService {
 
     public PostDTO update(Long id, PostDTO dto) {
         Post dbPost = repository.findById(id).orElse(null);
-
         if (dbPost == null) return null;
 
         if (dto.getTitle() != null) dbPost.setTitle(dto.getTitle());
@@ -84,6 +83,15 @@ public class PostService {
         if (dto.getPostUrl() != null) dbPost.setPostUrl(dto.getPostUrl());
         if (dto.getDescription() != null) dbPost.setDescription(dto.getDescription());
         if (dto.getContent() != null) dbPost.setContent(dto.getContent());
+        if (dto.getTags() != null) {
+            Set<Tag> tagsReceived = new HashSet<>();
+            dto.getTags().forEach(tagDto -> {
+                Tag checkTag = tagRepository.findByName(tagDto.getTag());
+                tagsReceived.add(checkTag == null ? tagRepository.save(Mapper.dtoToTag(tagDto)) : checkTag);
+            });
+
+            dbPost.setTags(tagsReceived);
+        }
 
         dbPost.setUpdatedAt(new Date());
 

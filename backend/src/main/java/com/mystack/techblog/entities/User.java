@@ -1,9 +1,10 @@
 package com.mystack.techblog.entities;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -63,16 +64,16 @@ public class User implements UserDetails {
     private Role role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Comment> comments = new ArrayList<>();
+    private Set<Comment> comments = new HashSet<>();
 
     @ManyToMany(mappedBy = "usersLikes", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Post> postsLikes = new ArrayList<>();
+    private Set<Post> postsLikes = new HashSet<>();
 
     @ManyToMany(mappedBy = "usersLikes", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Comment> commentsLikes = new ArrayList<>();
+    private Set<Comment> commentsLikes = new HashSet<>();
 
     @ManyToMany(mappedBy = "usersDislikes", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Comment> commentsDislikes = new ArrayList<>();
+    private Set<Comment> commentsDislikes = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

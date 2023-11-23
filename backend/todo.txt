@@ -22,14 +22,6 @@ fazer um user permision para somente admin conseguir editar conteúdo e demais u
 
 fazer esquema para delete de tags onde primeiro busca todos posts que já tem tags e desassocia através de um método findPostsByTagName e depois dá um saveAll(List<Post>) com todos tendo removido a tag deletada
 
-refatorar o Mapper para o relacionamento de comments com User
-
-UserDTO não vai exibir o Role do User. Mas em cada requisição, é verificado se trata-se de um ADMIN, MODERATOR, etc. Somente admin pode criar posts e fazer todas alterações. Mod podem apagar comentários etc
-
-Fazer método de Delete user deletando antes todos os posts que possuem o id do userId igual ao id do usuário
-
-Fazer UserDTO receber o JsonWebToken no Body
-
 fazer tabela user_posts_likes e relações
 fazer tabela user_comments_likes e relações
 
@@ -39,15 +31,6 @@ Configurar pasta estática que suporta as imagens e que pode ser acessada por qu
 Configurar tabela que comporta imagens e seus relacionamentos, onde cada usuário só pode ter uma imagem de perfil e esta é apagada assim que
     uma nova é salva para o id do User
 
-Fazer controller de LOGIN separado
-
-User chama o CommentService para criar comentário, editar e deletar.
-
-Lombok para adicionar @Getters @Setters e construtores vazios ou com todos itens
-
-instalar Validation
-Validações com o Spring boot https://youtu.be/cP2x9zD9wDc?si=tRvZZGtcwqPQ5Atj
-refatorar a aplicação em relação aos ifs que validam manualmente e deixar o @Valid tomar de conta sempre para os DTOs
 e-mail salva e confere toLowerCase()
 Retornar mensagens de erro da validação: https://youtu.be/15XMEG-14mA?si=_cabANumKJ9jE2lB
 
