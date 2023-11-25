@@ -1,44 +1,36 @@
-PROBLEMA -> USUÁRIO PODE TER MAIS DE UM COMENTÁRIO NO MESMO POST
+## REMOVER AS VARIÁVEIS DE AMBIENTE DO MEU COMPUTADOR APÓS DEPLOY DO PROJETO
 
-
-Método put para post: sempre que um usuário carrega um post com o get, o service faz um put que atualiza as views
-
-relacionamento post_likes: pk composta por user_id e post_id
-
-Fazer exceptions personalizadas e lembrar de adicionar nos findById e update para erro 404 (não encontrado)
-
-implementar o CORS (CrossOrigin) para ser acessado somente pela url https://alltech.mystack.site
-
-implementar os likes após criar os usuários
-
-Fazer service de e-mail para enviar link ao usuário e ele acessar para confirmar cadastro, acessando rota dinâmica com hash dele mesmo
-
-implementar método para like e dislike do comment, onde ambos são metodos Patch e dão um like se o usuário
-    não tem likes e remove um like se o usuário já tem like
 
 remover os CrossOrigins do localhost:3000
+implementar o CORS (CrossOrigin) para ser acessado somente pela url https://alltech.mystack.site
 
-fazer um user permision para somente admin conseguir editar conteúdo e demais usuários somente poderão editar coisas relacionadas ao seu id com sua chave jwt
+Fazer service de e-mail para enviar link ao usuário e ele acessar para confirmar cadastro, acessando rota dinâmica com hash dele mesmo
+Fazer também no AuthenticationService um serviço de recuperação de senha que envia e-mail para o e-mail informado SE ele existir na base de dados,
+    mas não retorna se ele existe ou não ao usuário
 
-fazer esquema para delete de tags onde primeiro busca todos posts que já tem tags e desassocia através de um método findPostsByTagName e depois dá um saveAll(List<Post>) com todos tendo removido a tag deletada
+Ao registrar, o usuário ainda não recebe o token correto. Em vez disso, ele recebe um link no e-mail com redirecionamento para a página de login
+    no front-end, mas que tem uma url dinamica/[token], com um token temporário com payload contendo somente subject 'confirm' e
+    user 'emaildousuario@email.com', com um secret diferente para a senha (nova variável de ambiente).
+Configurar o AuthentiationService para que quando o usuário é cadastrado mas ainda não habilitado, e tente cadastrar novamente, ele envie outro e-mail de
+	confirmação em vez de retornar erro de que o usuário já existe. Caso já seja enabled = true, simplesmente retorna erro que e-mail está indisponível
 
-fazer tabela user_posts_likes e relações
-fazer tabela user_comments_likes e relações
+Esse token será válido por 60 minutos (configurar expiration do jwt para confirm)
 
-Fazer lógica para adicionar e remover tags a um post através de um novo método no PostService (addTags && removeTags)
+Um novo entry point com método post será criado para o AuthenticationService. Ele habilita o usuário no DB e ao mesmo tempo devolve
+    o token, assim como o login. Mas ele retornará erro caso o usuário já esteja habilitado e tente enviar uma requisição para o entrypoint
+Reajustar todos os outros campos da aplicação para verificar se o usuário tem enabled == true, isso inclui o findAll do repository
+    talvez seja necessário mudar o repository para Query personalizada com a clausula WHERE u.enabled = true, também criar findAll() assim
+O recuperar senha será similar, mas sem "habilitar" o usuário. Somente enviar esse e-mail
 
 Configurar pasta estática que suporta as imagens e que pode ser acessada por qualquer endpoint
 Configurar tabela que comporta imagens e seus relacionamentos, onde cada usuário só pode ter uma imagem de perfil e esta é apagada assim que
     uma nova é salva para o id do User
 
-e-mail salva e confere toLowerCase()
-Retornar mensagens de erro da validação: https://youtu.be/15XMEG-14mA?si=_cabANumKJ9jE2lB
-
-refatorar o Mapper da aplicação com o ModelMapper para economizar no código e atualizar só o que faltar, como os relacionamentos, fks, etc
-
 fazer exceptions e adicionar TokenExpiredException e SignatureVerificationException
 
-organizar todas as entities com os nullable = false para valores que não podeme ser nulos, como datas
+## IMPLEMENTAR TESTES PARA A APLICAÇÃO E NOS TESTES DE INTEGRAÇÃO CONFIGURAR VARIÁVEIS DE AMBIENTE NO TEST CONTAINERS DOCKER SIMILARES ÀS DA APLICAÇÃO, COM VALORES DIFERENTES
+
+Fazer README.md para o Back-end ao final do projeto, além do README.md para o Front-end e para o repositório em geral
 
 backup temporario:
 

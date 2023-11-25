@@ -32,7 +32,7 @@ public class AuthenticationService {
     @Autowired
     private UserRepository repository;
 
-    public String register(RegisterRequest request) {
+    public String register(RegisterRequest request) { // TODO -> Fazer lógica para enviar novo e-mail de confirmação
         if (repository.findByEmail(request.email()) != null) throw new BadRequestException("E-mail indisponível para cadastro");
 
         String passwordHash = passwordEncoder.encode(request.password().trim());
@@ -48,6 +48,7 @@ public class AuthenticationService {
             request.email().toLowerCase(),
             passwordHash,
             new Date(),
+            false,
             Role.USER,
             null,
             null,

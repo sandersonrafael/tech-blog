@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mystack.techblog.exceptions.BadRequestException;
 import com.mystack.techblog.exceptions.ExceptionResponse;
@@ -18,6 +19,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public class CustomizedExceptionHandler {
 
     @ExceptionHandler(Exception.class)
+    @ResponseBody
     public final ResponseEntity<ExceptionResponse> handleAllExceptions(Exception exception, HttpServletRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(
             request.getRequestURL().toString(),
@@ -31,6 +33,7 @@ public class CustomizedExceptionHandler {
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseBody
     public final ResponseEntity<ExceptionResponse> handleResourceNotFoundException(
         Exception exception, HttpServletRequest request
     ) {
@@ -46,6 +49,7 @@ public class CustomizedExceptionHandler {
     }
 
     @ExceptionHandler(BadRequestException.class)
+    @ResponseBody
     public final ResponseEntity<ExceptionResponse> handleBadRequestException(
         Exception exception, HttpServletRequest request
     ) {
@@ -61,6 +65,7 @@ public class CustomizedExceptionHandler {
     }
 
     @ExceptionHandler(UnauthorizedException.class)
+    @ResponseBody
     public final ResponseEntity<ExceptionResponse> handleUnauthorizedException(
         Exception exception, HttpServletRequest request
     ) {

@@ -50,8 +50,12 @@ public class PostService {
 
         return Mapper.postToDto(dbPost);
     }
-
+    // TODO -> Usar o ApplitationValidator para validar as entradas do usuário
     public PostDTO create(PostDTO dto) {
+        if (repository.findByPostUrl(dto.getPostUrl()) != null) {
+            throw new BadRequestException("Url informada para o post já está em uso");
+        }
+
         Date now = new Date();
         dto.setCreatedAt(now);
         dto.setUpdatedAt(now);
@@ -68,20 +72,13 @@ public class PostService {
             tagsReceived.add(checkTag == null ? tagRepository.save(Mapper.dtoToTag(tagDto)) : checkTag);
         });
 
-        Post persisted;
-        try {
-            persisted = repository.save(Mapper.dtoToPost(dto));
-            persisted.setTags(tagsReceived);
-            repository.save(persisted);
-        } catch(RuntimeException e) {
-            if (e.getMessage().contains("Duplicate entry"))
-                throw new BadRequestException("Entrada duplicada. Reveja os campos duplicados na base de dados");
-            throw new BadRequestException(e.getMessage());
-        }
+        Post persisted = repository.save(Mapper.dtoToPost(dto));
+        persisted.setTags(tagsReceived);
+        repository.save(persisted);
 
         return Mapper.postToDto(persisted);
     }
-
+    // TODO -> Usar o ApplitationValidator para validar as entradas do usuário
     public PostDTO update(Long id, PostDTO dto) {
         Post dbPost = repository.findById(id).orElseThrow(
             () -> new ResourceNotFoundException("Post não encontrado")
@@ -106,13 +103,13 @@ public class PostService {
 
         dbPost.setUpdatedAt(new Date());
 
-        try {
-            dbPost = repository.save(dbPost);
-        } catch(RuntimeException e) {
-            if (e.getMessage().contains("Duplicate entry"))
-                throw new BadRequestException("Entrada duplicada. Reveja os campos duplicados na base de dados");
-            throw new BadRequestException(e.getMessage());
+        if (dto.getPostUrl() != null && !dto.getPostUrl().isBlank()) {
+            if (repository.findByPostUrl(dto.getPostUrl()) != null) {
+               throw new BadRequestException("Url informada para o post já está em uso");
+            }
         }
+
+        dbPost = repository.save(dbPost);
         return Mapper.postToDto(dbPost);
     }
 

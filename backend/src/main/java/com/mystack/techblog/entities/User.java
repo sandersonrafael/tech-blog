@@ -60,6 +60,8 @@ public class User implements UserDetails {
 
     private Date createdAt;
 
+    private Boolean enabled;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -92,6 +94,11 @@ public class User implements UserDetails {
     }
 
     @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    @Override
     public boolean isAccountNonExpired() {
         return true;
     }
@@ -103,11 +110,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
         return true;
     }
 }
