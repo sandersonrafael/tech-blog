@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mystack.techblog.entities.auth.LoginRequest;
+import com.mystack.techblog.entities.auth.RecoverRequest;
 import com.mystack.techblog.entities.auth.RegisterRequest;
 import com.mystack.techblog.entities.messages.ValidationErrors;
 
@@ -15,11 +16,14 @@ public class ApplicationValidator {
         List<String> emailErrors = validateEmail(data.email());
         List<String> firstNameErrors = validateName(data.firstName());
         List<String> lastNameErrors = validateName(data.lastName());
+        List<String> profileImgErrors = data.profileImg() != null && !data.profileImg().isBlank()
+            ? validateUserImg(data.profileImg()) : null;
         List<String> passwordErrors = validatePassword(data.password());
 
         if (emailErrors != null) errors.addErrors("emailErrors", emailErrors);
         if (firstNameErrors != null) errors.addErrors("firstNameErrors", firstNameErrors);
         if (lastNameErrors != null) errors.addErrors("lastNameErrors", lastNameErrors);
+        if (profileImgErrors != null) errors.addErrors("profileImgErrors", profileImgErrors);
         if (passwordErrors != null) errors.addErrors("passwordErrors", passwordErrors);
 
         return errors.getErrors().size() > 0 ? errors : null;
@@ -33,6 +37,16 @@ public class ApplicationValidator {
 
         if (emailErrors != null) errors.addErrors("emailErrors", emailErrors);
         if (passwordErrors != null) errors.addErrors("passwordErrors", passwordErrors);
+
+        return errors.getErrors().size() > 0 ? errors : null;
+    }
+
+    public static ValidationErrors validateRecoverPasswordRequest(RecoverRequest data) {
+        ValidationErrors errors = new ValidationErrors();
+
+        List<String> emailErrors = validateEmail(data.email());
+
+        if (emailErrors != null) errors.addErrors("emailErrors", emailErrors);
 
         return errors.getErrors().size() > 0 ? errors : null;
     }
@@ -88,4 +102,13 @@ public class ApplicationValidator {
 
         return passwordErrors.size() != 0 ? passwordErrors : null;
    }
+
+    private static List<String> validateUserImg(String imgPath) {
+        List<String> profileImgErrors = new ArrayList<>();
+
+        if (imgPath.contains(" ")) profileImgErrors.add("Imagem não pode conter espaços em branco");
+        if (imgPath.indexOf("/") == -1) profileImgErrors.add("Imagem informada é inválida");
+
+        return profileImgErrors.size() != 0 ? profileImgErrors : null;
+    }
 }

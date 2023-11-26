@@ -11,9 +11,11 @@ import org.springframework.stereotype.Service;
 
 import com.mystack.techblog.entities.User;
 import com.mystack.techblog.entities.auth.LoginRequest;
+import com.mystack.techblog.entities.auth.RecoverRequest;
 import com.mystack.techblog.entities.auth.RegisterRequest;
 import com.mystack.techblog.entities.enums.Role;
 import com.mystack.techblog.exceptions.BadRequestException;
+import com.mystack.techblog.exceptions.ResourceNotFoundException;
 import com.mystack.techblog.exceptions.UnauthorizedException;
 import com.mystack.techblog.repositories.UserRepository;
 import com.mystack.techblog.services.MailService;
@@ -84,5 +86,61 @@ public class AuthenticationService {
         var token = tokenService.generateToken((User) auth.getPrincipal());
 
         return token;
+    }
+
+    public String firstLogin(LoginRequest request, String confirmationToken) {
+        String userEmail;
+        confirmationToken = confirmationToken.replace("Bearer ", "");
+
+        try {
+            userEmail = tokenService.validateAccountConfirmationToken(confirmationToken);
+        } catch (Throwable e) {
+            throw new UnauthorizedException("Token inválido, expirado ou usuário já cadastrado");
+        }
+
+        User dbUser = repository.findEmailToConfirm(userEmail).orElse(null);
+        if (dbUser == null) throw new BadRequestException("Credenciais inválidas");
+        if (dbUser.getEmail() != request.email()) throw new BadRequestException("Solicitação inválida");
+        if (dbUser.getEnabled() == true) throw new BadRequestException("Solicitação inválida");
+
+        Boolean passwordMatches = passwordEncoder.matches(request.password(), dbUser.getPasswordHash());
+
+        if (passwordMatches) {
+            dbUser.setEnabled(true);
+            repository.save(dbUser);
+        }
+        return this.login(request);
+    }
+
+    public void requestRecoverPassword(RecoverRequest request) {
+        User dbUser = repository.findUserByEmail(request.email()).orElse(null);
+        if (dbUser == null) throw new ResourceNotFoundException("Usuário não encontrado");
+
+        mailService.sendRecoverPasswordEmail(request.email(), dbUser.getFirstName());
+    }
+
+    public String recoverPassword(LoginRequest request, String recoverToken) {
+        String userEmail;
+        recoverToken = recoverToken.replace("Bearer ", recoverToken);
+
+        try {
+            userEmail = tokenService.validateRecoverPasswordToken(recoverToken);
+        } catch (Exception e) {
+            throw new UnauthorizedException("Token inválido ou expirado");
+        }
+
+        User dbUser = repository.findUserByEmail(userEmail).orElse(null);
+
+        if (dbUser == null) throw new BadRequestException("Credenciais inválidas");
+        if (!userEmail.equals(request.email().toLowerCase())) {
+            throw new BadRequestException("Solicitação inválida");
+        }
+
+        String passwordHash = passwordEncoder.encode(request.password());
+        dbUser.setPasswordHash(passwordHash);
+
+        repository.save(dbUser);
+
+        return this.login(request);
     }
 }

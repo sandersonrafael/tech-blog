@@ -3,6 +3,7 @@ package com.mystack.techblog.controllers.auth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mystack.techblog.entities.auth.AuthenticationResponse;
 import com.mystack.techblog.entities.auth.LoginRequest;
+import com.mystack.techblog.entities.auth.RecoverRequest;
 import com.mystack.techblog.entities.auth.RegisterRequest;
 import com.mystack.techblog.entities.messages.ValidationErrors;
 import com.mystack.techblog.services.auth.AuthenticationService;
@@ -33,7 +35,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> postMethodName(@RequestBody LoginRequest data) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest data) {
         ValidationErrors errors = ApplicationValidator.validateLoginRequest(data);
         if (errors != null) return ResponseEntity.badRequest().body(errors);
 
@@ -43,6 +45,35 @@ public class AuthenticationController {
         return ResponseEntity.ok(auth);
     }
 
-    // TODO -> Criar path e method POST para "firstLogin", onde o usuário faz o mesmo que login, mas faz o enabled = true na conta
-    // Verificando o token de acordo com o método validateAccountConfirmationToken do TokenService
+    @PostMapping("/first-login/{confirmationToken}")
+    public ResponseEntity<?> firstLogin(@RequestBody LoginRequest request, @PathVariable String confirmationToken) {
+        ValidationErrors errors = ApplicationValidator.validateLoginRequest(request);
+        if (errors != null) return ResponseEntity.badRequest().body(errors);
+
+        String token = service.firstLogin(request, confirmationToken);
+        AuthenticationResponse auth = new AuthenticationResponse(token);
+
+        return ResponseEntity.ok(auth);
+    }
+
+    @PostMapping("/recover")
+    public ResponseEntity<?> requestRecoverPassword(@RequestBody RecoverRequest request) {
+        ValidationErrors errors = ApplicationValidator.validateRecoverPasswordRequest(request);
+        if (errors != null) return ResponseEntity.badRequest().body(errors);
+
+        service.requestRecoverPassword(request);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/recover/{recoveryToken}")
+    public ResponseEntity<?> recoverPassword(@RequestBody LoginRequest request, @PathVariable String recoveryToken) {
+        ValidationErrors errors = ApplicationValidator.validateLoginRequest(request);
+        if (errors != null) return ResponseEntity.badRequest().body(errors);
+
+        String token = service.recoverPassword(request, recoveryToken);
+        AuthenticationResponse auth = new AuthenticationResponse(token);
+
+        return ResponseEntity.ok(auth);
+    }
 }

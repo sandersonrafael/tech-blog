@@ -17,7 +17,7 @@ import com.mystack.techblog.services.auth.TokenService;
 @Service
 public class UserService {
 
-    private ModelMapper mapper = new ModelMapper();
+    private final ModelMapper mapper = new ModelMapper();
 
     @Autowired
     private UserRepository repository;
@@ -27,7 +27,7 @@ public class UserService {
 
     public List<UserDTO> findAll() {
         var users = repository.findAll();
-        return users.stream().map(user -> Mapper.userToDto(user)).toList();
+        return users.stream().map(Mapper::userToDto).toList();
     }
 
     public UserDetailsDTO findByToken(String token) {
