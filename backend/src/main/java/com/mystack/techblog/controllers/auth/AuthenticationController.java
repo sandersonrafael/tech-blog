@@ -27,10 +27,9 @@ public class AuthenticationController {
         ValidationErrors errors = ApplicationValidator.validateRegisterRequest(data);
         if (errors != null) return ResponseEntity.badRequest().body(errors);
 
-        String token = service.register(data);
-        AuthenticationResponse auth = new AuthenticationResponse(token);
+        service.register(data);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(auth);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PostMapping("/login")
@@ -43,4 +42,7 @@ public class AuthenticationController {
 
         return ResponseEntity.ok(auth);
     }
+
+    // TODO -> Criar path e method POST para "firstLogin", onde o usuário faz o mesmo que login, mas faz o enabled = true na conta
+    // Verificando o token de acordo com o método validateAccountConfirmationToken do TokenService
 }

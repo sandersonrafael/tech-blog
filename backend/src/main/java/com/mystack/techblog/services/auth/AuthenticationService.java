@@ -16,6 +16,7 @@ import com.mystack.techblog.entities.enums.Role;
 import com.mystack.techblog.exceptions.BadRequestException;
 import com.mystack.techblog.exceptions.UnauthorizedException;
 import com.mystack.techblog.repositories.UserRepository;
+import com.mystack.techblog.services.MailService;
 
 @Service
 public class AuthenticationService {
@@ -32,8 +33,17 @@ public class AuthenticationService {
     @Autowired
     private UserRepository repository;
 
-    public String register(RegisterRequest request) { // TODO -> Fazer lógica para enviar novo e-mail de confirmação
-        if (repository.findByEmail(request.email()) != null) throw new BadRequestException("E-mail indisponível para cadastro");
+    @Autowired
+    private MailService mailService;
+
+    public void register(RegisterRequest request) {
+        var checkedUser = repository.findEmailToConfirm(request.email()).orElse(null);
+        if (checkedUser != null) {
+            if (checkedUser.isEnabled()) throw new BadRequestException("E-mail indisponível para cadastro");
+
+            mailService.sendConfirmationEmail(checkedUser.getUsername(), checkedUser.getFirstName());
+            return;
+        }
 
         String passwordHash = passwordEncoder.encode(request.password().trim());
         String profileImg = request.profileImg().isBlank() || request.profileImg() == null
@@ -55,10 +65,10 @@ public class AuthenticationService {
             null,
             null
         );
-
         user = repository.save(user);
 
-        return tokenService.generateToken(user);
+        mailService.sendConfirmationEmail(user.getEmail(), user.getFirstName());
+        return;
     }
 
     public String login(LoginRequest request) {

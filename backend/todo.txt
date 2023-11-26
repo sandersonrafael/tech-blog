@@ -14,6 +14,8 @@ Ao registrar, o usuário ainda não recebe o token correto. Em vez disso, ele re
 Configurar o AuthentiationService para que quando o usuário é cadastrado mas ainda não habilitado, e tente cadastrar novamente, ele envie outro e-mail de
 	confirmação em vez de retornar erro de que o usuário já existe. Caso já seja enabled = true, simplesmente retorna erro que e-mail está indisponível
 
+Fazer  newsletter com mensagem para se desinscrever
+
 Esse token será válido por 60 minutos (configurar expiration do jwt para confirm)
 
 Um novo entry point com método post será criado para o AuthenticationService. Ele habilita o usuário no DB e ao mesmo tempo devolve

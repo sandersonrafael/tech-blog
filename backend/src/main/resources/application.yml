@@ -8,11 +8,24 @@ spring:
     show-sql: false
     hibernate:
       ddl-auto: none
+  mail:
+    host: ${JMS_HOST}
+    port: ${JMS_PORT}
+    username: ${JMS_USERNAME}
+    password: ${JMS_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 api:
   security:
     token:
       secret: ${JWT_TOKEN_SECRET}
+      confirmationSecret: ${JWT_ACCOUNT_CONFIRMATION_SECRET}
       expiresAt: ${JWT_EXPIRES_AT}
+      confirmationExpiresAt: ${JWT_ACCOUNT_CONFIRMATION_EXPIRES_AT}
       issuer: ${JWT_ISSUER}
     cors:
       originPatterns: ${AUTHORIZED_URLS_SEPARATED_BY_COMMA}

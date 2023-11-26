@@ -18,5 +18,15 @@
     "name": "api.security.cors.origin-patterns",
     "type": "java.lang.String",
     "description": "A description for 'api.security.cors.origin-patterns'"
+  },
+  {
+    "name": "api.security.token.confirmationExpiresAt",
+    "type": "java.lang.Long",
+    "description": "A description for 'api.security.token.confirmationExpiresAt'"
+  },
+  {
+    "name": "api.security.token.confirmationSecret",
+    "type": "java.lang.Long",
+    "description": "A description for 'api.security.token.confirmationSecret'"
   }
 ]}
