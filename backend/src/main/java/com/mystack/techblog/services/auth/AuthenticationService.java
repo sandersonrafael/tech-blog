@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.mystack.techblog.entities.User;
+import com.mystack.techblog.entities.auth.ChangePasswordRequest;
 import com.mystack.techblog.entities.auth.LoginRequest;
 import com.mystack.techblog.entities.auth.RecoverRequest;
 import com.mystack.techblog.entities.auth.RegisterRequest;
@@ -99,8 +100,8 @@ public class AuthenticationService {
         }
 
         User dbUser = repository.findEmailToConfirm(userEmail).orElse(null);
-        if (dbUser == null) throw new BadRequestException("Credenciais inválidas");
-        if (dbUser.getEmail() != request.email()) throw new BadRequestException("Solicitação inválida");
+        if (dbUser == null) throw new ResourceNotFoundException("Usuário não encontrado");
+        if (dbUser.getEmail() != request.email()) throw new BadRequestException("Credenciais inválidas");
         if (dbUser.getEnabled() == true) throw new BadRequestException("Solicitação inválida");
 
         Boolean passwordMatches = passwordEncoder.matches(request.password(), dbUser.getPasswordHash());
@@ -110,6 +111,31 @@ public class AuthenticationService {
             repository.save(dbUser);
         }
         return this.login(request);
+    }
+
+    public void changePassword(ChangePasswordRequest request, String token) {
+        String userEmail;
+        token = token.replace("Bearer ", "");
+
+        try {
+            userEmail = tokenService.validateToken(token);
+        } catch (Exception e) {
+            throw new UnauthorizedException("Token inválido ou expirado");
+        }
+
+        User dbUser = repository.findUserByEmail(userEmail).orElse(null);
+        if (dbUser == null) throw new ResourceNotFoundException("Usuário não encontrado");
+        if (!dbUser.getEmail().equals(request.email().toLowerCase())) {
+            throw new BadRequestException("Credenciais inválidas");
+        }
+
+        if (passwordEncoder.matches(request.oldPassword(), dbUser.getPasswordHash())) {
+            dbUser.setPasswordHash(passwordEncoder.encode(request.newPassword()));
+            repository.save(dbUser);
+            return;
+        }
+
+        throw new BadRequestException("Credenciais inválidas");
     }
 
     public void requestRecoverPassword(RecoverRequest request) {
@@ -131,9 +157,9 @@ public class AuthenticationService {
 
         User dbUser = repository.findUserByEmail(userEmail).orElse(null);
 
-        if (dbUser == null) throw new BadRequestException("Credenciais inválidas");
+        if (dbUser == null) throw new ResourceNotFoundException("Usuário não encontrado");
         if (!userEmail.equals(request.email().toLowerCase())) {
-            throw new BadRequestException("Solicitação inválida");
+            throw new BadRequestException("Credenciais inválidas");
         }
 
         String passwordHash = passwordEncoder.encode(request.password());

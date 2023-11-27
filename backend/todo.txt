@@ -1,18 +1,16 @@
 ## REMOVER AS VARIÁVEIS DE AMBIENTE DO MEU COMPUTADOR APÓS DEPLOY DO PROJETO
 
-Fazer newsletter com mensagem para se desinscrever
+Fazer newsletter com mensagem para se desinscrever enviada em todo e-mail
 Fazer modificações no create do PostService para enviar emails de novos posts para todos assinantes de e-mail (
     no MailService, criar serviço que busca todos usuários do SubscriberRepository e envia e-mail com BCC que lista todos encontrados
 )
 Criar entidade Subscriber
 Criar SubscriberService com métodos subscribe e unsubscribe
-
-Fazer changePassword no AuthenticationService
-
-Fazer método PUT do UserService para atualizar informações de usuário (exceto senha e e-mail)
+Fazer migration incluindo a table
 
 Implementar no futuro um delete para user.
-Fazer todas validações para que a deleção em cascata não acabe por deletar usuários e comentários terceiros
+Testar o delete de um User e ver como ele se comporta nos comments, likes, etc (se deleta os demais ou se só remove o user deles)
+O delete recebe o token do usuário e exige que ele também confirme e-mail e senha. Somente se validar token, login e senha que deleta
 
 ## IMPLEMENTAR TESTES PARA A APLICAÇÃO E NOS TESTES DE INTEGRAÇÃO CONFIGURAR VARIÁVEIS DE AMBIENTE NO TEST CONTAINERS DOCKER SIMILARES ÀS DA APLICAÇÃO, COM VALORES DIFERENTES
 

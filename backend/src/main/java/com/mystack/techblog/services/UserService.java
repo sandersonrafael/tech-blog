@@ -10,6 +10,7 @@ import com.mystack.techblog.entities.User;
 import com.mystack.techblog.entities.dtos.UserDTO;
 import com.mystack.techblog.entities.dtos.UserDetailsDTO;
 import com.mystack.techblog.exceptions.ResourceNotFoundException;
+import com.mystack.techblog.exceptions.UnauthorizedException;
 import com.mystack.techblog.mapper.Mapper;
 import com.mystack.techblog.repositories.UserRepository;
 import com.mystack.techblog.services.auth.TokenService;
@@ -45,5 +46,25 @@ public class UserService {
         dto.setCommentsDislikesIds(user.getCommentsDislikes().stream().map(c -> c.getId()).toList());
 
         return dto;
+    }
+
+    public Object update(UserDTO dto, String token) {
+        token = token.replace("Bearer ", "");
+        String userEmail;
+
+        try {
+            userEmail = tokenService.validateToken(token);
+        } catch (Exception e) {
+            throw new UnauthorizedException("Token inválido ou expirado");
+        }
+
+        User dbUser = repository.findUserByEmail(userEmail).orElse(null);
+        if (dbUser == null) throw new ResourceNotFoundException("Usuário não encontrado");
+
+        if (dto.getFirstName() != null && !dto.getFirstName().isBlank()) dbUser.setFirstName(dto.getFirstName());
+        if (dto.getLastName() != null && !dto.getLastName().isBlank()) dbUser.setLastName(dto.getLastName());
+        if (dto.getProfileImg() != null && !dto.getProfileImg().isBlank()) dbUser.setProfileImg(dto.getProfileImg());
+
+        return Mapper.userToDto(repository.save(dbUser));
     }
 }

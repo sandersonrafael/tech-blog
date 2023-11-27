@@ -6,10 +6,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mystack.techblog.entities.auth.AuthenticationResponse;
+import com.mystack.techblog.entities.auth.ChangePasswordRequest;
 import com.mystack.techblog.entities.auth.LoginRequest;
 import com.mystack.techblog.entities.auth.RecoverRequest;
 import com.mystack.techblog.entities.auth.RegisterRequest;
@@ -54,6 +56,19 @@ public class AuthenticationController {
         AuthenticationResponse auth = new AuthenticationResponse(token);
 
         return ResponseEntity.ok(auth);
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<?> changePassword(
+        @RequestBody ChangePasswordRequest request,
+        @RequestHeader("Authorization") String token
+    ) {
+        ValidationErrors errors = ApplicationValidator.validateChangePassword(request);
+        if (errors != null) return ResponseEntity.badRequest().body(errors);
+
+        service.changePassword(request, token);
+
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/recover")

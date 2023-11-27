@@ -3,9 +3,11 @@ package com.mystack.techblog.validation;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mystack.techblog.entities.auth.ChangePasswordRequest;
 import com.mystack.techblog.entities.auth.LoginRequest;
 import com.mystack.techblog.entities.auth.RecoverRequest;
 import com.mystack.techblog.entities.auth.RegisterRequest;
+import com.mystack.techblog.entities.dtos.UserDTO;
 import com.mystack.techblog.entities.messages.ValidationErrors;
 
 public class ApplicationValidator {
@@ -47,6 +49,35 @@ public class ApplicationValidator {
         List<String> emailErrors = validateEmail(data.email());
 
         if (emailErrors != null) errors.addErrors("emailErrors", emailErrors);
+
+        return errors.getErrors().size() > 0 ? errors : null;
+    }
+
+    public static ValidationErrors validateUserUpdate(UserDTO dto) {
+        ValidationErrors errors = new ValidationErrors();
+
+        List<String> firstNameErrors = validateName(dto.getFirstName());
+        List<String> lastNameErrors = validateName(dto.getLastName());
+        List<String> profileImgErrors = dto.getProfileImg() != null && !dto.getProfileImg().isBlank()
+            ? validateUserImg(dto.getProfileImg()) : null;
+
+        if (firstNameErrors != null) errors.addErrors("firstNameErrors", firstNameErrors);
+        if (lastNameErrors != null) errors.addErrors("lastNameErrors", lastNameErrors);
+        if (profileImgErrors != null) errors.addErrors("profileImgErrors", profileImgErrors);
+
+        return errors.getErrors().size() > 0 ? errors : null;
+    }
+
+    public static ValidationErrors validateChangePassword(ChangePasswordRequest data) {
+        ValidationErrors errors = new ValidationErrors();
+
+        List<String> emailErrors = validateEmail(data.email().toLowerCase());
+        List<String> oldPasswordErrors = validatePassword(data.oldPassword());
+        List<String> newPasswordErrors = validatePassword(data.newPassword());
+
+        if (emailErrors != null) errors.addErrors("emailErrors", emailErrors);
+        if (oldPasswordErrors != null) errors.addErrors("oldPasswordErrors", oldPasswordErrors);
+        if (newPasswordErrors != null) errors.addErrors("newPasswordErrors", newPasswordErrors);
 
         return errors.getErrors().size() > 0 ? errors : null;
     }
