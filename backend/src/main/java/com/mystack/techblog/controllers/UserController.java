@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mystack.techblog.entities.auth.LoginRequest;
 import com.mystack.techblog.entities.dtos.UserDTO;
 import com.mystack.techblog.entities.dtos.UserDetailsDTO;
 import com.mystack.techblog.entities.messages.ValidationErrors;
@@ -40,5 +42,14 @@ public class UserController {
         if (errors != null) return ResponseEntity.badRequest().body(errors);
 
         return ResponseEntity.ok(service.update(dto, token));
+    }
+
+    @DeleteMapping
+    private ResponseEntity<?> delete(@RequestBody LoginRequest request, @RequestHeader("Authorization") String token) {
+        ValidationErrors errors = ApplicationValidator.validateLoginRequest(request);
+        if (errors != null) return ResponseEntity.badRequest().body(errors);
+
+        service.delete(request, token);
+        return ResponseEntity.ok().build();
     }
 }

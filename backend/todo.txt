@@ -1,10 +1,8 @@
 ## REMOVER AS VARIÁVEIS DE AMBIENTE DO MEU COMPUTADOR APÓS DEPLOY DO PROJETO
 
-Voltar para implementar no front o cancelamento da newsletter pelo link enviado no e-mail
+Voltar ao implementar no front o cancelamento da newsletter pelo link enviado no e-mail
 
 Criar validações para novas postagens e para edições de posts
-
-Implementar um delete para user, verificando como ele se comporta em relação aos commentLikes, commentDislikes, comments, postsLikes, etc
 
 Documentar com o Swagger(?)
 

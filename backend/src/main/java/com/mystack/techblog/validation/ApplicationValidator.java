@@ -85,25 +85,27 @@ public class ApplicationValidator {
     private static List<String> validateEmail(String email) {
         List<String> emailErrors = new ArrayList<>();
 
-        if (email.isBlank() || email == null) emailErrors.add("E-mail não pode estar vazio");
+        if (email == null || email.isBlank()) emailErrors.add("E-mail não pode estar vazio");
 
-        if (email.indexOf(" ") != -1) emailErrors.add("E-mail não pode conter espaços em branco");
+        if (email != null  && email.indexOf(" ") != -1) emailErrors.add("E-mail não pode conter espaços em branco");
 
-        String[] splitAt = email.split("@");
-        if (splitAt.length == 2) {
-            String[] splitDot = splitAt[1].split("\\.");
+        if (email != null) {
+            String[] splitAt = email.split("@");
+            if (splitAt.length == 2) {
+                String[] splitDot = splitAt[1].split("\\.");
 
-            if (splitDot.length >= 2) {
+                if (splitDot.length >= 2) {
 
-                for (String string : splitDot) {
+                    for (String string : splitDot) {
 
-                    if (string.length() < 2) {
-                        emailErrors.add("E-mail inválido.");
-                        break;
+                        if (string.length() < 2) {
+                            emailErrors.add("E-mail inválido.");
+                            break;
+                        }
                     }
-                }
+                } else emailErrors.add("E-mail inválido");
             } else emailErrors.add("E-mail inválido");
-        } else emailErrors.add("E-mail inválido");
+        }
 
         return emailErrors.size() != 0 ? emailErrors : null;
     }
@@ -112,9 +114,9 @@ public class ApplicationValidator {
         List<String> nameErrors = new ArrayList<>();
 
         if (name == null || name.isBlank()) nameErrors.add("Campo não pode estar vazio");
-        if (name.length() < 2) nameErrors.add("Campo não pode conter menos que 2 caracteres");
-        if (name.indexOf("  ") != -1) nameErrors.add("Campo não pode conter múltiplos espaços vazios");
-        if (name.indexOf(" ") == 0 || name.indexOf(" ") == (name.length() - 1))
+        if (name != null && name.length() < 2) nameErrors.add("Campo não pode conter menos que 2 caracteres");
+        if (name != null && name.indexOf("  ") != -1) nameErrors.add("Campo não pode conter múltiplos espaços vazios");
+        if (name != null && name.indexOf(" ") == 0 || name.indexOf(" ") == (name.length() - 1))
             nameErrors.add("Campo não pode iniciar ou finalizar com espaços em branco");
 
         return nameErrors.size() != 0 ? nameErrors : null;
@@ -123,11 +125,12 @@ public class ApplicationValidator {
     private static List<String> validatePassword(String password) {
         List<String> passwordErrors = new ArrayList<>();
 
-        if (password.length() < 4 || password.length() > 24) {
+        if (password == null) passwordErrors.add("Senha deve ser informada");
+        if (password != null && (password.length() < 4 || password.length() > 24)) {
             passwordErrors.add("Senha deve conter entre 4 e 24 caracteres");
         }
-        if (password.indexOf(" ") != -1) passwordErrors.add("Senha não pode conter espaços em branco");
-        if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*\\W).*$")) {
+        if (password != null && password.indexOf(" ") != -1) passwordErrors.add("Senha não pode conter espaços em branco");
+        if (password != null && !password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*\\W).*$")) {
             passwordErrors.add("Senha precisa conter maiúsculas, minúsculas, números e símbolos");
         }
 
@@ -137,7 +140,7 @@ public class ApplicationValidator {
     private static List<String> validateUserImg(String imgPath) {
         List<String> profileImgErrors = new ArrayList<>();
 
-        if (imgPath.contains(" ")) profileImgErrors.add("Imagem não pode conter espaços em branco");
+        if (imgPath != null && imgPath.contains(" ")) profileImgErrors.add("Imagem não pode conter espaços em branco");
 
         return profileImgErrors.size() != 0 ? profileImgErrors : null;
     }

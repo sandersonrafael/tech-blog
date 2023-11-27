@@ -36,7 +36,9 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.PATCH, "/api/posts/**").hasRole("USER")
                 .requestMatchers(HttpMethod.GET, "/api/users/**", "/api/comments/**").hasRole("USER")
                 .requestMatchers(HttpMethod.PUT, "/api/users/**", "/api/comments/**").hasRole("USER")
-                .requestMatchers(HttpMethod.DELETE, "/api/users/**", "/api/comments/**").hasRole("USER")
+                .requestMatchers(
+                    HttpMethod.DELETE, "/api/users", "/api/users/**", "/api/comments/**"
+                ).hasRole("USER")
                 .requestMatchers(HttpMethod.POST, "/api/comments/**").hasRole("USER")
                 .requestMatchers(HttpMethod.PATCH, "/api/comments/**").hasRole("USER")
                 .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
