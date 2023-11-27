@@ -40,6 +40,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/comments/**").hasRole("USER")
                 .requestMatchers(HttpMethod.PATCH, "/api/comments/**").hasRole("USER")
                 .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
+                .requestMatchers("/api/newsletter").permitAll()
                 .anyRequest().denyAll()
             ).addFilterBefore(securityTokenFilter, UsernamePasswordAuthenticationFilter.class);
 

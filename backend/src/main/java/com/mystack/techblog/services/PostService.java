@@ -35,6 +35,9 @@ public class PostService {
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private MailService mailService;
+
     public List<PostDTO> findAll() {
         List<Post> dbPosts = repository.findAll();
         return dbPosts.stream().map(post -> Mapper.postToDto(post)).toList();
@@ -50,9 +53,9 @@ public class PostService {
 
         return Mapper.postToDto(dbPost);
     }
-    // TODO -> Usar o ApplitationValidator para validar as entradas do usuário
+
     public PostDTO create(PostDTO dto) {
-        if (repository.findByPostUrl(dto.getPostUrl()) != null) {
+        if (repository.findByPostUrl(dto.getPostUrl()).orElse(null) != null) {
             throw new BadRequestException("Url informada para o post já está em uso");
         }
 
@@ -76,9 +79,11 @@ public class PostService {
         persisted.setTags(tagsReceived);
         repository.save(persisted);
 
+        mailService.sendNewsletterEmail(persisted.getPostUrl(), persisted.getTitle());
+
         return Mapper.postToDto(persisted);
     }
-    // TODO -> Usar o ApplitationValidator para validar as entradas do usuário
+
     public PostDTO update(Long id, PostDTO dto) {
         Post dbPost = repository.findById(id).orElseThrow(
             () -> new ResourceNotFoundException("Post não encontrado")

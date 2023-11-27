@@ -138,7 +138,6 @@ public class ApplicationValidator {
         List<String> profileImgErrors = new ArrayList<>();
 
         if (imgPath.contains(" ")) profileImgErrors.add("Imagem não pode conter espaços em branco");
-        if (imgPath.indexOf("/") == -1) profileImgErrors.add("Imagem informada é inválida");
 
         return profileImgErrors.size() != 0 ? profileImgErrors : null;
     }
