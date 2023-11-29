@@ -1,12 +1,14 @@
-type comment = {
+import User from './User';
+
+type Comment = {
   id: number;
-  authorId: number;
   postId: number;
   createdAt: Date;
-  lastModify: Date;
+  updatedAt: Date;
   content: string;
-  likes: number;
-  dislikes: number;
+  usersLikesIds: number[];
+  usersDislikesIds: number[];
+  author: User;
 };
 
-export default comment;
+export default Comment;

@@ -1,7 +1,43 @@
-export const sortLast = <T>(array: Array<T>, attribute: keyof T): T[] => {
-  return array.sort((a: T, b: T) => (b[attribute] as number) - (a[attribute] as number));
+export const sortDes = <T>(array: Array<T>, attribute: keyof T): T[] => {
+  if (array.length > 0 && Array.isArray(array[0][attribute])) {
+    return array.sort((a: T, b: T) => (b[attribute] as unknown[]).length - (a[attribute] as unknown[]).length);
+  }
+
+  if (array.length > 0 && array[0][attribute] instanceof Date) {
+    return array.sort((a: T, b: T) => (b[attribute] as Date).getTime() - (a[attribute] as Date).getTime());
+  }
+
+  if (array.length > 0) {
+    return array.sort((a: T, b: T) => (b[attribute] as number) - (a[attribute] as number));
+  }
+
+  return [];
 };
 
-export const sortOld = <T>(array: Array<T>, attribute: keyof T): T[] => {
-  return array.sort((a: T, b: T) => (a[attribute] as number) - (b[attribute] as number));
+export const sortAsc = <T>(array: Array<T>, attribute: keyof T): T[] => {
+  if (array.length > 0 && Array.isArray(array[0][attribute])) {
+    return array.sort((a: T, b: T) => (a[attribute] as unknown[]).length - (b[attribute] as unknown[]).length);
+  }
+
+  if (array.length > 0 && array[0][attribute] instanceof Date) {
+    return array.sort((a: T, b: T) => (a[attribute] as Date).getTime() - (b[attribute] as Date).getTime());
+  }
+
+  if (array.length > 0) {
+    return array.sort((a: T, b: T) => (a[attribute] as number) - (b[attribute] as number));
+  }
+
+  return [];
+};
+
+export const sortRandom = <T>(array: Array<T>) => {
+  const newArray = [...array];
+
+  for (let i = 0; i < newArray.length; i++) {
+    const j: number = Math.round(Math.random() * (newArray.length - 1));
+
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+
+  return [...newArray];
 };

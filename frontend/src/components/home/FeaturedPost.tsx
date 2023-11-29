@@ -5,7 +5,7 @@ import Post from '@/types/Post';
 import dateFormatter from '@/utils/dateFormatter';
 import Link from 'next/link';
 
-const FeaturedPost = ({ thumb, tags, title, postUrl, createdAt, views, likes, className }: Post & { className: string}) => {
+const FeaturedPost = ({ thumb, tags, title, postUrl, createdAt, views, usersLikes, className }: Post & { className: string}) => {
   return (
     <Link href={postUrl} className={className}>
       <div
@@ -19,21 +19,21 @@ const FeaturedPost = ({ thumb, tags, title, postUrl, createdAt, views, likes, cl
 
         <div className="mt-auto flex flex-col gap-2 sm:gap-3 px-7 py-5 text-2xs sm:text-sm text-gray-100">
           <div className="flex">
-            {tags.map(({ id, tag }, index) => index <= 2 && (
+            {tags && tags.map(({ id, tag }, index) => index <= 2 && (
               <div key={id}>{index > 0 ? ', ' : 'Tags: '}{tag}{index === 2 && '...'}</div>
             ))}
           </div>
 
           <div className="flex">
             <h3 className="text-xs sm:text-base md:text-2xl font-black">
-              {title.length > 80 ? title.slice(0, 80) + '...' : title}
+              {title && title.length > 80 ? title.slice(0, 80) + '...' : title}
             </h3>
           </div>
 
           <div className="pt-1 flex gap-4 text-2xs sm:text-xs md:text-sm text-gray-100">
             <span className="flex items-center gap-2">
               <IconCalendar />
-              {dateFormatter.ddMMyyyy(createdAt)}
+              {createdAt && dateFormatter.ddMMyyyy(createdAt)}
             </span>
 
             <span>|</span>
@@ -47,7 +47,7 @@ const FeaturedPost = ({ thumb, tags, title, postUrl, createdAt, views, likes, cl
 
             <span className="flex items-center gap-2">
               <IconHeart width={18} height={18} />
-              {likes}
+              {usersLikes && usersLikes.length}
             </span>
           </div>
         </div>

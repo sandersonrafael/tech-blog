@@ -6,7 +6,7 @@ import dateFormatter from '@/utils/dateFormatter';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const HorizontalPostCard = ({ thumb, thumbAlt, tags, title, postUrl, createdAt, views, likes }: Post) => {
+const HorizontalPostCard = ({ thumb, thumbAlt, tags, title, postUrl, createdAt, views, usersLikes }: Post) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-12 sm:mb-10 w-full">
       <Link
@@ -34,7 +34,7 @@ const HorizontalPostCard = ({ thumb, thumbAlt, tags, title, postUrl, createdAt, 
           text-base font-bold text-gray-800
           hover:text-blue-400 transition-colors duration-300"
         >
-          <Link href={postUrl}>
+          <Link href={postUrl || ''}>
             {title.length > 79
               ? title.slice(0, 79) + '...'
               : title}
@@ -44,7 +44,7 @@ const HorizontalPostCard = ({ thumb, thumbAlt, tags, title, postUrl, createdAt, 
         <div className="flex gap-3 text-xs">
           <span className="flex items-center gap-2">
             <IconCalendar />
-            {dateFormatter.ddMMyyyy(createdAt)}
+            {createdAt && dateFormatter.ddMMyyyy(createdAt)}
           </span>
 
           <span>|</span>
@@ -58,7 +58,7 @@ const HorizontalPostCard = ({ thumb, thumbAlt, tags, title, postUrl, createdAt, 
 
           <span className="flex items-center gap-2">
             <IconHeart width={18} height={18} />
-            {likes}
+            {usersLikes.length}
           </span>
         </div>
       </div>

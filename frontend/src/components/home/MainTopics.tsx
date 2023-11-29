@@ -1,29 +1,28 @@
-'use client';
+import { useContext, useEffect, useState } from 'react';
 import FeaturedCategory from './FeaturedCategory';
 
-// import featuredPosts from '@/fakeApi/featuredPosts';
 import LatestPosts from './LatestPosts';
-import { useEffect, useState } from 'react';
-import fetchPosts from '@/utils/fetchPosts';
+import PostsContext from '@/contexts/PostsContext';
+import { sortDes } from '@/utils/sort';
 import Post from '@/types/Post';
 
 const MainTopics = ({ className }: { className?: string }) => {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const { posts } = useContext(PostsContext);
+  const [localPosts, setLocalPosts] = useState<Post[]>([]);
 
   useEffect(() => {
-    const fetchData = async() => {
-      const loadedPosts = await fetchPosts('http://localhost:8080/api/posts');
-      setPosts([...loadedPosts, ...loadedPosts, ...loadedPosts, ...loadedPosts, ...loadedPosts, ...loadedPosts]);
-    };
-
-    fetchData();
-  }, []);
+    setLocalPosts([...posts]);
+  }, [posts]);
 
   return (
     <section className={`${className}`}>
-      <FeaturedCategory featuredPosts={posts} />
+      {localPosts.length > 0 &&
+        <FeaturedCategory featuredPosts={sortDes(localPosts, 'views')} />
+      }
 
-      <LatestPosts latestPosts={posts} />
+      {localPosts.length > 0 &&
+        <LatestPosts latestPosts={sortDes(localPosts, 'createdAt')} />
+      }
     </section>
   );
 };

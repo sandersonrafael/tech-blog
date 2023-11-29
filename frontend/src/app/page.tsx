@@ -1,15 +1,21 @@
+'use client';
+
 import FeaturedPosts from '@/components/home/FeaturedPosts';
 import HomeBanner from '@/components/home/HomeBanner';
 import HomeContent from '@/components/home/HomeContent';
+import PostsProvider from '@/contexts/PostsProvider';
 
 const Home = () => {
   return (
     <main>
       <HomeBanner />
 
-      <FeaturedPosts />
+      <PostsProvider>
+        <FeaturedPosts />
 
-      <HomeContent />
+        <HomeContent />
+      </PostsProvider>
+
     </main>
   );
 };

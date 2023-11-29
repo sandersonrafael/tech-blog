@@ -1,4 +1,9 @@
-modificar a estrutura de comentários e posts para os likes e deslikes que agora receberão listas de usersIds e não números inteiros
+ordenar corretamente os posts de acordo com as categorias {
+  Posts populares -> ordenar por número de views do maior para o menor
+  Featured Post -> vai ser o post mais recente
+}
+
+ORGANIZAR AS LETRAS DO FEATURED POST QUE ESTÃO BRANCAS E SEM SOMBRA
 
 cookies
 
@@ -7,10 +12,6 @@ login
 ver como fazer lazy loading (primeiro página carrega as imagens, depois o usuário vê o conteúdo)
 
 page 404
-
-Ver a possibilidade de salvar os likes no localStorage do usuário para que ele possa dar like sem se logar
-Se o usuário tiver logado, preenche o localStorage sempre que ele entra no site com os posts que ele curtiu
-Se ele curtir, salva no localStorage o post id e se ele descutir, remove do localStorage e manda requisição de remover o like
 
 remover todos comentários do tipo // temp algumaCoisa -> need to remove...
 

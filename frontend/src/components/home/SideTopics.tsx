@@ -1,40 +1,23 @@
-'use client';
 import AboutMe from '../AboutMe';
 import MiniaturePostCard from '../MiniaturePostCard';
 import CommentCard from '../CommentCard';
 
-import { sortLast } from '@/utils/sort';
-
-// temp data -> need to remove after backend implementation
-
-// import comments from '@/fakeApi/comments';
-import featuredPosts from '@/fakeApi/featuredPosts';
-import users from '@/fakeApi/users';
-import User from '@/types/User';
+import { sortDes, sortRandom } from '@/utils/sort';
+import { useContext, useEffect, useState } from 'react';
+import PostsContext from '@/contexts/PostsContext';
 import Post from '@/types/Post';
-import { useEffect, useState } from 'react';
-import fetchPosts from '@/utils/fetchPosts';
-import comment from '@/types/Comment';
-import fetchComments from '@/utils/fetchComments';
-
-// temp function -> need to remove after backend implementation
-const getAuthor = (authorId: number) => (users as User[]).find(({ id }) => id === authorId) as User;
-const getPost = (postId: number) => (featuredPosts as Post[]).find(({ id }) => id === postId) as Post;
+import Comment from '@/types/Comment';
 
 const SideTopics = ({ className }: { className?: string }) => {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [lastComments, setLastComments] = useState<comment[]>([]);
+  const { posts, comments } = useContext(PostsContext);
+  const [localPosts, setLocalPosts] = useState<Post[]>([]);
+  const [localComments, setLocalComments] = useState<Comment[]>([]);
 
   useEffect(() => {
-    const fetchData = async() => {
-      const loadedPosts = await fetchPosts('http://localhost:8080/api/posts');
-      const loadComments = await fetchComments('http://localhost:8080/api/comments');
-      setPosts([...loadedPosts]);
-      setLastComments([...loadComments]);
-    };
+    setLocalPosts([...posts]);
+    setLocalComments([...comments]);
+  }, [posts, comments]);
 
-    fetchData();
-  }, []);
   return (
     <aside className={`${className} lg:ml-4`}>
       <AboutMe />
@@ -43,7 +26,7 @@ const SideTopics = ({ className }: { className?: string }) => {
       <hr className="bg-gray-600 mb-7" />
 
       <div className="grid my-6 gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-1">
-        {posts.map((post, index) => index <= 3 && (
+        {localPosts.length > 0 && sortRandom(posts).map((post, index) => index <= 3 && (
           <MiniaturePostCard key={post.id} {...post} miniatureType={1} />
         ))}
       </div>
@@ -51,12 +34,11 @@ const SideTopics = ({ className }: { className?: string }) => {
       <h2 className="mt-12 pb-1">Últimos Comentários</h2>
       <hr className="bg-gray-600 mb-7" />
 
-      {sortLast(lastComments, 'createdAt').map((comment, index) => index <= 2 && (
+      {localComments.length > 0 && sortDes(localComments, 'createdAt').map((comment, index) => index <= 2 && (
         <CommentCard
           key={comment.id}
           {...comment}
-          author={getAuthor(comment.authorId)}
-          post={getPost(comment.postId)}
+          post={(localPosts.find(({ comments }) => comments.map(({ id }) => id).indexOf(comment.id) !== -1)) as Post}
         />
       ))}
     </aside>

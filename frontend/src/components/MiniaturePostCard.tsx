@@ -22,7 +22,7 @@ const MiniaturePostCard = ({
           'bg-white rounded-lg border shadow-sm p-6 flex-row-reverse hover:shadow-2xl'}
       `}
     >
-      <Link href={postUrl} className="my-auto w-20 h-20 shrink-0 block overflow-hidden rounded-md">
+      <Link href={postUrl || ''} className="my-auto w-20 h-20 shrink-0 block overflow-hidden rounded-md">
         <Image
           src={miniature}
           alt={thumbAlt}
@@ -33,7 +33,7 @@ const MiniaturePostCard = ({
       </Link>
 
       <div>
-        <Link href={postUrl}>
+        <Link href={postUrl || ''}>
           <h3 className="font-medium text-sm hover:text-blue-400 pb-3">
             {title.length > 42 ? title.slice(0, 42) + '...' : title}
           </h3>
@@ -41,7 +41,7 @@ const MiniaturePostCard = ({
 
         <div className="flex text-xs gap-2 items-center">
           <span><IconCalendar /></span>
-          <span>{dateFormatter.ddMMyyyy(createdAt)}</span>
+          <span>{createdAt && dateFormatter.ddMMyyyy(createdAt)}</span>
           <span>|</span>
           <span><IconEye /></span>
           <span>{views}</span>

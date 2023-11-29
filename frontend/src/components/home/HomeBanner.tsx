@@ -9,7 +9,7 @@ const HomeBanner = () => {
           <div className="h-full flex flex-col justify-center">
             <p className="pb-4 text-sm font-normal text-gray-500">Full Stack Developer</p>
             <h2 className="text-5xl font-extrabold pb-5">
-            Olá, me chamo Rafael
+              Olá, me chamo Rafael
               <br />Bem vindo ao meu Blog!
             </h2>
             <p className="pb-8 font-medium text-lg text-gray-500">

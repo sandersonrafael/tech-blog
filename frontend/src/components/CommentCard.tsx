@@ -1,13 +1,12 @@
-import comment from '@/types/Comment';
-import User from '@/types/User';
+import Comment from '@/types/Comment';
 import Image from 'next/image';
 
 import dateFormatter from '@/utils/dateFormatter';
 import Link from 'next/link';
-import Post from '@/types/Post';
 import IconArrowRight from '@/icons/IconArrowRight';
+import Post from '@/types/Post';
 
-const CommentCard = ({ content, createdAt, author, post }: comment & { author: User, post: Post }) => {
+const CommentCard = ({ content, createdAt, author, post }: Comment & { post: Post }) => {
   const { firstName, profileImg, lastName } = author;
 
   return (

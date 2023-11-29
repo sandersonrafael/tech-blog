@@ -1,4 +1,6 @@
+import Comment from './Comment';
 import Tag from './Tag';
+import User from './User';
 
 type Post = {
   id: number;
@@ -12,7 +14,8 @@ type Post = {
   createdAt: Date;
   updatedAt: Date;
   views: number;
-  likes: number;
+  usersLikes: User[];
+  comments: Comment[];
 };
 
 export default Post;

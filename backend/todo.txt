@@ -4,6 +4,8 @@ Voltar ao implementar no front o cancelamento da newsletter pelo link enviado no
 
 Criar validações para novas postagens e para edições de posts
 
+remover o localhost:3000 do corst da aplicação hospedada
+
 Documentar com o Swagger(?)
 
 ## IMPLEMENTAR TESTES PARA A APLICAÇÃO E NOS TESTES DE INTEGRAÇÃO CONFIGURAR VARIÁVEIS DE AMBIENTE NO TEST CONTAINERS DOCKER SIMILARES ÀS DA APLICAÇÃO, COM VALORES DIFERENTES
@@ -22,10 +24,10 @@ backup temporario:
 		"postUrl": "java-8-ao-java-17",
 		"description": "Explore as evoluções notáveis do Java ao longo das versões 8 a 17, destacando melhorias cruciais, novas funcionalidades e aprimoramentos de desempenho que impulsionaram a linguagem para o futuro.",
 		"content": "<h1>Java: Uma Jornada de Inovação</h1><p>O Java tem passado por uma evolução significativa desde a introdução do Java 8 até as últimas implementações no Java 17. Vamos explorar as atualizações mais relevantes que moldaram a linguagem ao longo dessas versões.</p><h2>Java 8: Streams e Lambdas</h2><p>O Java 8 introduziu expressões lambda e streams, revolucionando a forma como lidamos com operações de coleções. Isso proporcionou um código mais conciso e funcional.</p><h2>Java 9: Módulos</h2><p>A versão 9 trouxe a modularidade para o Java, permitindo uma melhor organização e encapsulamento de código, melhorando a manutenibilidade e a escalabilidade de grandes sistemas.</p><h2>Java 10 e 11: Var e HTTP Client</h2><p>O Java 10 apresentou a palavra-chave 'var' para inferência de tipo, simplificando declarações de variáveis. Além disso, o Java 11 trouxe um cliente HTTP nativo, aprimorando a comunicação em aplicativos Java.</p><h2>Java 12 a 17: Novas Funcionalidades e Melhorias</h2><p>Nas versões mais recentes, o Java continuou a inovar com recursos como switch expressions, record classes, melhorias na API de String, melhorias de desempenho e suporte a padrões mais modernos.</p><p>Essas atualizações não apenas aprimoram a produtividade dos desenvolvedores, mas também mantêm o Java relevante e competitivo no cenário de desenvolvimento de software.</p><p>Descubra mais sobre essas atualizações explorando a documentação oficial do Java e experimentando as versões mais recentes para tirar o máximo proveito das inovações oferecidas.</p>",
-        "tags": [
-            { "tag": "Java" },
-            { "tag": "Back-end" }
-        ],
+		"tags": [
+			{ "tag": "Java" },
+			{ "tag": "Back-end" }
+		],
         "createdAt": "2023-11-15T21:48:14.550+00:00",
 		"updatedAt": "2023-11-15T22:12:57.869+00:00",
 		"views": 2,
@@ -40,10 +42,10 @@ backup temporario:
 		"postUrl": "javascript-e-suas-novidades-nos-ultimos-10-anos",
 		"description": "Explore as principais inovações e melhorias no JavaScript ao longo da última década, desde ECMAScript 5 até as últimas features do ECMAScript 2022.",
 		"content": "<h1>Evolução do JavaScript nos Últimos 10 Anos</h1><p>O JavaScript passou por uma incrível evolução nas últimas décadas, trazendo inovações significativas para o desenvolvimento web. Vamos destacar as principais novidades desde ECMAScript 5 até as últimas features do ECMAScript 2022.</p><h2>ECMAScript 5: Introdução de Strict Mode</h2><p>Em 2009, o ECMAScript 5 trouxe o modo estrito (strict mode), melhorando a robustez do código e reduzindo erros com a introdução de regras mais rigorosas.</p><h2>ECMAScript 6 (ES2015): Arrow Functions e Destructuring</h2><p>O ES6 introduziu recursos poderosos como arrow functions, destructuring, e let/const para declaração de variáveis, simplificando a sintaxe e tornando o código mais legível.</p><h2>ECMAScript 7 a 10: Async/Await e Operador de Pipeline</h2><p>As versões seguintes trouxeram melhorias significativas, como async/await para lidar com operações assíncronas de forma mais elegante, e o operador de pipeline (|>) para facilitar a composição de funções.</p><h2>ECMAScript 2022: Recursos Mais Recentes</h2><p>Nos últimos anos, o JavaScript continua evoluindo. O ECMAScript 2022 trouxe recursos como record and tuple, melhorias em promises, e updates na manipulação de strings e arrays.</p><p>Essas inovações refletem o compromisso contínuo da comunidade em tornar o JavaScript uma linguagem moderna e eficiente para o desenvolvimento web.</p><p>Explore a documentação oficial e atualize suas práticas de desenvolvimento para aproveitar ao máximo as capacidades mais recentes do JavaScript.</p>",
-        "tags": [
-            { "tag": "JavaScript" },
-            { "tag": "Front-end" }
-        ],
+		"tags": [
+			{ "tag": "JavaScript" },
+			{ "tag": "Front-end" }
+		],
 		"createdAt": "2023-11-15T21:53:21.467+00:00",
 		"updatedAt": "2023-11-15T22:13:06.087+00:00",
 		"views": 1,
@@ -58,10 +60,10 @@ backup temporario:
 		"postUrl": "html-5-e-sua-importancia",
 		"description": "Explore o papel fundamental do HTML (Hypertext Markup Language) como a espinha dorsal da World Wide Web, moldando a experiência de navegação online desde o seu início.",
 		"content": "<h1>A Importância do HTML na Web</h1><p>O HTML, ou Hypertext Markup Language, é a linguagem fundamental que constitui a espinha dorsal da World Wide Web. Desde os primeiros dias da web até o cenário digital contemporâneo, o HTML desempenha um papel crucial na construção e exibição de conteúdo online.</p><h2>A Estrutura da Informação</h2><p>O HTML fornece a estrutura básica para organizar e apresentar informações na web. Com tags semânticas como &lt;head&gt;, &lt;body&gt;, &lt;article&gt;, &lt;section&gt;, entre outras, o HTML permite uma organização lógica e compreensível do conteúdo.</p><h2>A Base para Outras Tecnologias</h2><p>Além de ser a base para a estrutura de uma página web, o HTML trabalha em conjunto com outras tecnologias, como CSS (Cascading Style Sheets) para estilização e JavaScript para interatividade. Essa tríade forma o alicerce para a criação de experiências web dinâmicas e atraentes.</p><h2>Acessibilidade e SEO</h2><p>Utilizando corretamente as tags semânticas, o HTML contribui para a acessibilidade, tornando o conteúdo mais compreensível para leitores de tela e outras tecnologias assistivas. Além disso, motores de busca usam a estrutura HTML para indexar e entender o conteúdo, impactando diretamente a otimização para mecanismos de busca (SEO).</p><h2>Evolução Constante</h2><p>A linguagem HTML está em constante evolução para atender às demandas do ambiente online em evolução. Novas versões introduzem elementos e atributos que refletem as necessidades emergentes, mantendo o HTML como uma linguagem relevante e adaptável.</p><p>Em resumo, o HTML é mais do que um simples conjunto de tags; é a linguagem que possibilita a expressão digital, a acessibilidade, a interatividade e a estética na web. Compreender e utilizar efetivamente o HTML é essencial para qualquer desenvolvedor web comprometido em criar experiências online impactantes e acessíveis.</p>",
-        "tags": [
-            { "tag": "HTML" },
-            { "tag": "Front-end" }
-        ],
+		"tags": [
+			{ "tag": "HTML" },
+			{ "tag": "Front-end" }
+		],
 		"createdAt": "2023-11-15T21:59:37.874+00:00",
 		"updatedAt": "2023-11-16T04:39:43.806+00:00",
 		"views": 2,
@@ -76,14 +78,29 @@ backup temporario:
 		"postUrl": "mysql-e-seu-papel-na-web",
 		"description": "Explore a importância do MySQL como um dos sistemas de gerenciamento de banco de dados mais amplamente utilizados, impulsionando aplicações, websites e soluções empresariais em todo o mundo.",
 		"content": "<h1>O Papel Crucial do MySQL no Mercado Atual</h1><p>O MySQL é, sem dúvida, um dos sistemas de gerenciamento de banco de dados (SGBD) mais influentes e amplamente adotados no mercado de tecnologia. Sua importância é evidente em diversos setores, impulsionando aplicações, websites e soluções empresariais em todo o mundo.</p><h2>Confiabilidade e Desempenho</h2><p>Uma das razões fundamentais para a popularidade do MySQL é sua confiabilidade comprovada e desempenho sólido. Empresas confiam no MySQL para lidar com grandes volumes de dados de forma eficiente, garantindo a integridade e disponibilidade necessárias para operações críticas.</p><h2>Comunidade Ativa e Suporte</h2><p>O MySQL é de código aberto, mantido por uma comunidade ativa de desenvolvedores. Isso não apenas resulta em atualizações regulares e melhorias contínuas, mas também proporciona um amplo suporte através de fóruns e recursos online. Empresas têm a tranquilidade de contar com uma comunidade robusta, além de opções para suporte profissional, se necessário.</p><h2>Escalabilidade e Flexibilidade</h2><p>Outro fator-chave é a capacidade do MySQL de escalar conforme as necessidades do negócio crescem. Desde startups até grandes corporações, o MySQL oferece opções de escalabilidade que podem acompanhar o crescimento orgânico das operações. Sua flexibilidade permite a adaptação a uma variedade de cenários de uso, desde sistemas embutidos até ambientes de data center.</p><h2>Integração com Tecnologias Modernas</h2><p>O MySQL não apenas se destaca por suas capacidades autônomas, mas também por sua capacidade de integrar-se facilmente a outras tecnologias. Sua compatibilidade com linguagens de programação populares e a capacidade de suportar arquiteturas modernas, como microservices, o tornam uma escolha estratégica para desenvolvedores e arquitetos de sistemas contemporâneos.</p><h2>Segurança e Conformidade</h2><p>Em um ambiente digital cada vez mais regulamentado, a segurança e conformidade dos dados são críticas. O MySQL oferece recursos avançados de segurança, incluindo criptografia, controle de acesso granular e auditoria, permitindo que as organizações atendam aos padrões de conformidade de maneira eficaz.</p><p>Em resumo, o MySQL continua desempenhando um papel crucial no mercado atual, fornecendo uma base sólida para o armazenamento e recuperação de dados em uma variedade de cenários. Sua confiabilidade, suporte ativo da comunidade, escalabilidade e integração com tecnologias modernas o tornam uma escolha estratégica para organizações em busca de soluções de gerenciamento de banco de dados robustas e flexíveis.</p>",
-        "tags": [
-            { "tag": "MySQL" },
-            { "tag": "Back-end" },
-            { "tag": "Banco de Dados" }
-        ],
+		"tags": [
+			{ "tag": "MySQL" },
+			{ "tag": "Back-end" },
+			{ "tag": "Banco de Dados" }
+		],
 		"createdAt": "2023-11-15T22:03:31.707+00:00",
 		"updatedAt": "2023-11-15T22:03:31.707+00:00",
 		"views": 0,
 		"likes": 0
-	}
+	},
+    {
+        "title": "Java em Grandes Empresas: Uma Jornada de Sucesso",
+        "thumb": "https://www.codingbytes.com/wp-content/uploads/2019/03/377484-636807313660331603-16x9.jpg",
+        "miniature": "https://cdn.awsli.com.br/600x450/1225/1225697/produto/47027787/caneca-java-logo-3ff0c50b.jpg",
+        "thumbAlt": "Java e O Mercado",
+        "postUrl": "java-no-mercado-de-ti",
+        "description": "Explore como grandes empresas aproveitam o poder do Java para impulsionar suas operações, desde desenvolvimento de software até aplicações empresariais críticas.",
+        "content": "<h1>Java em Grandes Empresas: Uma Jornada de Sucesso</h1><p>O Java consolidou sua posição como uma das linguagens de programação mais confiáveis e versáteis, e grandes empresas em todo o mundo o adotaram com entusiasmo para atender às suas necessidades tecnológicas. Vamos explorar algumas dessas empresas e como elas têm utilizado o Java para impulsionar seu sucesso.</p><h2>1. Oracle</h2><p>A Oracle, uma das maiores empresas de tecnologia do mundo, não apenas é a mantenedora do Java, mas também utiliza extensivamente a linguagem em suas soluções empresariais. O Oracle Database, por exemplo, é construído com Java, demonstrando a confiança da empresa em sua própria tecnologia.</p><h2>2. Google</h2><p>O Google, gigante da tecnologia conhecido por sua escala global, utiliza Java em vários projetos-chave. O Android, o sistema operacional móvel mais usado do mundo, é baseado em Java. Além disso, muitos serviços e aplicativos internos do Google são desenvolvidos utilizando Java devido à sua portabilidade e desempenho confiável.</p><h2>3. IBM</h2><p>A IBM incorpora o Java em muitos aspectos de seus produtos e serviços. Desde a implementação de Java em servidores corporativos até a contribuição ativa para o desenvolvimento da linguagem, a IBM reconhece o valor do Java em suas soluções para clientes corporativos.</p><h2>4. Netflix</h2><p>A Netflix, líder no setor de streaming de vídeos, é outro exemplo de uma grande empresa que confia no Java. O backend da plataforma de streaming é construído em grande parte com tecnologias Java, proporcionando escalabilidade e confiabilidade para atender a milhões de usuários simultâneos.</p><h2>5. eBay</h2><p>O eBay, uma das maiores plataformas de comércio eletrônico do mundo, utiliza Java para suportar suas operações em grande escala. Desde o processamento de transações até a gestão de inventário, o eBay aproveita as vantagens de desenvolver com Java para garantir desempenho e confiabilidade.</p><h2>Conclusão</h2><p>Esses exemplos destacam como grandes empresas confiam no Java para impulsionar uma variedade de operações críticas. A adaptabilidade, a portabilidade e a confiabilidade do Java tornam-no uma escolha ideal para empresas que buscam uma linguagem robusta para enfrentar os desafios do mundo digital.</p><p>Independentemente do setor, o Java continua a ser uma escolha sólida para empresas que buscam inovação, escalabilidade e desempenho confiável em suas operações.</p>",
+        "tags": [
+			{ "tag": "Java" },
+			{ "tag": "Mercado de TI" },
+			{ "tag": "Programação" }
+		]
+    }
+
 ]
