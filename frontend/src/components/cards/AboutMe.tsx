@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Github, Linkedin } from './SocialLinks';
+import { Github, Linkedin } from '../SocialLinks';
 
 const AboutMe = () => {
   return (

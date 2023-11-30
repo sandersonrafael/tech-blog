@@ -15,7 +15,7 @@ const config: Config = {
       },
     },
   },
-  safelist: ['max-sm:-left-full', 'max-sm:left-0', 'max-sm:transparent', 'max-sm:bg-black'],
+  safelist: ['max-sm:-left-full', 'max-sm:left-0', 'max-sm:transparent', 'max-sm:bg-black', '-mr-96', 'hidden'],
   plugins: [],
 };
 export default config;

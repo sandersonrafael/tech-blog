@@ -33,7 +33,7 @@ const HeaderNav = () => {
       <HeaderHamburgerBtn handleClick={handleMenuView} btnType="hamburger" />
       <div className={`
           max-sm:fixed max-sm:top-0 max-sm:-bottom-20 max-sm:right-0 max-sm:w-full
-          max-sm:bg-opacity-80 ${menuVisibility} ${navBg} transition-all duration-500
+          max-sm:bg-opacity-50 ${menuVisibility} ${navBg} transition-all duration-500
         `}
       ref={div}
       onClick={(e) => handleClickOutside(e)}

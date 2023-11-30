@@ -2,8 +2,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import HeaderNav from './HeaderNav';
 import IconMoon from '@/icons/IconMoon';
-import IconPerson from '@/icons/IconPerson';
 import SearchBar from './SearchBar';
+import HeaderLogin from './HeaderLogin';
 
 const LayoutHeader = () => {
   return (
@@ -25,9 +25,7 @@ const LayoutHeader = () => {
               />
             </button>
 
-            <button>
-              <IconPerson width={24} height={24} className="hover:scale-110 transition-all duration-300" />
-            </button>
+            <HeaderLogin />
           </div>
         </div>
 

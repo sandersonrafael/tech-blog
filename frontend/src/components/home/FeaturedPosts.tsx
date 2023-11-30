@@ -1,5 +1,5 @@
 import FeaturedPost from './FeaturedPost';
-import PostCard from '../PostCard';
+import PostCard from '../cards/PostCard';
 
 import { useContext, useEffect, useState } from 'react';
 import { sortDes } from '@/utils/sort';

@@ -38,7 +38,7 @@ const LayoutFooter = () => {
             className="
               mt-3 inline-block underline hover:text-blue-400 transition-colors duration-300
             "
-            href="mailto:contato@alltech.mystack.site"
+            href="mailto:alltech@mystack.site"
           >
             alltech@mystack.site
           </a>

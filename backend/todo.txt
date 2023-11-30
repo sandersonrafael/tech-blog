@@ -2,6 +2,8 @@
 
 Voltar ao implementar no front o cancelamento da newsletter pelo link enviado no e-mail
 
+Fazer lógica para ao alterar a imagem de usuário para uma nula ou vazia, fazer ficar como a padrão /imgs/default-profile-img.png
+
 Criar validações para novas postagens e para edições de posts
 
 remover o localhost:3000 do corst da aplicação hospedada

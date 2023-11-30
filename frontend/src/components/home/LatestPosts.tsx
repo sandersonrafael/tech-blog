@@ -1,5 +1,5 @@
 import Post from '@/types/Post';
-import HorizontalPostCard from '../HorizontalPostCard';
+import HorizontalPostCard from '../cards/HorizontalPostCard';
 import Pagination from '../Pagination';
 import { useEffect, useState } from 'react';
 

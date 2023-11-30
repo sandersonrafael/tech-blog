@@ -9,10 +9,12 @@
     "lint": "next lint --fix"
   },
   "dependencies": {
+    "@types/validator": "^13.11.7",
     "next": "^14.0.3",
     "react": "^18",
     "react-dom": "^18",
-    "sharp": "^0.32.6"
+    "sharp": "^0.32.6",
+    "validator": "^13.11.0"
   },
   "devDependencies": {
     "@types/node": "^20",

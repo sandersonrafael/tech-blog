@@ -1,6 +1,6 @@
-import AboutMe from '../AboutMe';
-import MiniaturePostCard from '../MiniaturePostCard';
-import CommentCard from '../CommentCard';
+import AboutMe from '../cards/AboutMe';
+import MiniaturePostCard from '../cards/MiniaturePostCard';
+import CommentCard from '../cards/CommentCard';
 
 import { sortDes, sortRandom } from '@/utils/sort';
 import { useContext, useEffect, useState } from 'react';

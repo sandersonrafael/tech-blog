@@ -3,11 +3,29 @@ ordenar corretamente os posts de acordo com as categorias {
   Featured Post -> vai ser o post mais recente
 }
 
+Fazer um ColorsContext para propagar o modo Claro/Escuro por toda a aplicação {
+  dentro dele, haverá uma função que modifica a cor dos botões com um boolean e aciona um:
+     useEffect(() => {}, [dark: boolean]);
+}
+
+Fazer componentes de Loading
+
+### FAZER COMPONENTE MODAL COM FUNDO MEIO TRANSPARENTE E CAIXA BRANCA SOMBREADA NO CENTRO ###
+  - ESSE MODAL RECEBE UM { children }, QUE REPRESENTARÁ OS ELEMENTOS, EX: COMPONENTE DE LOGIN, COMPONENTE DE CONFIRMAÇÃO DE ASSINATURA EMAIL
+  - ETC
+
+VER SE VALE A PENA TORNAR O HEADER E O FOOTER EM VEZ DE SEREM SERVER SIDE, CLIENT SIDES, PARA MELHORAR A QUESTÃO DA AUTENTICAÇÃO
+  ALÉM DE TORNAR MAIS FÁCIL LIDAR COM COISAS COMO MODO ESCURO (IMPLEMENTAR)
+
 ORGANIZAR AS LETRAS DO FEATURED POST QUE ESTÃO BRANCAS E SEM SOMBRA
+
+utilizar a tag pre quando for salvar post na base de dados que envolve linha de código para manter formatação digitada
 
 cookies
 
 login
+
+revisar toda a aplicação, todos os componentes e etc, em busca de comentários e coisas desnecessárias
 
 ver como fazer lazy loading (primeiro página carrega as imagens, depois o usuário vê o conteúdo)
 
