@@ -3,7 +3,7 @@ import Link from 'next/link';
 import HeaderNav from './HeaderNav';
 import IconMoon from '@/icons/IconMoon';
 import SearchBar from './SearchBar';
-import HeaderLogin from './HeaderLogin';
+import HeaderUserMenu from './HeaderUserMenu';
 
 const LayoutHeader = () => {
   return (
@@ -25,7 +25,7 @@ const LayoutHeader = () => {
               />
             </button>
 
-            <HeaderLogin />
+            <HeaderUserMenu />
           </div>
         </div>
 

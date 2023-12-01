@@ -8,7 +8,7 @@ export type RegistrationErrors = {
   lastNameErrors: string[];
   emailErrors: string[];
   passwordErrors: string[];
-  repeatPasswordErrors: string[];
+  repeatPasswordErrors?: string[];
 };
 
 export type RecoverPasswordErrors = {

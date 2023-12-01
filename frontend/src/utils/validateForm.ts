@@ -21,7 +21,7 @@ class ValidateForm {
       emailErrors: validations.email(userRegister.email),
       passwordErrors: validations.password(userRegister.password, 'Senha'),
       repeatPasswordErrors: validations.confirmPassword(
-        userRegister.password, userRegister.repeatPassword, 'Senha', 'Repetição de senha',
+        userRegister.password, userRegister.repeatPassword as string, 'Senha', 'Repetição de senha',
       ),
     };
 

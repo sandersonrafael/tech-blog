@@ -8,7 +8,7 @@ export type UserRegister = {
   lastName: string;
   email: string;
   password: string;
-  repeatPassword: string;
+  repeatPassword?: string;
 };
 
 export type UserRecover = {

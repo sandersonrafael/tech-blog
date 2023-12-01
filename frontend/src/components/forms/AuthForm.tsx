@@ -5,11 +5,17 @@ import FormInput from './FormInput';
 import validateForm from '@/utils/validateForm';
 import { LoginErrors, RecoverPasswordErrors, RegistrationErrors } from '@/types/ValidationErrors';
 import { UserLogin, UserRecover, UserRegister } from '@/types/AuthenticationTypes';
+import api from '@/api/api';
 
 // TODO: Fazer lógica para ao Submitar, ficar somente uma mensagem de sucesso. Caso seja erro dar somente alerta abaixo do botão de submit
 
+const registerDefault: UserRegister = { email: '', firstName: '', lastName: '', password: '', repeatPassword: '' };
+const loginDefault: UserLogin = { email: '', password: '' };
+const recoverDefault: UserRecover = { email: '' };
+
 const AuthForm = () => {
   const [formStyle, setFormStyle] = useState<'login' | 'register' | 'recover'>('login');
+  const [successMessage, setSuccessMessage] = useState<string>('');
   const [errors, setErrors] = useState<LoginErrors | RegistrationErrors | RecoverPasswordErrors>({
     emailErrors: [],
     passwordErrors: [],
@@ -18,16 +24,13 @@ const AuthForm = () => {
 
   useEffect(() => {
     setData(
-      formStyle === 'register'
-        ? { email: '', firstName: '', lastName: '', password: '', repeatPassword: '' }
-        : formStyle === 'login'
-          ? { email: '', password: '' }
-          : { email: '' }
+      formStyle === 'register' ? { ...registerDefault } : formStyle === 'login'
+        ? { ...loginDefault } : { ...recoverDefault }
     );
     setErrors({ emailErrors: [] });
   }, [formStyle]);
 
-  const submit = (e: FormEvent) => {
+  const submit = async (e: FormEvent) => {
     e.preventDefault();
 
     const validationErrors = formStyle === 'login'
@@ -37,6 +40,17 @@ const AuthForm = () => {
         : validateForm.recover(data as UserRecover);
 
     if (validationErrors !== null) return setErrors({ ...validationErrors });
+
+    if (formStyle === 'register') {
+      const register = await api.register(data as UserRegister);
+
+      if (typeof register === 'string') {
+        setSuccessMessage(register);
+        setData({ ...registerDefault });
+      }
+      const newErrors = (register as { errors: RegistrationErrors }).errors;
+      return setErrors({ ...newErrors });
+    }
   };
 
   return (
@@ -116,6 +130,8 @@ const AuthForm = () => {
           Esqueceu sua senha?
         </button>
       }
+
+      {successMessage && <p className="text-center text-sm text-green-600">{successMessage}</p>}
 
       <button
         className="bg-blue-400 rounded-md p-3 text-white

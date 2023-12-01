@@ -4,7 +4,7 @@ import IconPerson from '@/icons/IconPerson';
 import IconClose from '@/icons/IconClose';
 import AuthForm from '../forms/AuthForm';
 
-const HeaderLogin = () => {
+const HeaderUserMenu = () => {
   const [menuView, setMenuView] = useState<boolean>(false);
 
   const changeMenuView = () => {
@@ -37,14 +37,14 @@ const HeaderLogin = () => {
               height={36}
             ></IconClose>
           </button>
-
-          <div className="p-5">
+          {<div className="p-5">
+            {/* TODO -> Fazer lógica: se logado, mostra perfil, se não: mostra AuthForm */}
             <AuthForm />
-          </div>
+          </div>}
         </div>
       </aside>
     </>
   );
 };
 
-export default HeaderLogin;
+export default HeaderUserMenu;
