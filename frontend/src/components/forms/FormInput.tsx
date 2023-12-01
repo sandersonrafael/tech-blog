@@ -1,4 +1,4 @@
-import { HTMLInputTypeAttribute, useState, useEffect } from 'react';
+import { HTMLInputTypeAttribute, useState, useEffect, ChangeEventHandler } from 'react';
 
 type FormInputType = {
   title: string;
@@ -8,9 +8,11 @@ type FormInputType = {
   classInput?: string;
   placeholder: string;
   errors: string[];
+  value: string;
+  onChange: ChangeEventHandler; // eslint-disable-line no-unused-vars
 };
 
-const FormInput = ({ title, name, type, classLabel, classInput, placeholder, errors }: FormInputType) => {
+const FormInput = ({ title, name, type, classLabel, classInput, placeholder, errors, value, onChange }: FormInputType) => {
   const [errorsList, setErrorsList] = useState<string[]>([]);
 
   useEffect(() => {
@@ -28,11 +30,14 @@ const FormInput = ({ title, name, type, classLabel, classInput, placeholder, err
           name={name}
           className={`text-xs block w-full p-1 outline-none ${classInput}`}
           placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          required
         />
       </label>
 
       {errorsList.length > 0 && errorsList.map((error) => (
-        <small key={error} className="text-xs text-red-500 px-2">{error}</small>
+        <small key={error} className="block text-xs text-red-500 px-2">{error}</small>
       ))
       }
     </div>

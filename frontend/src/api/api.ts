@@ -29,6 +29,8 @@ class Api {
 
     return formattedData;
   }
+
+  // TODO -> Quando for fazer o Register, fazer um: delete objeto.repeatPassword (pois no DB não tem repeatPassword)
 }
 
 const api = new Api();

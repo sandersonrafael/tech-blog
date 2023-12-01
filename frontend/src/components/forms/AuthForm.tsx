@@ -1,19 +1,50 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import FormInput from './FormInput';
-// TODO: Fazer lógica para ao Submitar, ficar somente uma mensagem de sucesso ou erro e um botão de tentar novamente
+import validateForm from '@/utils/validateForm';
+import { LoginErrors, RecoverPasswordErrors, RegistrationErrors } from '@/types/ValidationErrors';
+import { UserLogin, UserRecover, UserRegister } from '@/types/AuthenticationTypes';
+
+// TODO: Fazer lógica para ao Submitar, ficar somente uma mensagem de sucesso. Caso seja erro dar somente alerta abaixo do botão de submit
+
 const AuthForm = () => {
   const [formStyle, setFormStyle] = useState<'login' | 'register' | 'recover'>('login');
+  const [errors, setErrors] = useState<LoginErrors | RegistrationErrors | RecoverPasswordErrors>({
+    emailErrors: [],
+    passwordErrors: [],
+  });
+  const [data, setData] = useState<UserLogin | UserRegister | UserRecover>({ email: '', password: '' });
+
+  useEffect(() => {
+    setData(
+      formStyle === 'register'
+        ? { email: '', firstName: '', lastName: '', password: '', repeatPassword: '' }
+        : formStyle === 'login'
+          ? { email: '', password: '' }
+          : { email: '' }
+    );
+    setErrors({ emailErrors: [] });
+  }, [formStyle]);
 
   const submit = (e: FormEvent) => {
-    (e.target as HTMLFormElement).scrollTo({ top: 10000, behavior: 'smooth' });
     e.preventDefault();
 
+    const validationErrors = formStyle === 'login'
+      ? validateForm.login(data as UserLogin)
+      : formStyle === 'register'
+        ? validateForm.register(data as UserRegister)
+        : validateForm.recover(data as UserRecover);
+
+    if (validationErrors !== null) return setErrors({ ...validationErrors });
   };
 
   return (
-    <form onSubmit={(e) => submit(e)} className="flex flex-col gap-4 px-3 overflow-auto">
+    <form
+      className="flex flex-col gap-4 px-3 overflow-auto"
+      onChange={() => setErrors({ emailErrors: [] })}
+      onSubmit={(e) => submit(e)}
+    >
       <h1 className="font-bold text-xl mx-1 mt-0 mb-3">
         {formStyle === 'login' && 'Login'}
         {formStyle === 'register' && 'Cadastro'}
@@ -26,14 +57,19 @@ const AuthForm = () => {
           name="firstName"
           type="text"
           placeholder="Digite seu nome"
-          errors={[]}
+          value={(data as UserRegister).firstName || ''}
+          onChange={(e) => setData({ ...data, firstName: (e.target as HTMLInputElement).value })}
+          errors={(errors as RegistrationErrors).firstNameErrors || []}
         />
+
         <FormInput
           title="Sobrenome"
           name="lastName"
           type="text"
           placeholder="Digite seu nome"
-          errors={[]}
+          value={(data as UserRegister).lastName || ''}
+          onChange={(e) => setData({ ...data, lastName: (e.target as HTMLInputElement).value })}
+          errors={(errors as RegistrationErrors).lastNameErrors || []}
         />
       </>}
 
@@ -42,15 +78,20 @@ const AuthForm = () => {
         name="email"
         type="email"
         placeholder="Digite seu e-mail"
-        errors={[]}
+        value={data.email}
+        onChange={(e) => setData({ ...data, email: (e.target as HTMLInputElement).value })}
+        errors={errors.emailErrors || []}
       />
 
       {formStyle !== 'recover' &&
-        <FormInput title="Senha"
+        <FormInput
+          title="Senha"
           name="password"
           type="password"
           placeholder="Digite sua senha"
-          errors={[]}
+          onChange={(e) => setData({ ...data, password: (e.target as HTMLInputElement).value })}
+          value={(data as UserLogin | UserRegister).password || ''}
+          errors={(errors as LoginErrors | RegistrationErrors).passwordErrors || []}
         />
       }
 
@@ -60,7 +101,9 @@ const AuthForm = () => {
           name="repeatPassword"
           type="password"
           placeholder="Digite sua senha"
-          errors={[]}
+          onChange={(e) => setData({ ...data, repeatPassword: (e.target as HTMLInputElement).value })}
+          value={(data as UserRegister).repeatPassword || ''}
+          errors={(errors as RegistrationErrors).repeatPasswordErrors || []}
         />
       }
 
@@ -68,12 +111,17 @@ const AuthForm = () => {
         <button
           className="ml-auto flex w-fit text-blue-400 font-bold hover:opacity-80"
           onClick={() => setFormStyle('recover')}
+          type="button"
         >
           Esqueceu sua senha?
         </button>
       }
 
-      <button className="bg-blue-400 rounded-md p-3 text-white hover:opacity-90 font-medium active:opacity-100">
+      <button
+        className="bg-blue-400 rounded-md p-3 text-white
+          hover:opacity-90 font-medium active:opacity-100"
+        type="submit"
+      >
         {formStyle === 'login' && 'Entrar'}
         {formStyle === 'register' && 'Registrar-se'}
         {formStyle === 'recover' && 'Enviar e-mail'}
@@ -87,6 +135,7 @@ const AuthForm = () => {
         <button
           className="inline-block text-blue-400 font-bold hover:opacity-80"
           onClick={() => setFormStyle(formStyle === 'login' ? 'register' : 'login')}
+          type="button"
         >
           {formStyle === 'login' && 'Registre-se'}
           {formStyle !== 'login' && 'Faça login'}
