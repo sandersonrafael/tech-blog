@@ -4,7 +4,7 @@ import PostCard from '../cards/PostCard';
 import { useContext, useEffect, useState } from 'react';
 import { sortDes } from '@/utils/sort';
 import PostsContext from '@/contexts/PostsContext';
-import Post from '@/types/Post';
+import Post from '@/types/entities/Post';
 
 const FeaturedPosts = () => {
   const { posts } = useContext(PostsContext);

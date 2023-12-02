@@ -1,6 +1,6 @@
 import PostCard from '../cards/PostCard';
 
-import Post from '@/types/Post';
+import Post from '@/types/entities/Post';
 
 const FeaturedCategory = ({ featuredPosts }: { featuredPosts: Post[] }) => {
   return (

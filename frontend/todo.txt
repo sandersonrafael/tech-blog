@@ -8,6 +8,8 @@ Fazer um ColorsContext para propagar o modo Claro/Escuro por toda a aplicação 
      useEffect(() => {}, [dark: boolean]);
 }
 
+Fazer respostas melhores para confirmação de login / registro / recuperação
+
 Fazer componentes de Loading
 
 ### FAZER COMPONENTE MODAL COM FUNDO MEIO TRANSPARENTE E CAIXA BRANCA SOMBREADA NO CENTRO ###

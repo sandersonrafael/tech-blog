@@ -4,8 +4,8 @@ import React, { ReactNode, useEffect, useState } from 'react';
 
 import api from '@/api/api';
 
-import Comment from '@/types/Comment';
-import Post from '@/types/Post';
+import Comment from '@/types/entities/Comment';
+import Post from '@/types/entities/Post';
 import PostsContext from './PostsContext';
 
 const PostsProvider = ({ children }: { children: ReactNode }) => {

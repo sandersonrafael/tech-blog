@@ -1,9 +1,9 @@
-export type UserLogin = {
+export type LoginRequest = {
   email: string;
   password: string;
 };
 
-export type UserRegister = {
+export type RegisterRequest = {
   firstName: string;
   lastName: string;
   email: string;
@@ -11,6 +11,6 @@ export type UserRegister = {
   repeatPassword?: string;
 };
 
-export type UserRecover = {
+export type RecoverRequest = {
   email: string;
 };

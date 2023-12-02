@@ -1,6 +1,6 @@
 import { Dispatch } from 'react';
-import Post from './Post';
-import Comment from './Comment';
+import Post from '../entities/Post';
+import Comment from '../entities/Comment';
 
 type PostsContextTypes = {
   posts: Post[];

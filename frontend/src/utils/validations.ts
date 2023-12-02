@@ -1,7 +1,7 @@
 import validator from 'validator';
 
 class Validations {
-  public email(email: string): string[] {
+  public email(email: string = ''): string[] {
     const errors: string[] = [];
 
     if (email.length === 0) errors.push('E-mail não pode estar em branco');
@@ -10,7 +10,7 @@ class Validations {
     return errors;
   }
 
-  public password(password: string, denomination: string): string[] {
+  public password(password: string = '', denomination: string): string[] {
     const errors: string[] = [];
 
     if (password.length === 0) {
@@ -33,17 +33,17 @@ class Validations {
     return errors;
   }
 
-  public name(name: string, denomination: string): string[] {
+  public name(name: string = '', denomination: string): string[] {
     const errors: string[] = [];
 
-    if (name.length < 3) errors.push(`${denomination} não pode conter menos de 3 caracteres`);
+    if (name.length < 2) errors.push(`${denomination} não pode conter menos de 2 caracteres`);
     if (name !== name.trim())
       errors.push(`${denomination} não pode iniciar ou finalizar com espaços em branco`);
 
     return errors;
   }
 
-  public confirmPassword(password: string, repeatPassword: string, firstTerm: string, secondTerm: string): string[] {
+  public confirmPassword(password: string = '', repeatPassword: string = '', firstTerm: string, secondTerm: string): string[] {
     const errors: string[] = [];
 
     if (repeatPassword.length === 0)

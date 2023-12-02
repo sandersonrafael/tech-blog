@@ -1,4 +1,4 @@
-import Post from '@/types/Post';
+import Post from '@/types/entities/Post';
 import HorizontalPostCard from '../cards/HorizontalPostCard';
 import Pagination from '../Pagination';
 import { useEffect, useState } from 'react';

@@ -37,6 +37,7 @@ const HeaderUserMenu = () => {
               height={36}
             ></IconClose>
           </button>
+
           {<div className="p-5">
             {/* TODO -> Fazer lógica: se logado, mostra perfil, se não: mostra AuthForm */}
             <AuthForm />

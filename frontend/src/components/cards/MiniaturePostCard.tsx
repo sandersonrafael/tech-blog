@@ -1,6 +1,6 @@
 import IconCalendar from '@/icons/IconCalendar';
 import IconEye from '@/icons/IconEye';
-import Post from '@/types/Post';
+import Post from '@/types/entities/Post';
 import dateFormatter from '@/utils/dateFormatter';
 import Image from 'next/image';
 import Link from 'next/link';

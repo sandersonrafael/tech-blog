@@ -32,7 +32,6 @@ const FormInput = ({ title, name, type, classLabel, classInput, placeholder, err
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          required
         />
       </label>
 

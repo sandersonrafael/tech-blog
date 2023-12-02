@@ -1,9 +1,9 @@
 import { LoginErrors, RecoverPasswordErrors, RegistrationErrors } from '@/types/ValidationErrors';
 import validations from './validations';
-import { UserLogin, UserRecover, UserRegister } from '@/types/AuthenticationTypes';
+import { LoginRequest, RecoverRequest, RegisterRequest } from '@/types/api/AuthRequests';
 
 class ValidateForm {
-  public login(userLogin: UserLogin): LoginErrors | null {
+  public login(userLogin: LoginRequest): LoginErrors | null {
 
     const errors: LoginErrors = {
       emailErrors: validations.email(userLogin.email),
@@ -13,7 +13,7 @@ class ValidateForm {
     return Object.values(errors).find((value) => value.length > 0) ? errors : null;
   }
 
-  public register(userRegister: UserRegister): RegistrationErrors | null {
+  public register(userRegister: RegisterRequest): RegistrationErrors | null {
 
     const errors: RegistrationErrors = {
       firstNameErrors: validations.name(userRegister.firstName, 'Nome'),
@@ -28,7 +28,7 @@ class ValidateForm {
     return Object.values(errors).find((value) => value.length > 0) ? errors : null;
   }
 
-  public recover(userRecover: UserRecover): RecoverPasswordErrors | null {
+  public recover(userRecover: RecoverRequest): RecoverPasswordErrors | null {
 
     const errors: RecoverPasswordErrors = {
       emailErrors: validations.email(userRecover.email),

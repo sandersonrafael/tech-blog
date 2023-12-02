@@ -5,8 +5,8 @@ import CommentCard from '../cards/CommentCard';
 import { sortDes, sortRandom } from '@/utils/sort';
 import { useContext, useEffect, useState } from 'react';
 import PostsContext from '@/contexts/PostsContext';
-import Post from '@/types/Post';
-import Comment from '@/types/Comment';
+import Post from '@/types/entities/Post';
+import Comment from '@/types/entities/Comment';
 
 const SideTopics = ({ className }: { className?: string }) => {
   const { posts, comments } = useContext(PostsContext);

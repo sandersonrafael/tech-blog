@@ -4,7 +4,7 @@ import FeaturedCategory from './FeaturedCategory';
 import LatestPosts from './LatestPosts';
 import PostsContext from '@/contexts/PostsContext';
 import { sortDes } from '@/utils/sort';
-import Post from '@/types/Post';
+import Post from '@/types/entities/Post';
 
 const MainTopics = ({ className }: { className?: string }) => {
   const { posts } = useContext(PostsContext);

@@ -4,23 +4,25 @@ import { FormEvent, useEffect, useState } from 'react';
 import FormInput from './FormInput';
 import validateForm from '@/utils/validateForm';
 import { LoginErrors, RecoverPasswordErrors, RegistrationErrors } from '@/types/ValidationErrors';
-import { UserLogin, UserRecover, UserRegister } from '@/types/AuthenticationTypes';
+import { LoginRequest, RecoverRequest, RegisterRequest } from '@/types/api/AuthRequests';
 import api from '@/api/api';
+import { RegisterServerError, RegisterSuccess, RegisterValidationErrors } from '@/types/api/AuthResponses';
 
 // TODO: Fazer lógica para ao Submitar, ficar somente uma mensagem de sucesso. Caso seja erro dar somente alerta abaixo do botão de submit
 
-const registerDefault: UserRegister = { email: '', firstName: '', lastName: '', password: '', repeatPassword: '' };
-const loginDefault: UserLogin = { email: '', password: '' };
-const recoverDefault: UserRecover = { email: '' };
+const registerDefault: RegisterRequest = { email: '', firstName: '', lastName: '', password: '', repeatPassword: '' };
+const loginDefault: LoginRequest = { email: '', password: '' };
+const recoverDefault: RecoverRequest = { email: '' };
 
 const AuthForm = () => {
   const [formStyle, setFormStyle] = useState<'login' | 'register' | 'recover'>('login');
   const [successMessage, setSuccessMessage] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const [errors, setErrors] = useState<LoginErrors | RegistrationErrors | RecoverPasswordErrors>({
     emailErrors: [],
     passwordErrors: [],
   });
-  const [data, setData] = useState<UserLogin | UserRegister | UserRecover>({ email: '', password: '' });
+  const [data, setData] = useState<LoginRequest | RegisterRequest | RecoverRequest>({ email: '', password: '' });
 
   useEffect(() => {
     setData(
@@ -32,31 +34,36 @@ const AuthForm = () => {
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
+    setErrorMessage('');
+    setSuccessMessage('');
+    setErrors({ emailErrors: [] });
 
     const validationErrors = formStyle === 'login'
-      ? validateForm.login(data as UserLogin)
+      ? validateForm.login(data as LoginRequest)
       : formStyle === 'register'
-        ? validateForm.register(data as UserRegister)
-        : validateForm.recover(data as UserRecover);
+        ? validateForm.register(data as RegisterRequest)
+        : validateForm.recover(data as RecoverRequest);
 
     if (validationErrors !== null) return setErrors({ ...validationErrors });
 
     if (formStyle === 'register') {
-      const register = await api.register(data as UserRegister);
+      const register = await api.register(data as RegisterRequest);
 
-      if (typeof register === 'string') {
-        setSuccessMessage(register);
-        setData({ ...registerDefault });
-      }
-      const newErrors = (register as { errors: RegistrationErrors }).errors;
-      return setErrors({ ...newErrors });
+      const { success } = register as RegisterSuccess;
+      const { errors } = register as RegisterValidationErrors;
+      const { error } = register as RegisterServerError;
+
+      if (success) return setSuccessMessage(success);
+      if (errors) return setErrors({ ...errors });
+      if (error.message === 'E-mail indisponível para cadastro') return setErrorMessage(error.message);
+      return setErrorMessage('Erro no servidor. Tente novamente mais tarde');
     }
   };
 
   return (
     <form
       className="flex flex-col gap-4 px-3 overflow-auto"
-      onChange={() => setErrors({ emailErrors: [] })}
+      onChange={() => {setErrors({ emailErrors: [] }); setErrorMessage(''); setSuccessMessage('');}}
       onSubmit={(e) => submit(e)}
     >
       <h1 className="font-bold text-xl mx-1 mt-0 mb-3">
@@ -71,7 +78,7 @@ const AuthForm = () => {
           name="firstName"
           type="text"
           placeholder="Digite seu nome"
-          value={(data as UserRegister).firstName || ''}
+          value={(data as RegisterRequest).firstName || ''}
           onChange={(e) => setData({ ...data, firstName: (e.target as HTMLInputElement).value })}
           errors={(errors as RegistrationErrors).firstNameErrors || []}
         />
@@ -81,7 +88,7 @@ const AuthForm = () => {
           name="lastName"
           type="text"
           placeholder="Digite seu nome"
-          value={(data as UserRegister).lastName || ''}
+          value={(data as RegisterRequest).lastName || ''}
           onChange={(e) => setData({ ...data, lastName: (e.target as HTMLInputElement).value })}
           errors={(errors as RegistrationErrors).lastNameErrors || []}
         />
@@ -104,7 +111,7 @@ const AuthForm = () => {
           type="password"
           placeholder="Digite sua senha"
           onChange={(e) => setData({ ...data, password: (e.target as HTMLInputElement).value })}
-          value={(data as UserLogin | UserRegister).password || ''}
+          value={(data as LoginRequest | RegisterRequest).password || ''}
           errors={(errors as LoginErrors | RegistrationErrors).passwordErrors || []}
         />
       }
@@ -116,7 +123,7 @@ const AuthForm = () => {
           type="password"
           placeholder="Digite sua senha"
           onChange={(e) => setData({ ...data, repeatPassword: (e.target as HTMLInputElement).value })}
-          value={(data as UserRegister).repeatPassword || ''}
+          value={(data as RegisterRequest).repeatPassword || ''}
           errors={(errors as RegistrationErrors).repeatPasswordErrors || []}
         />
       }
@@ -132,6 +139,7 @@ const AuthForm = () => {
       }
 
       {successMessage && <p className="text-center text-sm text-green-600">{successMessage}</p>}
+      {errorMessage && <p className="text-center text-sm text-red-500">{errorMessage}</p>}
 
       <button
         className="bg-blue-400 rounded-md p-3 text-white
