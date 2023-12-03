@@ -6,9 +6,7 @@ import validateForm from '@/utils/validateForm';
 import { LoginErrors, RecoverPasswordErrors, RegistrationErrors } from '@/types/ValidationErrors';
 import { LoginRequest, RecoverRequest, RegisterRequest } from '@/types/api/AuthRequests';
 import api from '@/api/api';
-import { RegisterServerError, RegisterSuccess, RegisterValidationErrors } from '@/types/api/AuthResponses';
-
-// TODO: Fazer lógica para ao Submitar, ficar somente uma mensagem de sucesso. Caso seja erro dar somente alerta abaixo do botão de submit
+import { LoginServerError, LoginSuccess, LoginValidationErrors, RecoverServerError, RecoverSuccess, RecoverValidationErrors, RegisterServerError, RegisterSuccess, RegisterValidationErrors } from '@/types/api/AuthResponses';
 
 const registerDefault: RegisterRequest = { email: '', firstName: '', lastName: '', password: '', repeatPassword: '' };
 const loginDefault: LoginRequest = { email: '', password: '' };
@@ -29,14 +27,18 @@ const AuthForm = () => {
       formStyle === 'register' ? { ...registerDefault } : formStyle === 'login'
         ? { ...loginDefault } : { ...recoverDefault }
     );
-    setErrors({ emailErrors: [] });
+    resetFields();
   }, [formStyle]);
 
-  const submit = async (e: FormEvent) => {
-    e.preventDefault();
+  const resetFields = () => {
     setErrorMessage('');
     setSuccessMessage('');
     setErrors({ emailErrors: [] });
+  };
+
+  const submit = async (e: FormEvent) => {
+    e.preventDefault();
+    resetFields();
 
     const validationErrors = formStyle === 'login'
       ? validateForm.login(data as LoginRequest)
@@ -56,7 +58,33 @@ const AuthForm = () => {
       if (success) return setSuccessMessage(success);
       if (errors) return setErrors({ ...errors });
       if (error.message === 'E-mail indisponível para cadastro') return setErrorMessage(error.message);
-      return setErrorMessage('Erro no servidor. Tente novamente mais tarde');
+      return setErrorMessage('Ocorreu um erro. Tente novamente mais tarde...');
+    }
+
+    if (formStyle === 'login') {
+      const login = await api.login(data as LoginRequest);
+
+      const { success } = login as LoginSuccess;
+      const { errors } = login as LoginValidationErrors;
+      const { error } = login as LoginServerError;
+
+      if (success) return setSuccessMessage(success);
+      if (errors) return setErrors({ ...errors });
+      if (error.message === 'Credenciais inválidas') return setErrorMessage(error.message);
+      return setErrorMessage('Ocorreu um erro. Tente novamente mais tarde...');
+    }
+
+    if (formStyle === 'recover') {
+      const recover = await api.recover(data as RecoverRequest);
+
+      const { success } = recover as RecoverSuccess;
+      const { errors } = recover as RecoverValidationErrors;
+      const { error } = recover as RecoverServerError;
+
+      if (success) return setSuccessMessage(success);
+      if (errors) return setErrors({ ...errors });
+      if (error.message === 'Usuário não encontrado') return setErrorMessage(error.message);
+      return setErrorMessage('Ocorreu um erro. Tente novamente mais tarde...');
     }
   };
 

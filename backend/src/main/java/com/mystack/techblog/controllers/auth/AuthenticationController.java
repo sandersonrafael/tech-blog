@@ -80,7 +80,7 @@ public class AuthenticationController {
 
         return ResponseEntity.ok().build();
     }
-
+    // TODO -> mudar isso para um RequestHeader("Authorization") em vez de PathVariable e mudar a route para /recover e o de cima para /recover/request -> mudar no insomnia também e na aplicação frontend
     @PostMapping("/recover/{recoveryToken}")
     public ResponseEntity<?> recoverPassword(@RequestBody LoginRequest request, @PathVariable String recoveryToken) {
         ValidationErrors errors = ApplicationValidator.validateLoginRequest(request);
