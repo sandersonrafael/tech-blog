@@ -10,6 +10,10 @@ Fazer um ColorsContext para propagar o modo Claro/Escuro por toda a aplicação 
 
 Fazer respostas melhores para confirmação de login / registro / recuperação
 
+Fazer um loading na home page que carrega até os posts serem carregados. Ele tem seu carregamento interrompido assim que a API dá a resposta, mesmo que com erro
+
+Implementar sistema de likes para todos usuários logados na home page, para todos os posts
+
 Fazer componentes de Loading
 
 ### FAZER COMPONENTE MODAL COM FUNDO MEIO TRANSPARENTE E CAIXA BRANCA SOMBREADA NO CENTRO ###

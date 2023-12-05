@@ -3,6 +3,8 @@ import { LoginServerError, LoginSuccess, LoginValidationErrors, RecoverServerErr
 import { LoginRequest, RecoverRequest, RegisterRequest } from '@/types/api/AuthRequests';
 import Comment from '@/types/entities/Comment';
 import Post from '@/types/entities/Post';
+import UserDetails from '@/types/entities/UserDetails';
+import { UserDetailsServerError } from '@/types/api/UserResponse';
 
 const apiHost = process.env.NEXT_PUBLIC_API_HOST as string;
 
@@ -35,73 +37,106 @@ class Api {
 
   public async register(registerRequest: RegisterRequest):
       Promise<RegisterSuccess | RegisterValidationErrors | RegisterServerError> {
-    delete registerRequest.repeatPassword;
+    try {
+      delete registerRequest.repeatPassword;
 
-    const res = await fetch(`${apiHost}/auth/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...registerRequest, profileImg: '' }), // TODO -> Remover esse profileImg e arrumar a imagem depois
-    });
+      const res = await fetch(`${apiHost}/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...registerRequest, profileImg: '' }), // TODO -> Remover esse profileImg e arrumar a imagem depois
+      });
 
-    if (res.status === 201) {
-      return { success: 'Usuário cadastrado com sucesso e e-mail de confirmação enviado!' } as RegisterSuccess;
+      if (res.status === 201) {
+        return { success: 'Usuário cadastrado com sucesso e e-mail de confirmação enviado!' } as RegisterSuccess;
+      }
+
+      const resJson: RegisterValidationErrors | ApiError = await res.json();
+
+      if (res.status === 400) {
+        const errors = resJson;
+
+        if ((errors as RegisterValidationErrors).errors) return errors as RegisterValidationErrors;
+        return { error: errors } as RegisterServerError;
+      }
+
+      const error = resJson as ApiError;
+      return { error };
+    } catch (e) {
+      return { error: { message: 'Erro no servidor' } } as RegisterServerError;
     }
-
-    const resJson: RegisterValidationErrors | ApiError = await res.json();
-
-    if (res.status === 400) {
-      const errors = resJson;
-
-      if ((errors as RegisterValidationErrors).errors) return errors as RegisterValidationErrors;
-      return { error: errors } as RegisterServerError;
-    }
-
-    const error = resJson as ApiError;
-    return { error };
   }
 
   public async login(loginRequest: LoginRequest):
       Promise<LoginSuccess | LoginValidationErrors | LoginServerError> {
-    const res = await fetch(`${apiHost}/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(loginRequest),
-    });
+    try {
+      const res = await fetch(`${apiHost}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(loginRequest),
+      });
 
-    const resJson: { token: string } | LoginValidationErrors | ApiError = await res.json();
+      const resJson: { token: string } | LoginValidationErrors | ApiError = await res.json();
 
-    if (res.status === 200) {
-      const { token } = resJson as { token: string };
-      localStorage.setItem('jwt', JSON.stringify(token));
-      return { success: 'Login realizado com sucesso' };
+      if (res.status === 200) {
+        const { token } = resJson as { token: string };
+        localStorage.setItem('jwt', token);
+        return { success: 'Login realizado com sucesso' };
+      }
+
+      if (res.status === 400) {
+        const errors = resJson as LoginValidationErrors;
+        return errors;
+      }
+
+      return { error: resJson } as LoginServerError;
+    } catch (e) {
+      return { error: { message: 'Erro no servidor' } } as LoginServerError;
     }
-
-    if (res.status === 400) {
-      const errors = resJson as LoginValidationErrors;
-      return errors;
-    }
-
-    return { error: resJson } as LoginServerError;
   }
 
   public async recover(recoverRequest: RecoverRequest):
       Promise<RecoverSuccess | RecoverValidationErrors | RecoverServerError> {
-    const res = await fetch(`${apiHost}/auth/recover`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(recoverRequest),
-    });
+    try {
+      const res = await fetch(`${apiHost}/auth/recover`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(recoverRequest),
+      });
 
-    if (res.status === 200) return { success: 'E-mail enviado com instruções para a recuperação de senha' };
+      if (res.status === 200) return { success: 'E-mail enviado com instruções para a recuperação de senha' };
 
-    const resJson: RecoverValidationErrors | ApiError = await res?.json();
+      const resJson: RecoverValidationErrors | ApiError = await res?.json();
 
-    if (res.status === 400) {
-      const errors = resJson as RecoverValidationErrors;
-      return errors;
+      if (res.status === 400) {
+        const errors = resJson as RecoverValidationErrors;
+        return errors;
+      }
+
+      return { error: resJson } as RecoverServerError;
+    } catch (e) {
+      return { error: { message: 'Erro no servidor' } } as RecoverServerError;
     }
+  }
 
-    return { error: resJson } as RecoverServerError;
+  public async getUserDetails(token: string): Promise<UserDetails | UserDetailsServerError> {
+    try {
+      const res = await fetch(`${apiHost}/api/users/details`, {
+        method: 'GET',
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+
+      const resJson = await res.json();
+
+      if (res.status === 200) {
+        const userDetails = { ...resJson } as UserDetails;
+        userDetails.createdAt = new Date(userDetails.createdAt);
+        return userDetails;
+      }
+
+      return { error: resJson } as UserDetailsServerError;
+    } catch (e) {
+      return { error: { message: 'Erro no servidor' } } as UserDetailsServerError;
+    }
   }
 }
 

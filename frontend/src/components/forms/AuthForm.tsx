@@ -1,18 +1,26 @@
 'use client';
 
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState, useContext } from 'react';
+
 import FormInput from './FormInput';
 import validateForm from '@/utils/validateForm';
+
 import { LoginErrors, RecoverPasswordErrors, RegistrationErrors } from '@/types/ValidationErrors';
 import { LoginRequest, RecoverRequest, RegisterRequest } from '@/types/api/AuthRequests';
+import { LoginServerError, LoginSuccess, LoginValidationErrors } from '@/types/api/AuthResponses';
+import { RecoverServerError, RecoverSuccess, RecoverValidationErrors } from '@/types/api/AuthResponses';
+import { RegisterServerError, RegisterSuccess, RegisterValidationErrors } from '@/types/api/AuthResponses';
+
 import api from '@/api/api';
-import { LoginServerError, LoginSuccess, LoginValidationErrors, RecoverServerError, RecoverSuccess, RecoverValidationErrors, RegisterServerError, RegisterSuccess, RegisterValidationErrors } from '@/types/api/AuthResponses';
+import UserContext from '@/contexts/UserContext';
 
 const registerDefault: RegisterRequest = { email: '', firstName: '', lastName: '', password: '', repeatPassword: '' };
 const loginDefault: LoginRequest = { email: '', password: '' };
 const recoverDefault: RecoverRequest = { email: '' };
 
 const AuthForm = () => {
+  const { updateUserData } = useContext(UserContext);
+
   const [formStyle, setFormStyle] = useState<'login' | 'register' | 'recover'>('login');
   const [successMessage, setSuccessMessage] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -68,7 +76,10 @@ const AuthForm = () => {
       const { errors } = login as LoginValidationErrors;
       const { error } = login as LoginServerError;
 
-      if (success) return setSuccessMessage(success);
+      if (success) {
+        setSuccessMessage(success);
+        return updateUserData();
+      }
       if (errors) return setErrors({ ...errors });
       if (error.message === 'Credenciais inválidas') return setErrorMessage(error.message);
       return setErrorMessage('Ocorreu um erro. Tente novamente mais tarde...');

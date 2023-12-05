@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import PostsProvider from '@/contexts/PostsProvider';
+import UserProvider from '@/contexts/UserProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -14,9 +15,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt-BR">
       <body className={inter.className}>
-        <PostsProvider>
-          {children}
-        </PostsProvider>
+        <UserProvider>
+          <PostsProvider>
+            {children}
+          </PostsProvider>
+        </UserProvider>
       </body>
     </html>
   );

@@ -11,9 +11,7 @@ const HeaderHamburgerBtn = ({ handleClick, className, btnType }: IconHamburger) 
   return (
     <button
       onClick={handleClick}
-      className={`${className}
-          inline-block sm:hidden transition-all hover:scale-110 hover:text-blue-400 duration-300
-        `}
+      className={`inline-block sm:hidden transition-all hover:scale-110 duration-300 ${className}`}
     >
       {btnType === 'hamburger' &&
         <IconHamburgerMenu width={36} height={36} />
