@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.mystack.techblog.entities.Comment;
 import com.mystack.techblog.entities.User;
 import com.mystack.techblog.entities.dtos.CommentDTO;
+import com.mystack.techblog.entities.enums.Role;
 import com.mystack.techblog.exceptions.BadRequestException;
 import com.mystack.techblog.exceptions.ResourceNotFoundException;
 import com.mystack.techblog.exceptions.UnauthorizedException;
@@ -94,7 +95,7 @@ public class CommentService {
             () -> new ResourceNotFoundException("Comentário não encontrado")
         );
 
-        if (dbComment.getUser().getId() == dbUser.getId()) {
+        if (dbComment.getUser().getId() == dbUser.getId() || dbUser.getRole() == Role.ADMIN) {
             repository.deleteById(id);
             return;
         }
