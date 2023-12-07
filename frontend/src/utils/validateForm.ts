@@ -16,6 +16,7 @@ class ValidateForm {
   public register(userRegister: RegisterRequest): RegistrationErrors | null {
 
     const errors: RegistrationErrors = {
+      profileImgErrors: validations.image(userRegister.profileImg),
       firstNameErrors: validations.name(userRegister.firstName, 'Nome'),
       lastNameErrors: validations.name(userRegister.lastName, 'Sobrenome'),
       emailErrors: validations.email(userRegister.email),

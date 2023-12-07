@@ -13,8 +13,9 @@ import { RegisterServerError, RegisterSuccess, RegisterValidationErrors } from '
 
 import api from '@/api/api';
 import UserContext from '@/contexts/UserContext';
+import ProfileImageInput from './ProfileImageInput';
 
-const registerDefault: RegisterRequest = { email: '', firstName: '', lastName: '', password: '', repeatPassword: '' };
+const registerDefault: RegisterRequest = { profileImg: '', email: '', firstName: '', lastName: '', password: '', repeatPassword: '' };
 const loginDefault: LoginRequest = { email: '', password: '' };
 const recoverDefault: RecoverRequest = { email: '' };
 
@@ -110,6 +111,14 @@ const AuthForm = () => {
         {formStyle === 'register' && 'Cadastro'}
         {formStyle === 'recover' && 'Recuperação'}
       </h1>
+
+      {formStyle === 'register' &&
+        <ProfileImageInput
+          errors={errors}
+          setErrors={setErrors}
+          setData={setData}
+        />
+      }
 
       {formStyle === 'register' && <>
         <FormInput

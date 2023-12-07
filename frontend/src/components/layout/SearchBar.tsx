@@ -1,6 +1,6 @@
 import IconSearch from '@/icons/IconSearch';
 
-const SearchBar = ({ className }: { className: string }) => {
+const SearchBar = ({ className = '' }: { className: string }) => {
   return (
     <form className={`flex content-center border-b py-1 justify-center ${className}`}>
       <input

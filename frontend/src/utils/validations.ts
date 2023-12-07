@@ -43,6 +43,19 @@ class Validations {
     return errors;
   }
 
+  public image(image: string): string[] {
+    const errors: string[] = [];
+
+    if (image === '') return errors;
+
+    if (!validator.isURL(image)) errors.push('Url de imagem inválido');
+    if (image.slice(-4) !== '.png' && image.slice(-4) !== '.jpg' && image.slice(-5) !== '.jpeg') {
+      errors.push('Formato de imagem inválido. Somente são aceitas imagens dos formatos png, jpeg ou jpg');
+    }
+
+    return errors;
+  }
+
   public confirmPassword(password: string = '', repeatPassword: string = '', firstTerm: string, secondTerm: string): string[] {
     const errors: string[] = [];
 

@@ -1,22 +1,25 @@
-import { Dispatch, ReactNode, SetStateAction } from 'react';
+import { Dispatch, ReactNode, SetStateAction, useRef, MouseEvent } from 'react';
 
 import IconClose from '@/icons/IconClose';
 
-const Modal = ({ children, showModal, setShowModal }: {
-  children: ReactNode, showModal: boolean, setShowModal: Dispatch<SetStateAction<boolean>>
+const Modal = ({ children, showModal, setShowModal, className = '' }: {
+  children: ReactNode, showModal: boolean, setShowModal: Dispatch<SetStateAction<boolean>>, className?: string
 }) => {
+  const backgroundDiv = useRef<HTMLDivElement>(null);
   const closeModal = () => setShowModal(false);
+  const clickOutside = (e: MouseEvent) => (e.target === backgroundDiv.current) && setShowModal(false);
 
   return (
     <div
-      className={`${showModal || 'hidden'} fixed left-0 top-0 h-screen w-screen z-30 flex`}
+      className={`${showModal || 'hidden'} fixed left-0 top-0 h-screen w-screen z-30 flex content-center items-center p-2 ${className}`}
       style={{ backgroundColor: 'rgb(0 0 0 / .8)' }}
-      onClick={closeModal}
+      onClick={clickOutside}
+      ref={backgroundDiv}
     >
-      <section className="relative bg-white p-8 rounded-lg inline-block m-auto">
-        {/* TODO -> Fazer com que largura e altura máximos fiquem de acordo com a tela e que crie barra de rolagem ao exceder */}
+      <section className="relative bg-white m-auto p-8 rounded-lg overflow-auto max-w-full max-h-full flex content-center items-center">
         <button
-          className="absolute top-0 right-0 p-1 transition-all duration-300 hover:scale-110"
+          type="button"
+          className="absolute top-0 right-0 p-1 transition-all duration-300 hover:scale-110 m-1"
           onClick={closeModal}
         >
           <IconClose width={24} height={24} />

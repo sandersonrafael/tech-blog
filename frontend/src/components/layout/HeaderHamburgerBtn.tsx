@@ -7,7 +7,7 @@ type IconHamburger = {
   btnType: 'hamburger' | 'close';
 };
 
-const HeaderHamburgerBtn = ({ handleClick, className, btnType }: IconHamburger) => {
+const HeaderHamburgerBtn = ({ handleClick, className = '', btnType }: IconHamburger) => {
   return (
     <button
       onClick={handleClick}

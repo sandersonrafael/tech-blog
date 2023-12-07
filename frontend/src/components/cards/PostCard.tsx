@@ -10,7 +10,7 @@ const maxLen = (description: string): number => {
   return description ? 40 : 60;
 };
 
-const PostCard = ({ thumb, thumbAlt, tags, title, description, postUrl, createdAt, views, usersLikes, className }: PostCard & { className?: string }) => {
+const PostCard = ({ thumb, thumbAlt, tags, title, description, postUrl, createdAt, views, usersLikes, className = '' }: PostCard & { className?: string }) => {
   return (
     <div className={`
       flex flex-col shadow-lg shadow-gray-300 rounded-2xl overflow-hidden h-full ${className}

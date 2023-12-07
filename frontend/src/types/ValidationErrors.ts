@@ -4,6 +4,7 @@ export type LoginErrors = {
 };
 
 export type RegistrationErrors = {
+  profileImgErrors: string[];
   firstNameErrors: string[];
   lastNameErrors: string[];
   emailErrors: string[];

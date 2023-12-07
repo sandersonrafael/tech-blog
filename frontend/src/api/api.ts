@@ -43,7 +43,7 @@ class Api {
       const res = await fetch(`${apiHost}/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...registerRequest, profileImg: '' }), // TODO -> Remover esse profileImg e arrumar a imagem depois
+        body: JSON.stringify({ ...registerRequest }), // TODO -> Verificar se está sendo recebido o profileImg corretamente
       });
 
       if (res.status === 201) {

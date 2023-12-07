@@ -8,11 +8,11 @@ type FormInputType = {
   classInput?: string;
   placeholder: string;
   errors: string[];
-  value: string;
+  value?: string;
   onChange: ChangeEventHandler; // eslint-disable-line no-unused-vars
 };
 
-const FormInput = ({ title, name, type, classLabel, classInput, placeholder, errors, value, onChange }: FormInputType) => {
+const FormInput = ({ title, name, type, classLabel = '', classInput = '', placeholder, errors, value, onChange }: FormInputType) => {
   const [errorsList, setErrorsList] = useState<string[]>([]);
 
   useEffect(() => {
@@ -32,6 +32,7 @@ const FormInput = ({ title, name, type, classLabel, classInput, placeholder, err
           placeholder={placeholder}
           value={value}
           onChange={onChange}
+          accept={type === 'file' ? 'image/png,image/jpeg' : undefined}
         />
       </label>
 

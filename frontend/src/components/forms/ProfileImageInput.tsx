@@ -1,0 +1,86 @@
+import { Dispatch, SetStateAction, ChangeEvent, useState } from 'react';
+
+import { LoginErrors, RecoverPasswordErrors, RegistrationErrors } from '@/types/ValidationErrors';
+import { LoginRequest, RecoverRequest, RegisterRequest } from '@/types/api/AuthRequests';
+import FormInput from './FormInput';
+import Modal from '../Modal';
+import CropProfileImg from '../CropProfileImg';
+import Image from 'next/image';
+import { Area } from 'react-easy-crop';
+import getCroppedImg from '@/utils/getCroppedImg';
+
+type InputImgTypes = {
+  setData: Dispatch<SetStateAction<RegisterRequest | LoginRequest | RecoverRequest>>;
+  setErrors: Dispatch<SetStateAction<LoginErrors | RegistrationErrors | RecoverPasswordErrors>>;
+  errors: LoginErrors | RegistrationErrors | RecoverPasswordErrors;
+};
+
+const ProfileImageInput = ({ setData, setErrors, errors }: InputImgTypes) => {
+  const [imgBase64, setImgBase64] = useState<string>('');
+  const [croppedImage, setCroppedImage] = useState<string>('');
+  const [croppingImg, setCroppingImg] = useState<boolean>(false);
+  const [croppedArea, setCroppedArea] = useState<Area>({ x: 0, y: 0, height: 0, width: 0 });
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => setImgBase64(reader.result as string);
+      reader.readAsDataURL(file);
+      setCroppingImg(true);
+    } else {
+      setImgBase64('');
+      setCroppedImage('');
+    }
+  };
+
+  const handleCropImage = async () => {
+    setCroppedImage(await getCroppedImg(imgBase64, croppedArea));
+
+    setCroppingImg(false);
+  };
+
+  return(
+    <>
+      <div className="flex">
+        <FormInput
+          errors={(errors as RegistrationErrors).profileImgErrors || []}
+          name="img"
+          onChange={handleFileChange}
+          placeholder=""
+          title="Imagem de perfil"
+          type="file"
+        />
+        {croppedImage &&
+          <Image
+            src={croppedImage}
+            alt="Profile Image"
+            width={40}
+            height={40}
+            className="w-10 h-10 ml-2 rounded-full m-auto bg-cover cursor-pointer"
+            onClick={() => setCroppingImg(true)}
+          />
+        }
+      </div>
+
+      <Modal showModal={croppingImg} setShowModal={setCroppingImg} className="flex flex-col">
+        <div className="relative">
+          <CropProfileImg imageSrc={imgBase64} setCroppedArea={setCroppedArea} />
+          <button
+            className="
+              absolute bottom-0 left-0 right-0 mx-auto mb-1 block bg-blue-400 text-white w-28 h-10 rounded-md
+              hover:bg-blue-500 transition-colors duration-300
+            "
+            onClick={handleCropImage}
+            type="button"
+          >
+            Selecionar
+          </button>
+        </div>
+      </Modal>
+    </>
+  );
+};
+
+export default ProfileImageInput;

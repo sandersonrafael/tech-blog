@@ -8,7 +8,7 @@ import PostsContext from '@/contexts/PostsContext';
 import Post from '@/types/entities/Post';
 import Comment from '@/types/entities/Comment';
 
-const SideTopics = ({ className }: { className?: string }) => {
+const SideTopics = ({ className = '' }: { className?: string }) => {
   const { posts, comments } = useContext(PostsContext);
   const [localPosts, setLocalPosts] = useState<Post[]>([]);
   const [localComments, setLocalComments] = useState<Comment[]>([]);

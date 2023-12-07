@@ -5,7 +5,7 @@ import Post from '@/types/entities/Post';
 import dateFormatter from '@/utils/dateFormatter';
 import Link from 'next/link';
 
-const FeaturedPost = ({ thumb, tags, title, postUrl, createdAt, views, usersLikes, className }: Post & { className: string}) => {
+const FeaturedPost = ({ thumb, tags, title, postUrl, createdAt, views, usersLikes, className = '' }: Post & { className: string}) => {
   return (
     <Link href={postUrl} className={className}>
       <div

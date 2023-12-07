@@ -6,7 +6,7 @@ type SocialIcon = {
   width: number;
 };
 
-export const Linkedin = ({ className, width }: SocialIcon) => {
+export const Linkedin = ({ className = '', width }: SocialIcon) => {
   return (
     <a href="https://www.linkedin.com/in/sandersonrafael"
       target="_blank"
@@ -22,7 +22,7 @@ export const Linkedin = ({ className, width }: SocialIcon) => {
   );
 };
 
-export const Github = ({ className, width }: SocialIcon) => {
+export const Github = ({ className = '', width }: SocialIcon) => {
   return (
     <a href="https://github.com/sandersonrafael"
       target="_blank"
