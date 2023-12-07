@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, ChangeEvent, useState } from 'react';
+import { Dispatch, SetStateAction, ChangeEvent, useState, MouseEventHandler } from 'react';
 
 import { LoginErrors, RecoverPasswordErrors, RegistrationErrors } from '@/types/ValidationErrors';
 import { LoginRequest, RecoverRequest, RegisterRequest } from '@/types/api/AuthRequests';
@@ -8,6 +8,7 @@ import CropProfileImg from '../CropProfileImg';
 import Image from 'next/image';
 import { Area } from 'react-easy-crop';
 import getCroppedImg from '@/utils/getCroppedImg';
+import firebase from '@/api/firebase';
 
 type InputImgTypes = {
   setData: Dispatch<SetStateAction<RegisterRequest | LoginRequest | RecoverRequest>>;
@@ -15,18 +16,25 @@ type InputImgTypes = {
   errors: LoginErrors | RegistrationErrors | RecoverPasswordErrors;
 };
 
-const ProfileImageInput = ({ setData, setErrors, errors }: InputImgTypes) => {
+const ProfileImageInput = ({ setData, errors, setErrors }: InputImgTypes) => {
   const [imgBase64, setImgBase64] = useState<string>('');
   const [croppedImage, setCroppedImage] = useState<string>('');
   const [croppingImg, setCroppingImg] = useState<boolean>(false);
   const [croppedArea, setCroppedArea] = useState<Area>({ x: 0, y: 0, height: 0, width: 0 });
+  const [value, setValue] = useState<string>('');
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
     const file = e.target.files && e.target.files[0];
+
+    if (file && file.name.slice(-4) !== '.png' && file.name.slice(-4) !== '.jpg' && file.name.slice(-5) !== '.jpeg') {
+      setErrors({ ...errors, profileImgErrors: ['Formato de arquivo inválido. São aceitos somente arquivos png, jpg e jpeg'] });
+      return;
+    }
 
     if (file) {
       const reader = new FileReader();
-      reader.onload = () => setImgBase64(reader.result as string);
+      reader.onloadend = () => setImgBase64(reader.result as string);
       reader.readAsDataURL(file);
       setCroppingImg(true);
     } else {
@@ -36,9 +44,22 @@ const ProfileImageInput = ({ setData, setErrors, errors }: InputImgTypes) => {
   };
 
   const handleCropImage = async () => {
-    setCroppedImage(await getCroppedImg(imgBase64, croppedArea));
-
+    const image = await getCroppedImg(imgBase64, croppedArea);
+    setCroppedImage(image);
+    const imageUrl:string = await firebase.uploadImg(image);
+    setData(data => {
+      return { ...data, profileImg: imageUrl };
+    });
     setCroppingImg(false);
+  };
+
+  const handleFileClick: MouseEventHandler = () => resetFile();
+
+  const resetFile = () => {
+    setValue('');
+    setCroppedImage('');
+    setImgBase64('');
+    setErrors({ emailErrors: [] });
   };
 
   return(
@@ -49,8 +70,10 @@ const ProfileImageInput = ({ setData, setErrors, errors }: InputImgTypes) => {
           name="img"
           onChange={handleFileChange}
           placeholder=""
-          title="Imagem de perfil"
+          title="Foto de perfil (opcional)"
           type="file"
+          onClick={handleFileClick}
+          value={value}
         />
         {croppedImage &&
           <Image
@@ -64,7 +87,7 @@ const ProfileImageInput = ({ setData, setErrors, errors }: InputImgTypes) => {
         }
       </div>
 
-      <Modal showModal={croppingImg} setShowModal={setCroppingImg} className="flex flex-col">
+      <Modal showModal={croppingImg} setShowModal={setCroppingImg} className="flex flex-col" closeFunction={resetFile}>
         <div className="relative">
           <CropProfileImg imageSrc={imgBase64} setCroppedArea={setCroppedArea} />
           <button

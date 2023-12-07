@@ -17,7 +17,10 @@ const CropProfileImg = ({ imageSrc, setCroppedArea }: CropperTypes) => {
   return (
     <Cropper
       image={imageSrc}
-      style={{ containerStyle: { position: 'relative', backgroundColor: 'white', minWidth: 300, minHeight: 300 } }}
+      style={{
+        containerStyle: { position: 'relative', backgroundColor: 'white', minWidth: 300, minHeight: 300 },
+        mediaStyle: { maxWidth: '100vw', maxHeight: '100vh' },
+      }}
       crop={crop}
       zoom={zoom}
       aspect={1 / 1}

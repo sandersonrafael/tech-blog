@@ -6,7 +6,7 @@ import Post from '@/types/entities/Post';
 import UserDetails from '@/types/entities/UserDetails';
 import { UserDetailsServerError } from '@/types/api/UserResponse';
 
-const apiHost = process.env.NEXT_PUBLIC_API_HOST as string;
+const apiHost = process.env.NEXT_PUBLIC_API_DATABASE_HOST as string;
 
 class Api {
   public async getAllPosts(): Promise<Post[]> {
@@ -38,12 +38,13 @@ class Api {
   public async register(registerRequest: RegisterRequest):
       Promise<RegisterSuccess | RegisterValidationErrors | RegisterServerError> {
     try {
-      delete registerRequest.repeatPassword;
+      const req = { ...registerRequest };
+      delete req.repeatPassword;
 
       const res = await fetch(`${apiHost}/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...registerRequest }), // TODO -> Verificar se está sendo recebido o profileImg corretamente
+        body: JSON.stringify({ ...req }),
       });
 
       if (res.status === 201) {

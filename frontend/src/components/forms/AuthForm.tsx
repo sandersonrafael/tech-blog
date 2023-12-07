@@ -37,16 +37,23 @@ const AuthForm = () => {
         ? { ...loginDefault } : { ...recoverDefault }
     );
     resetFields();
+    setErrors({ emailErrors: [] });
   }, [formStyle]);
 
   const resetFields = () => {
     setErrorMessage('');
     setSuccessMessage('');
-    setErrors({ emailErrors: [] });
+    setErrors(err => {
+      return {
+        emailErrors: [],
+        profileImgErrors: (err as RegistrationErrors).profileImgErrors,
+      };
+    });
   };
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
+    if ((errors as RegistrationErrors).profileImgErrors) return;
     resetFields();
 
     const validationErrors = formStyle === 'login'
@@ -103,7 +110,7 @@ const AuthForm = () => {
   return (
     <form
       className="flex flex-col gap-4 px-3 overflow-auto"
-      onChange={() => {setErrors({ emailErrors: [] }); setErrorMessage(''); setSuccessMessage('');}}
+      onChange={resetFields}
       onSubmit={(e) => submit(e)}
     >
       <h1 className="font-bold text-xl mx-1 mt-0 mb-3">

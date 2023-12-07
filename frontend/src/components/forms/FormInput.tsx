@@ -1,4 +1,4 @@
-import { HTMLInputTypeAttribute, useState, useEffect, ChangeEventHandler } from 'react';
+import { HTMLInputTypeAttribute, useState, useEffect, ChangeEventHandler, MouseEventHandler } from 'react';
 
 type FormInputType = {
   title: string;
@@ -9,10 +9,11 @@ type FormInputType = {
   placeholder: string;
   errors: string[];
   value?: string;
-  onChange: ChangeEventHandler; // eslint-disable-line no-unused-vars
+  onChange: ChangeEventHandler;
+  onClick?: MouseEventHandler;
 };
 
-const FormInput = ({ title, name, type, classLabel = '', classInput = '', placeholder, errors, value, onChange }: FormInputType) => {
+const FormInput = ({ title, name, type, classLabel = '', classInput = '', placeholder, errors, value, onChange, onClick }: FormInputType) => {
   const [errorsList, setErrorsList] = useState<string[]>([]);
 
   useEffect(() => {
@@ -20,7 +21,7 @@ const FormInput = ({ title, name, type, classLabel = '', classInput = '', placeh
   }, [errors]);
 
   return (
-    <div>
+    <div className="w-full flex flex-col">
       <label className={`relative w-full block border-2 border-gray-400 rounded-lg p-3 ${classLabel}
         focus-within:border-blue-400 focus-within:shadow-md
       `}>
@@ -32,6 +33,7 @@ const FormInput = ({ title, name, type, classLabel = '', classInput = '', placeh
           placeholder={placeholder}
           value={value}
           onChange={onChange}
+          onClick={onClick}
           accept={type === 'file' ? 'image/png,image/jpeg' : undefined}
         />
       </label>

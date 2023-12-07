@@ -2,12 +2,18 @@ import { Dispatch, ReactNode, SetStateAction, useRef, MouseEvent } from 'react';
 
 import IconClose from '@/icons/IconClose';
 
-const Modal = ({ children, showModal, setShowModal, className = '' }: {
-  children: ReactNode, showModal: boolean, setShowModal: Dispatch<SetStateAction<boolean>>, className?: string
+const Modal = ({ children, showModal, setShowModal, className = '', closeFunction }: {
+  children: ReactNode,
+  showModal: boolean,
+  setShowModal: Dispatch<SetStateAction<boolean>>, className?: string,
+  closeFunction?: () => void,
 }) => {
   const backgroundDiv = useRef<HTMLDivElement>(null);
-  const closeModal = () => setShowModal(false);
-  const clickOutside = (e: MouseEvent) => (e.target === backgroundDiv.current) && setShowModal(false);
+  const closeModal = () => {
+    closeFunction && closeFunction();
+    setShowModal(false);
+  };
+  const clickOutside = (e: MouseEvent) => (e.target === backgroundDiv.current) && closeModal();
 
   return (
     <div

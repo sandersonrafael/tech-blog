@@ -29,19 +29,22 @@ const getCroppedImg = (image: string, croppedAreaPixels: Area): Promise<string> 
         croppedAreaPixels.height,
       );
 
-      canvas.toBlob(
-        (blob) => {
-          if (!blob) {
-            reject(new Error('Não foi possível converter o canvas para Blob'));
-            return;
-          }
+      const base64 = canvas.toDataURL('image/jpeg');
+      resolve(base64);
 
-          const croppedImageUrl = URL.createObjectURL(blob);
-          resolve(croppedImageUrl);
-        },
-        'image/jpeg',
-        1,
-      );
+      // canvas.toBlob(
+      //   (blob) => {
+      //     if (!blob) {
+      //       reject(new Error('Não foi possível converter o canvas para Blob'));
+      //       return;
+      //     }
+
+      //     const croppedImageUrl = URL.createObjectURL(blob);
+      //     resolve(croppedImageUrl);
+      //   },
+      //   'image/jpeg',
+      //   1,
+      // );
     };
 
     img.onerror = (error) => {

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@types/validator": "^13.11.7",
+    "firebase": "^10.7.1",
     "next": "^14.0.3",
     "react": "^18",
     "react-dom": "^18",

@@ -49,7 +49,7 @@ class Validations {
     if (image === '') return errors;
 
     if (!validator.isURL(image)) errors.push('Url de imagem inválido');
-    if (image.slice(-4) !== '.png' && image.slice(-4) !== '.jpg' && image.slice(-5) !== '.jpeg') {
+    if (image.indexOf('.png') === -1 && image.indexOf('.jpg') === -1 && image.indexOf('.jpeg') === -1) {
       errors.push('Formato de imagem inválido. Somente são aceitas imagens dos formatos png, jpeg ou jpg');
     }
 
