@@ -5,6 +5,7 @@ import IconClose from '@/icons/IconClose';
 import AuthForm from '../forms/AuthForm';
 import UserContext from '@/contexts/UserContext';
 import Image from 'next/image';
+import HeaderUserDetails from './HeaderUserDetails';
 
 const HeaderUserMenu = () => {
   const { user } = useContext(UserContext);
@@ -51,7 +52,7 @@ const HeaderUserMenu = () => {
           </button>
           {<div className="p-5">
             {/* TODO -> Fazer lógica: se logado, mostra perfil, se não: mostra AuthForm */}
-            {user && <>Componente de usuário logado com botão de sair</>}
+            {user && <HeaderUserDetails />}
             {!user && <AuthForm />}
           </div>}
         </div>

@@ -35,6 +35,8 @@ revisar toda a aplicação, todos os componentes e etc, em busca de comentários
 
 ver como fazer lazy loading (primeiro página carrega as imagens, depois o usuário vê o conteúdo)
 
+Fazer menu de usuário onde o usuário tem acesso aos seus últimos comentários e postagens que curtiu
+
 page 404
 
 remover todos comentários do tipo // temp algumaCoisa -> need to remove...
