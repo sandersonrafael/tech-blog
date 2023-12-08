@@ -22,6 +22,32 @@ class Api {
     return formattedData;
   }
 
+  public async getPost(postId: number): Promise<Post> {
+    const res = await fetch(`${apiHost}/api/posts/${postId}`);
+    const post = await res.json() as Post;
+
+    post.createdAt = new Date(post.createdAt);
+    post.updatedAt = new Date(post.updatedAt);
+
+    post.comments = post.comments.map((comment) => {
+      comment.createdAt = new Date(comment.createdAt);
+      comment.updatedAt = new Date(comment.updatedAt);
+      return comment;
+    });
+
+    return post;
+  }
+
+  public async likePost(postId: number, token: string): Promise<{ success: string } | { error: string }> {
+    const res = await fetch(`${apiHost}/api/posts/${postId}`, {
+      method: 'PATCH',
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+
+    if (res.status === 204) return { success: 'Sucesso ao realizar a ação' };
+    return { error: 'Erro na solicitação' };
+  }
+
   public async getAllComments(): Promise<Comment[]> {
     const res = await fetch(`${apiHost}/api/comments`);
     const data = await res.json() as Comment[];

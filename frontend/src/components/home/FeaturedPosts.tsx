@@ -1,4 +1,4 @@
-import FeaturedPost from './FeaturedPost';
+import FeaturedPost from '../cards/FeaturedPost';
 import PostCard from '../cards/PostCard';
 
 import { useContext, useEffect, useState } from 'react';

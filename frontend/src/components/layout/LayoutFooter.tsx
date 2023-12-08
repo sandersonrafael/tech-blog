@@ -1,8 +1,10 @@
+'use client';
+
 import { Github, Linkedin } from '../SocialLinks';
 import Link from 'next/link';
 
 import quickLinks from '@/static/quickLinks';
-import tags from '@/static/tags';
+import footerTags from '@/static/footerTags';
 import FooterForm from './FooterForm';
 
 const footerTitle = (name: string) => <>
@@ -69,7 +71,7 @@ const LayoutFooter = () => {
           {footerTitle('TAGS')}
 
           <div className="flex flex-wrap gap-1">
-            {tags.map(({ name, url }) => (
+            {footerTags.map(({ name, url }) => (
               <Link
                 className="
                   py-2 px-3 rounded-full bg-gray-50 m-1 text-gray-600

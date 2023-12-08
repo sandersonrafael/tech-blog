@@ -6,6 +6,8 @@ import Link from 'next/link';
 import IconArrowRight from '@/icons/IconArrowRight';
 import Post from '@/types/entities/Post';
 
+const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+
 const CommentCard = ({ content, createdAt, author, post }: Comment & { post: Post }) => {
   const { firstName, profileImg, lastName } = author;
 
@@ -40,7 +42,7 @@ const CommentCard = ({ content, createdAt, author, post }: Comment & { post: Pos
           absolute right-0 bottom-0 mr-3 mb-3 text-sm text-blue-400 hover:text-blue-600
           flex gap-1 items-center
         "
-        href={post.postUrl}
+        href={`${appUrl}/posts/${post.postUrl || ''}`}
       >
         <span className="underline">Ver post</span>
         <IconArrowRight />

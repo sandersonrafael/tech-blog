@@ -5,9 +5,11 @@ import Post from '@/types/entities/Post';
 import dateFormatter from '@/utils/dateFormatter';
 import Link from 'next/link';
 
+const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+
 const FeaturedPost = ({ thumb, tags, title, postUrl, createdAt, views, usersLikes, className = '' }: Post & { className: string}) => {
   return (
-    <Link href={postUrl} className={className}>
+    <Link href={`${appUrl}/posts/${postUrl}`} className={className}>
       <div
         style={{ backgroundImage: `url(${thumb})`, backgroundSize: 'cover' }}
         className={`

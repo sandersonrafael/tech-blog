@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import PostsProvider from '@/contexts/PostsProvider';
 import UserProvider from '@/contexts/UserProvider';
+import LayoutHeader from '@/components/layout/LayoutHeader';
+import LayoutFooter from '@/components/layout/LayoutFooter';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,7 +19,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={inter.className}>
         <UserProvider>
           <PostsProvider>
+            <LayoutHeader />
             {children}
+            <LayoutFooter />
           </PostsProvider>
         </UserProvider>
       </body>

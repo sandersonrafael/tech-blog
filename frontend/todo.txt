@@ -29,13 +29,15 @@ utilizar a tag pre quando for salvar post na base de dados que envolve linha de 
 
 cookies
 
-login
+CRIAR LOADING PAGE QUE É COM FUNDO BRANCO E COMPONENTE LOADING CARREGANDO ATÉ BUSCAR POSTS | USAR NO COMPONENTE DE CONTEXTO DOS POSTS
 
 revisar toda a aplicação, todos os componentes e etc, em busca de comentários e coisas desnecessárias
 
 ver como fazer lazy loading (primeiro página carrega as imagens, depois o usuário vê o conteúdo)
 
 Fazer menu de usuário onde o usuário tem acesso aos seus últimos comentários e postagens que curtiu
+
+USAR COMPONENTE LOADING EM TODOS OS COMPONENTES QUE POSSUEM FUNÇÕES async
 
 page 404
 

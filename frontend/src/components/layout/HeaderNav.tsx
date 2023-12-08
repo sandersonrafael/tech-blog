@@ -24,6 +24,11 @@ const HeaderNav = () => {
     }
   };
 
+  const handleCloseMenu = () => {
+    setMenuVisibility('max-sm:-left-full');
+    setNavBg('max-sm:transparent');
+  };
+
   const handleClickOutside = (e: MouseEvent<HTMLDivElement>) => {
     if (e.target === div.current) handleMenuView();
   };
@@ -58,14 +63,14 @@ const HeaderNav = () => {
             btnType="close"
           />
 
-          <SearchBar className="sm:hidden text-md mx-6" />
+          <SearchBar className="sm:hidden text-md mx-6" handleCloseMenu={handleCloseMenu} />
 
-          <li className="hover:text-blue-400 transition-colors duration-300 sm:mr-6">
+          <li className="hover:text-blue-400 transition-colors duration-300 sm:mr-6" onClick={handleCloseMenu}>
             <Link href="/">Home</Link>
           </li>
 
           {headerLinks.map(({ name, url }) => (
-            <li key={name} className="hover:text-blue-400 transition-colors duration-300">
+            <li key={name} className="hover:text-blue-400 transition-colors duration-300" onClick={handleCloseMenu}>
               <Link href={url}>{name}</Link>
             </li>
           ))}

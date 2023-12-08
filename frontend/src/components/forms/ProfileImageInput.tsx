@@ -60,6 +60,7 @@ const ProfileImageInput = ({ setData, errors, setErrors }: InputImgTypes) => {
     setCroppedImage('');
     setImgBase64('');
     setErrors({ emailErrors: [] });
+    setData((data) => { return { ...data, profileImg: '' }; });
   };
 
   return(

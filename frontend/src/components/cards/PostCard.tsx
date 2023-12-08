@@ -10,13 +10,15 @@ const maxLen = (description: string): number => {
   return description ? 40 : 60;
 };
 
+const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+
 const PostCard = ({ thumb, thumbAlt, tags, title, description, postUrl, createdAt, views, usersLikes, className = '' }: PostCard & { className?: string }) => {
   return (
     <div className={`
       flex flex-col shadow-lg shadow-gray-300 rounded-2xl overflow-hidden h-full ${className}
       transition hover:-translate-y-1 hover:shadow-2xl hover:shadow-gray-400 duration-300
     `}>
-      <Link href={postUrl}>
+      <Link href={`${appUrl}/posts/${postUrl}`}>
         <Image
           className="w-full"
           src={thumb}
@@ -35,7 +37,7 @@ const PostCard = ({ thumb, thumbAlt, tags, title, description, postUrl, createdA
 
         <div className="flex my-auto">
           <h3 className="text-base font-bold text-gray-800 hover:text-blue-400 transition-colors duration-300">
-            <Link href={postUrl}>
+            <Link href={`${appUrl}/posts/${postUrl}`}>
               {title.length > maxLen(description)
                 ? title.slice(0, maxLen(description)) + '...'
                 : title}

@@ -5,6 +5,8 @@ import dateFormatter from '@/utils/dateFormatter';
 import Image from 'next/image';
 import Link from 'next/link';
 
+const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+
 const MiniaturePostCard = ({
   title,
   miniature,
@@ -22,7 +24,7 @@ const MiniaturePostCard = ({
           'bg-white rounded-lg border shadow-sm p-6 flex-row-reverse hover:shadow-2xl'}
       `}
     >
-      <Link href={postUrl || ''} className="my-auto w-20 h-20 shrink-0 block overflow-hidden rounded-md">
+      <Link href={`${appUrl}/posts/${postUrl || ''}`} className="my-auto w-20 h-20 shrink-0 block overflow-hidden rounded-md">
         <Image
           src={miniature}
           alt={thumbAlt}
@@ -33,7 +35,7 @@ const MiniaturePostCard = ({
       </Link>
 
       <div>
-        <Link href={postUrl || ''}>
+        <Link href={`${appUrl}/posts/${postUrl || ''}`}>
           <h3 className="font-medium text-sm hover:text-blue-400 pb-3">
             {title.length > 42 ? title.slice(0, 42) + '...' : title}
           </h3>

@@ -1,12 +1,13 @@
 import PageLink from '@/types/PageLink';
 
+const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+
 const headerLinks: PageLink[] = [
-  { url: '/front-end', name: 'Front-end' },
-  { url: '/back-end', name: 'Back-end' },
-  { url: '/vps', name: 'VPS' },
-  { url: '/security', name: 'Segurança' },
-  { url: '/javascript', name: 'JavaScript' },
-  { url: '/java', name: 'Java' },
+  { name: 'Todos os Posts', url: `${appUrl}/posts` },
+  { name: 'Front-end', url: `${appUrl}/tags/Front-end` },
+  { name: 'Back-end', url: `${appUrl}/tags/Back-end` },
+  { name: 'JavaScript', url: `${appUrl}/tags/JavaScript` },
+  { name: 'Java', url: `${appUrl}/tags/Java` },
 ];
 
 export default headerLinks;

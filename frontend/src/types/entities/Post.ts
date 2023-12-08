@@ -10,6 +10,7 @@ type Post = {
   tags: Tag[];
   title: string;
   description: string;
+  content: string;
   postUrl: string;
   createdAt: Date;
   updatedAt: Date;

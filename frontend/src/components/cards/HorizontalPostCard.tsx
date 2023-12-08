@@ -6,11 +6,13 @@ import dateFormatter from '@/utils/dateFormatter';
 import Image from 'next/image';
 import Link from 'next/link';
 
+const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+
 const HorizontalPostCard = ({ thumb, thumbAlt, tags, title, postUrl, createdAt, views, usersLikes }: Post) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-12 sm:mb-10 w-full">
       <Link
-        href={postUrl}
+        href={`${appUrl}/posts/${postUrl || ''}`}
         className="overflow-hidden rounded-md max-sm:max-h-32 flex items-center justify-center"
       >
         <Image
@@ -34,7 +36,7 @@ const HorizontalPostCard = ({ thumb, thumbAlt, tags, title, postUrl, createdAt, 
           text-base font-bold text-gray-800
           hover:text-blue-400 transition-colors duration-300"
         >
-          <Link href={postUrl || ''}>
+          <Link href={`${appUrl}/posts/${postUrl || ''}`}>
             {title.length > 79
               ? title.slice(0, 79) + '...'
               : title}
