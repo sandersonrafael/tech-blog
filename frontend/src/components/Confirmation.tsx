@@ -9,13 +9,13 @@ type ConfirmationTypes = {
   confirmAction: () => void;
   message?: string
   confirmMessage: string;
-  confirmClass: string;
+  confirmBtnClass: string;
 };
 
-const Confirmation = ({ children, isOpen, setIsOpen, confirmAction, message, confirmMessage, confirmClass }: ConfirmationTypes) => {
+const Confirmation = ({ children, isOpen, setIsOpen, confirmAction, message, confirmMessage, confirmBtnClass }: ConfirmationTypes) => {
   return(
-    <Modal showModal={isOpen} setShowModal={setIsOpen}>
-      <div className="flex flex-col w-full max-w-xs gap-6">
+    <Modal showModal={isOpen} setShowModal={setIsOpen} className="w-full">
+      <div className="flex flex-col w-80 gap-6">
         {message &&
           <span className="font-medium text-md">{message}</span>
         }
@@ -24,8 +24,8 @@ const Confirmation = ({ children, isOpen, setIsOpen, confirmAction, message, con
 
         <div className="w-full flex justify-between gap-3 text-sm">
           <button
-            className={`transition-colors duration-300 rounded-md border border-red-500 flex
-              items-center justify-center w-full h-10 ${confirmClass || ''}
+            className={`transition-colors duration-300 rounded-md flex
+              items-center justify-center w-full h-10 ${confirmBtnClass || ''}
             `}
             type="button"
             onClick={confirmAction}

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import Image from 'next/image';
 
 import IconLikeFill from '@/icons/IconLikeFill';
@@ -33,16 +33,21 @@ const PostCommentCard = ({ actualComment, postId, deleteCommentFromPost }: PostC
   const { posts, setPosts, setComments } = useContext(PostsContext);
 
   const [comment, setComment] = useState<Comment>(actualComment);
-  const [viewOptions, setViewOptions] = useState<boolean>(false);
   const [author, setAuthor] = useState<User>(actualComment.author);
+  const [viewOptions, setViewOptions] = useState<boolean>(false);
 
   const [deletingComment, setDeletingComment] = useState<boolean>(false);
+  const [editingComment, setEditingComment] = useState<boolean>(false);
+  const [commentEdit, setCommentEdit] = useState<string>(comment.content);
+  const [interval, setInterval] = useState<NodeJS.Timeout | null>(null);
 
-  const optionsView = () => { // TODO: Ver lógica para fechar automaticamente o menu ao clicar fora
+  const optionsView = () => {
+    if (interval) clearInterval(interval);
     setViewOptions(!viewOptions);
+    setInterval(setTimeout(() => setViewOptions(false), 2000));
   };
 
-  const updatePostsCommentsAndUser = async (jwt: string) => {
+  const updatePostsCommentsAndUser = async () => {
     const updatedPosts = (await api.getAllPosts()).map((post) => {
       post.comments = post.comments.map((comment) => {
         comment.createdAt = new Date(comment.createdAt);
@@ -56,7 +61,7 @@ const PostCommentCard = ({ actualComment, postId, deleteCommentFromPost }: PostC
 
     setPosts([...updatedPosts]);
     setComments([...updatedComments]);
-    const updatedUserData = await api.getUserDetails(jwt) as UserDetails;
+    const updatedUserData = await api.getUserDetails(getJwt()) as UserDetails;
     if (updatedUserData.id) setUser({ ...updatedUserData });
   };
 
@@ -65,7 +70,7 @@ const PostCommentCard = ({ actualComment, postId, deleteCommentFromPost }: PostC
 
     if (getJwt()) {
       const { success } = await api.likeComment(comment.id, getJwt()) as { success: string };
-      if (success) updatePostsCommentsAndUser(getJwt());
+      if (success) updatePostsCommentsAndUser();
     }
   };
 
@@ -74,8 +79,21 @@ const PostCommentCard = ({ actualComment, postId, deleteCommentFromPost }: PostC
 
     if (getJwt()) {
       const { success } = await api.dislikeComment(comment.id, getJwt()) as { success: string };
-      if (success) updatePostsCommentsAndUser(getJwt());
+      if (success) updatePostsCommentsAndUser();
     }
+  };
+
+  const updateComment = async () => {
+    if (!user) return;
+
+    if (getJwt()) {
+      const { success } = await api.updateComment(comment.id, commentEdit, getJwt()) as { success: string };
+      if (success) {
+        updatePostsCommentsAndUser();
+        setComment({ ...comment, content: commentEdit });
+      }
+    }
+    setEditingComment(false);
   };
 
   const deleteComment = async () => {
@@ -84,7 +102,7 @@ const PostCommentCard = ({ actualComment, postId, deleteCommentFromPost }: PostC
     if (getJwt()) {
       const { success } = await api.deleteComment(comment.id, getJwt()) as { success: string };
       if (success) {
-        await updatePostsCommentsAndUser(getJwt());
+        await updatePostsCommentsAndUser();
         deleteCommentFromPost(comment.id);
       }
     }
@@ -102,6 +120,8 @@ const PostCommentCard = ({ actualComment, postId, deleteCommentFromPost }: PostC
     }
   }, [posts, postId, comment.id, setComment]);
 
+  useEffect(() => setCommentEdit(comment.content), [editingComment, comment]);
+
   return (
     <div className="p-6 relative flex border shadow">
       <div className="overflow-hidden mr-5 h-full shrink-0">
@@ -118,7 +138,7 @@ const PostCommentCard = ({ actualComment, postId, deleteCommentFromPost }: PostC
         <div className="flex justify-between flex-wrap">
           <h3 className="font-bold mb-3">{author.firstName}</h3>
 
-          {(user && user.commentsIds.indexOf(comment.id) !== -1) &&
+          {(user && (user.commentsIds.indexOf(comment.id) !== -1 || user.role === 'ADMIN')) &&
             <div className="absolute top-0 right-0 mr-2 mt-2" >
               <div
                 className={`
@@ -129,9 +149,27 @@ const PostCommentCard = ({ actualComment, postId, deleteCommentFromPost }: PostC
                 <button
                   className="p-1 transition-all hover:scale-110 duration-300 text-gray-700 hover:text-orange-400"
                   type="button"
+                  onClick={() => setEditingComment(true)}
                 >
                   <IconPencil width={16} height={16} />
                 </button>
+
+                <Confirmation
+                  confirmAction={updateComment}
+                  confirmBtnClass="bg-blue-400 hover:bg-blue-500 text-white border border-blue-400"
+                  isOpen={editingComment}
+                  setIsOpen={setEditingComment}
+                  confirmMessage="Atualizar"
+                >
+                  <span className="text-sm text-center font-medium">Edite seu comentário</span>
+                  <textarea
+                    name="comment"
+                    className="resize-none border rounded-sm text-xs p-2 h-52"
+                    placeholder=""
+                    value={commentEdit}
+                    onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setCommentEdit(e.target.value)}
+                  ></textarea>
+                </Confirmation>
 
                 <button
                   className="p-1 transition-all hover:scale-110 duration-300 text-gray-700 hover:text-red-500"
@@ -142,10 +180,10 @@ const PostCommentCard = ({ actualComment, postId, deleteCommentFromPost }: PostC
                 </button>
 
                 <Confirmation
+                  confirmBtnClass="bg-red-500 hover:bg-red-600 text-white border border-red-500"
                   confirmAction={deleteComment}
                   setIsOpen={setDeletingComment}
                   isOpen={deletingComment}
-                  confirmClass="bg-red-500 hover:bg-red-600 text-white"
                   message="Tem certeza que deseja apagar o comentário? Essa ação não poderá ser desfeita"
                   confirmMessage="Apagar"
                 />
@@ -157,8 +195,8 @@ const PostCommentCard = ({ actualComment, postId, deleteCommentFromPost }: PostC
             </div>
           }
 
-          <p className="ml-auto text-xs mt-1 absolute left-4 bottom-0 mb-2">
-            {dateFormatter.inFull(comment.createdAt)}
+          <p className="ml-auto text-xs mt-1 absolute left-2 bottom-0 mb-2">
+            {dateFormatter.inFullWithTime(comment.createdAt)}
           </p>
         </div>
 

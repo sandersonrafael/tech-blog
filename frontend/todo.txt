@@ -39,6 +39,8 @@ Fazer menu de usuário onde o usuário tem acesso aos seus últimos comentários
 
 USAR COMPONENTE LOADING EM TODOS OS COMPONENTES QUE POSSUEM FUNÇÕES async
 
+FAZER TODOS OS FEEDBACKS DE ERROS PARA OS USUÁRIOS AO TENTAR REALIZAR AÇÕES COM O BACKEND COMO COMENTAR OU ATUALIZAR COMENTÁRIOS, DELETAR, ETC (TUDO QUE ENVOLVE LOADING)
+
 page 404
 
 remover todos comentários do tipo // temp algumaCoisa -> need to remove...

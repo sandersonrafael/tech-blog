@@ -4,18 +4,18 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 
-import PostsContext from '@/contexts/PostsContext';
-import PostCommentCard from '@/components/cards/PostCommentCard';
-
-import Post from '@/types/entities/Post';
-import api from '@/api/api';
-import dateFormatter from '@/utils/dateFormatter';
-
 import IconEye from '@/icons/IconEye';
 import IconHeart from '@/icons/IconHeart';
 import UserContext from '@/contexts/UserContext';
 import IconHeartFill from '@/icons/IconHeartFill';
-import { sortDes } from '@/utils/sort';
+import PostsContext from '@/contexts/PostsContext';
+import PostCommentCard from '@/components/cards/PostCommentCard';
+
+import api from '@/api/api';
+import dateFormatter from '@/utils/dateFormatter';
+import { sortAsc } from '@/utils/sort';
+
+import Post from '@/types/entities/Post';
 
 import './PostContent.css';
 
@@ -128,7 +128,7 @@ const PostPage = () => {
             {/* TODO: Fazer lógica para exibir mensagem caso ainda não tenham comentários */}
 
             <div className="mx-auto max-w-2xl flex flex-col gap-1 pb-12">
-              {sortDes(post.comments, 'createdAt').map((comment) => (
+              {sortAsc(post.comments, 'createdAt').map((comment) => (
                 <PostCommentCard
                   key={comment.id}
                   actualComment={comment}

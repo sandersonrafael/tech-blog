@@ -74,7 +74,7 @@ public class CommentService {
 
         User dbUser = validateTokenReceived(token);
 
-        if (dbComment.getUser().getId() != dbUser.getId())
+        if (dbComment.getUser().getId() != dbUser.getId() || dbUser.getRole() == Role.ADMIN)
             throw new BadRequestException("Comentário não pertence ao usuário");
 
         if (dto.getContent() != null && !dto.getContent().isBlank()) {

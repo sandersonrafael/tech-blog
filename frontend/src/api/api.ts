@@ -81,6 +81,20 @@ class Api {
     return { error: 'Erro na solicitação' };
   }
 
+  public async updateComment(commentId: number, content: string, token: string): Promise<{ success: string } | { error: string }> {
+    const res = await fetch(`${apiHost}/api/comments/${commentId}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ content }),
+    });
+
+    if (res.status === 200) return { success: 'Sucesso ao realizar a ação' };
+    return { error: 'Erro na solicitação' };
+  }
+
   public async deleteComment(commentId: number, token: string): Promise<{ success: string } | { error: string }> {
     const res = await fetch(`${apiHost}/api/comments/${commentId}`, {
       method: 'DELETE',
