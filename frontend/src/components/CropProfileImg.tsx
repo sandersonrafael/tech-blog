@@ -19,7 +19,6 @@ const CropProfileImg = ({ imageSrc, setCroppedArea }: CropperTypes) => {
       image={imageSrc}
       style={{
         containerStyle: { position: 'relative', backgroundColor: 'white', minWidth: 300, minHeight: 300 },
-        mediaStyle: { maxWidth: '100vw', maxHeight: '100vh' },
       }}
       crop={crop}
       zoom={zoom}
@@ -27,7 +26,7 @@ const CropProfileImg = ({ imageSrc, setCroppedArea }: CropperTypes) => {
       onCropChange={setCrop}
       onZoomChange={setZoom}
       onCropComplete={onCropComplete}
-      objectFit="cover"
+      objectFit="horizontal-cover"
     />
   );
 };

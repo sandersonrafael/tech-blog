@@ -61,6 +61,36 @@ class Api {
     return formattedData;
   }
 
+  public async likeComment(commentId: number, token: string): Promise<{ success: string } | { error: string }> {
+    const res = await fetch(`${apiHost}/api/comments/like/${commentId}`, {
+      method: 'PATCH',
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+
+    if (res.status === 204) return { success: 'Sucesso ao realizar a ação' };
+    return { error: 'Erro na solicitação' };
+  }
+
+  public async dislikeComment(commentId: number, token: string): Promise<{ success: string } | { error: string }> {
+    const res = await fetch(`${apiHost}/api/comments/dislike/${commentId}`, {
+      method: 'PATCH',
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+
+    if (res.status === 204) return { success: 'Sucesso ao realizar a ação' };
+    return { error: 'Erro na solicitação' };
+  }
+
+  public async deleteComment(commentId: number, token: string): Promise<{ success: string } | { error: string }> {
+    const res = await fetch(`${apiHost}/api/comments/${commentId}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+
+    if (res.status === 204) return { success: 'Sucesso ao realizar a ação' };
+    return { error: 'Erro na solicitação' };
+  }
+
   public async register(registerRequest: RegisterRequest):
       Promise<RegisterSuccess | RegisterValidationErrors | RegisterServerError> {
     try {

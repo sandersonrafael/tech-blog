@@ -2,3 +2,19 @@ main.post-main-content * {
   margin-bottom: 24px;
   text-align: justify;
 }
+
+main.post-main-content h1 {
+  font-weight: 700;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+main.post-main-content h2 {
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+main.post-main-content h3 {
+  font-weight: 500;
+  font-size: 1.2rem;
+}

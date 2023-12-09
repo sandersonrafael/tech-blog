@@ -17,7 +17,7 @@ const Modal = ({ children, showModal, setShowModal, className = '', closeFunctio
 
   return (
     <div
-      className={`${showModal || 'hidden'} fixed left-0 top-0 h-screen w-screen z-30 flex content-center items-center p-2 ${className}`}
+      className={`${showModal || 'hidden'} fixed left-0 top-0 right-0 bottom-0 z-30 flex content-center items-center p-2 ${className}`}
       style={{ backgroundColor: 'rgb(0 0 0 / .8)' }}
       onClick={clickOutside}
       ref={backgroundDiv}
