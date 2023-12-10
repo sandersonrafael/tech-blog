@@ -12,29 +12,12 @@ class Api {
   public async getAllPosts(): Promise<Post[]> {
     const res = await fetch(`${apiHost}/api/posts`);
     const data = await res.json() as Post[];
-
-    const formattedData: Post[] = data.map((post) => {
-      post.createdAt = new Date(post.createdAt);
-      post.updatedAt = new Date(post.updatedAt);
-      return post;
-    });
-
-    return formattedData;
+    return data;
   }
 
   public async getPost(postId: number): Promise<Post> {
     const res = await fetch(`${apiHost}/api/posts/${postId}`);
     const post = await res.json() as Post;
-
-    post.createdAt = new Date(post.createdAt);
-    post.updatedAt = new Date(post.updatedAt);
-
-    post.comments = post.comments.map((comment) => {
-      comment.createdAt = new Date(comment.createdAt);
-      comment.updatedAt = new Date(comment.updatedAt);
-      return comment;
-    });
-
     return post;
   }
 
@@ -51,14 +34,7 @@ class Api {
   public async getAllComments(): Promise<Comment[]> {
     const res = await fetch(`${apiHost}/api/comments`);
     const data = await res.json() as Comment[];
-
-    const formattedData: Comment[] = data.map((comment) => {
-      comment.createdAt = new Date(comment.createdAt);
-      comment.updatedAt = new Date(comment.updatedAt);
-      return comment;
-    });
-
-    return formattedData;
+    return data;
   }
 
   public async createComment(postId: number, content: string, token: string): Promise<Comment | { error: string }> {
@@ -222,7 +198,6 @@ class Api {
 
       if (res.status === 200) {
         const userDetails = { ...resJson } as UserDetails;
-        userDetails.createdAt = new Date(userDetails.createdAt);
         return userDetails;
       }
 

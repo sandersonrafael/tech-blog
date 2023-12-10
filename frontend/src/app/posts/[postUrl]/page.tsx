@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ChangeEvent, FormEventHandler, useContext, useEffect, useState } from 'react';
+import React, { ChangeEvent, FormEventHandler, KeyboardEvent, useContext, useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 
@@ -23,7 +23,7 @@ import Comment from '@/types/entities/Comment';
 const getJwt = () => localStorage.getItem('jwt') as string;
 
 const PostPage = () => {
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const { posts, setPosts } = useContext(PostsContext);
   const [post, setPost] = useState<Post>();
   const [newComment, setNewComment] = useState<string>('');
@@ -63,14 +63,15 @@ const PostPage = () => {
       const { error } = response as { error: string };
       if (error) return; // TODO: Fazer lógica para avisar erro ao tentar enviar
 
-      const comment = response as Comment;
-      comment.createdAt = new Date(comment.createdAt);
-      comment.updatedAt = new Date(comment.updatedAt);
-
+      const comment = { ...response } as Comment;
       const updatedPost = { ...post } as Post;
       updatedPost.comments?.push(comment);
       setPost(updatedPost);
       setPosts((posts) => posts.map((post) => post.id === updatedPost.id ? { ...updatedPost } : post));
+      setUser((user) => {
+        user?.commentsIds.push(comment.id);
+        return user;
+      });
       setNewComment('');
     }
   };
@@ -149,7 +150,6 @@ const PostPage = () => {
         <section className="bg-gray-100">
           <div className="container mx-auto xl:max-w-4xl px-3 md:px-6">
             <h2 className="text-center font-medium text-2xl py-8">Comentários</h2>
-            {/* TODO: Fazer lógica para exibir mensagem caso ainda não tenham comentários */}
 
             <div className="mx-auto max-w-2xl flex flex-col gap-1 pb-12">
               {sortAsc(post.comments, 'createdAt').map((comment) => (
@@ -171,7 +171,11 @@ const PostPage = () => {
               <hr className="w-12 border-black border-2"/>
               <hr className="mb-6"/>
 
-              <form className="flex flex-col pb-12" onSubmit={handleAddComment}>
+              <form
+                className="flex flex-col pb-12"
+                onSubmit={handleAddComment}
+                onKeyDown={(e: KeyboardEvent<HTMLFormElement>) => { if (e.key === 'Enter' && !e.shiftKey) handleAddComment(e); }}
+              >
                 <textarea
                   className={`
                     w-full h-36 sm:h-24 px-3 py-2 text-sm resize-none outline-none transition-all focus:shadow rounded-md

@@ -48,14 +48,7 @@ const PostCommentCard = ({ actualComment, postId, deleteCommentFromPost }: PostC
   };
 
   const updatePostsCommentsAndUser = async () => {
-    const updatedPosts = (await api.getAllPosts()).map((post) => {
-      post.comments = post.comments.map((comment) => {
-        comment.createdAt = new Date(comment.createdAt);
-        comment.updatedAt = new Date(comment.updatedAt);
-        return comment;
-      });
-      return post;
-    });
+    const updatedPosts = await api.getAllPosts();
     const updatedComments: Comment[] = [];
     updatedPosts.forEach((post) => post.comments.forEach((comment) => updatedComments.push(comment)));
 

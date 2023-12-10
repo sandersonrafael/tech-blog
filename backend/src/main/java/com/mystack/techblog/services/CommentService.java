@@ -55,6 +55,7 @@ public class CommentService {
 
         var post = postRepository.findById(dto.getPostId()).orElse(null);
         if (post == null) throw new ResourceNotFoundException("Post não encontrado");
+        if (dto.getContent() == "") throw new BadRequestException("Não é permitido adicionar comentários em branco");
 
         Date now = new Date();
         dto.setCreatedAt(now);

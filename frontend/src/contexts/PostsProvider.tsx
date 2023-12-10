@@ -19,14 +19,8 @@ const PostsProvider = ({ children }: { children: ReactNode }) => {
       const extractedComments: Comment[] = [];
       fetchedPosts.forEach((post) => post.comments.forEach(comment => extractedComments.push(comment)));
 
-      const fetchedComments = [...extractedComments.map((comment) => {
-        comment.createdAt = new Date(comment.createdAt);
-        comment.updatedAt = new Date(comment.updatedAt);
-        return comment;
-      })];
-
       setPosts([...fetchedPosts]);
-      setComments([...fetchedComments]);
+      setComments([...extractedComments]);
     };
 
     fetchData();

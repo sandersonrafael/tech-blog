@@ -3,8 +3,8 @@ export const sortDes = <T>(array: Array<T>, attribute: keyof T): T[] => {
     return array.sort((a: T, b: T) => (b[attribute] as unknown[]).length - (a[attribute] as unknown[]).length);
   }
 
-  if (array.length > 0 && array[0][attribute] instanceof Date) {
-    return array.sort((a: T, b: T) => (b[attribute] as Date).getTime() - (a[attribute] as Date).getTime());
+  if (array.length > 0 && (attribute === 'createdAt' || attribute === 'updatedAt')) {
+    return array.sort((a: T, b: T) => new Date((b[attribute] as Date)).getTime() - new Date(a[attribute] as Date).getTime());
   }
 
   if (array.length > 0) {
@@ -19,8 +19,8 @@ export const sortAsc = <T>(array: Array<T>, attribute: keyof T): T[] => {
     return array.sort((a: T, b: T) => (a[attribute] as unknown[]).length - (b[attribute] as unknown[]).length);
   }
 
-  if (array.length > 0 && array[0][attribute] instanceof Date) {
-    return array.sort((a: T, b: T) => (a[attribute] as Date).getTime() - (b[attribute] as Date).getTime());
+  if (array.length > 0 && (attribute === 'createdAt' || attribute === 'updatedAt')) {
+    return array.sort((a: T, b: T) => new Date(a[attribute] as Date).getTime() - new Date((b[attribute] as Date)).getTime());
   }
 
   if (array.length > 0) {
