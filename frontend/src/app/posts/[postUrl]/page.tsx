@@ -1,6 +1,6 @@
 'use client';
 
-import React, { FormEventHandler, useContext, useEffect, useState } from 'react';
+import React, { ChangeEvent, FormEventHandler, useContext, useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 
@@ -18,14 +18,18 @@ import { sortAsc } from '@/utils/sort';
 import Post from '@/types/entities/Post';
 
 import './PostContent.css';
+import Comment from '@/types/entities/Comment';
+
+const getJwt = () => localStorage.getItem('jwt') as string;
 
 const PostPage = () => {
   const { user } = useContext(UserContext);
   const { posts, setPosts } = useContext(PostsContext);
+  const [post, setPost] = useState<Post>();
+  const [newComment, setNewComment] = useState<string>('');
+
   const postUrl = useParams().postUrl as string;
   const postId = posts.find((post) => post.postUrl === postUrl)?.id;
-
-  const [post, setPost] = useState<Post>();
 
   const handleLikePost = async () => {
     if (!user || !post) return;
@@ -33,11 +37,10 @@ const PostPage = () => {
 
     // TODO: Lógica para se não tiver logado, abrir modal informado que é necessário estar logado para completar a ação
 
-    const jwt = localStorage.getItem('jwt');
     const userHasLike = post.usersLikes.map(({ id }) => id).indexOf(user.id) !== -1;
 
-    if (jwt) {
-      const { success } = await api.likePost(postId as number, jwt) as { success: string };
+    if (getJwt()) {
+      const { success } = await api.likePost(postId as number, getJwt()) as { success: string };
 
       if (success) {
         const updatedPost = { ...post };
@@ -51,9 +54,25 @@ const PostPage = () => {
     }
   };
 
-  const handleAddComment: FormEventHandler<HTMLFormElement> = (e) => {
+  const handleAddComment: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     if (!user) return;
+
+    if (getJwt()) {
+      const response = await api.createComment(postId as number, newComment, getJwt());
+      const { error } = response as { error: string };
+      if (error) return; // TODO: Fazer lógica para avisar erro ao tentar enviar
+
+      const comment = response as Comment;
+      comment.createdAt = new Date(comment.createdAt);
+      comment.updatedAt = new Date(comment.updatedAt);
+
+      const updatedPost = { ...post } as Post;
+      updatedPost.comments?.push(comment);
+      setPost(updatedPost);
+      setPosts((posts) => posts.map((post) => post.id === updatedPost.id ? { ...updatedPost } : post));
+      setNewComment('');
+    }
   };
 
   const deleteCommentFromPost = (commentId: number) => {
@@ -140,6 +159,10 @@ const PostPage = () => {
                   postId={comment.postId}
                   deleteCommentFromPost={deleteCommentFromPost} />
               ))}
+
+              {post.comments.length === 0 &&
+                <p className="text-center">Ainda não há comentários. Seja o primeiro a comentar...</p>
+              }
             </div>
 
             <div className="pb-3 max-w-2xl mx-auto">
@@ -152,22 +175,24 @@ const PostPage = () => {
                 <textarea
                   className={`
                     w-full h-36 sm:h-24 px-3 py-2 text-sm resize-none outline-none transition-all focus:shadow rounded-md
-                    mb-3 border-blue-400 focus:border ${user ? 'cursor-text' : 'cursor-not-allowed bg-gray-200'}
+                    mb-3 border-blue-400 focus:border
                   `}
                   placeholder="Conte-nos sua opinião, dúvida ou sugestão..."
                   name="new_comment"
-                  disabled={(!user)}
+                  value={newComment}
+                  onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setNewComment(e.target.value)}
                 ></textarea>
+
                 <button
                   className={`
                     rounded text-white h-9 transition-colors duration-300
                     ${user ? 'bg-blue-400 hover:bg-blue-500 cursor-pointer' : 'cursor-not-allowed bg-gray-400'}
                   `}
                   type="submit"
-                  disabled={(!!user)}
+                  disabled={!user}
                 >
                   {user && 'Enviar'}
-                  {!user && 'Entre para comentar'}
+                  {!user && 'Entre ou registre-se para enviar'}
                 </button>
               </form>
             </div>

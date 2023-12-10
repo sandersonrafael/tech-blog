@@ -61,23 +61,25 @@ class Api {
     return formattedData;
   }
 
-  public async likeComment(commentId: number, token: string): Promise<{ success: string } | { error: string }> {
-    const res = await fetch(`${apiHost}/api/comments/like/${commentId}`, {
-      method: 'PATCH',
-      headers: { 'Authorization': `Bearer ${token}` },
+  public async createComment(postId: number, content: string, token: string): Promise<Comment | { error: string }> {
+    const res = await fetch(`${apiHost}/api/comments`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ postId, content }),
     });
 
-    if (res.status === 204) return { success: 'Sucesso ao realizar a ação' };
-    return { error: 'Erro na solicitação' };
-  }
+    const comment: Comment | ApiError = await res.json();
 
-  public async dislikeComment(commentId: number, token: string): Promise<{ success: string } | { error: string }> {
-    const res = await fetch(`${apiHost}/api/comments/dislike/${commentId}`, {
-      method: 'PATCH',
-      headers: { 'Authorization': `Bearer ${token}` },
-    });
+    if (res.status === 201) {
+      return comment as Comment;
+    }
 
-    if (res.status === 204) return { success: 'Sucesso ao realizar a ação' };
+    const { message: error } = comment as ApiError;
+    if (error) return { error };
+
     return { error: 'Erro na solicitação' };
   }
 
@@ -98,6 +100,26 @@ class Api {
   public async deleteComment(commentId: number, token: string): Promise<{ success: string } | { error: string }> {
     const res = await fetch(`${apiHost}/api/comments/${commentId}`, {
       method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+
+    if (res.status === 204) return { success: 'Sucesso ao realizar a ação' };
+    return { error: 'Erro na solicitação' };
+  }
+
+  public async likeComment(commentId: number, token: string): Promise<{ success: string } | { error: string }> {
+    const res = await fetch(`${apiHost}/api/comments/like/${commentId}`, {
+      method: 'PATCH',
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+
+    if (res.status === 204) return { success: 'Sucesso ao realizar a ação' };
+    return { error: 'Erro na solicitação' };
+  }
+
+  public async dislikeComment(commentId: number, token: string): Promise<{ success: string } | { error: string }> {
+    const res = await fetch(`${apiHost}/api/comments/dislike/${commentId}`, {
+      method: 'PATCH',
       headers: { 'Authorization': `Bearer ${token}` },
     });
 
