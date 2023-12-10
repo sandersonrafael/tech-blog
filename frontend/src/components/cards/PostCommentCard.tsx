@@ -1,4 +1,4 @@
-import { ChangeEvent, useContext, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, KeyboardEvent, useContext, useEffect, useState } from 'react';
 import Image from 'next/image';
 
 import IconLikeFill from '@/icons/IconLikeFill';
@@ -19,6 +19,7 @@ import Comment from '@/types/entities/Comment';
 import Post from '@/types/entities/Post';
 import User from '@/types/entities/User';
 import UserDetails from '@/types/entities/UserDetails';
+import Loading from '../Loading';
 
 const getJwt = () => localStorage.getItem('jwt') as string;
 
@@ -35,11 +36,16 @@ const PostCommentCard = ({ actualComment, postId, deleteCommentFromPost }: PostC
   const [comment, setComment] = useState<Comment>(actualComment);
   const [author, setAuthor] = useState<User>(actualComment.author);
   const [viewOptions, setViewOptions] = useState<boolean>(false);
+  const [commentEdit, setCommentEdit] = useState<string>(comment.content);
+  const [interval, setInterval] = useState<NodeJS.Timeout | null>(null);
 
   const [deletingComment, setDeletingComment] = useState<boolean>(false);
   const [editingComment, setEditingComment] = useState<boolean>(false);
-  const [commentEdit, setCommentEdit] = useState<string>(comment.content);
-  const [interval, setInterval] = useState<NodeJS.Timeout | null>(null);
+
+  const [loadingLikeComment, setLoadingLikeComment] = useState<boolean>(false);
+  const [loadingDislikeComment, setLoadingDislikeComment] = useState<boolean>(false);
+  const [loadingDeleteComment, setLoadingDeleteComment] = useState<boolean>(false);
+  const [loadingUpdateComment, setLoadingUpdateComment] = useState<boolean>(false);
 
   const optionsView = () => {
     if (interval) clearInterval(interval);
@@ -61,24 +67,29 @@ const PostCommentCard = ({ actualComment, postId, deleteCommentFromPost }: PostC
   const likeComment = async () => {
     if (!user) return; // TODO: Lógica para avisar que usuário precisa estar logado para curtir comentários
 
+    setLoadingLikeComment(true);
     if (getJwt()) {
       const { success } = await api.likeComment(comment.id, getJwt()) as { success: string };
       if (success) updatePostsCommentsAndUser();
     }
+    setLoadingLikeComment(false);
   };
 
   const dislikeComment = async () => {
     if (!user) return; // TODO: Lógica para avisar que usuário precisa estar logado para curtir comentários
 
+    setLoadingDislikeComment(true);
     if (getJwt()) {
       const { success } = await api.dislikeComment(comment.id, getJwt()) as { success: string };
       if (success) updatePostsCommentsAndUser();
     }
+    setLoadingDislikeComment(false);
   };
 
   const updateComment = async () => {
     if (!user) return;
 
+    setLoadingUpdateComment(true);
     if (getJwt()) {
       const { success } = await api.updateComment(comment.id, commentEdit, getJwt()) as { success: string };
       if (success) {
@@ -86,12 +97,14 @@ const PostCommentCard = ({ actualComment, postId, deleteCommentFromPost }: PostC
         setComment({ ...comment, content: commentEdit });
       }
     }
+    setLoadingUpdateComment(false);
     setEditingComment(false);
   };
 
   const deleteComment = async () => {
     if (!user) return setDeletingComment(false);
 
+    setLoadingDeleteComment(true);
     if (getJwt()) {
       const { success } = await api.deleteComment(comment.id, getJwt()) as { success: string };
       if (success) {
@@ -99,6 +112,7 @@ const PostCommentCard = ({ actualComment, postId, deleteCommentFromPost }: PostC
         deleteCommentFromPost(comment.id);
       }
     }
+    setLoadingDeleteComment(false);
     setDeletingComment(false);
   };
 
@@ -147,22 +161,34 @@ const PostCommentCard = ({ actualComment, postId, deleteCommentFromPost }: PostC
                   <IconPencil width={16} height={16} />
                 </button>
 
-                <Confirmation
-                  confirmAction={updateComment}
-                  confirmBtnClass="bg-blue-400 hover:bg-blue-500 text-white border border-blue-400"
-                  isOpen={editingComment}
-                  setIsOpen={setEditingComment}
-                  confirmMessage="Atualizar"
-                >
-                  <span className="text-sm text-center font-medium">Edite seu comentário</span>
-                  <textarea
-                    name="comment"
-                    className="resize-none border rounded-sm text-xs p-2 h-52"
-                    placeholder=""
-                    value={commentEdit}
-                    onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setCommentEdit(e.target.value)}
-                  ></textarea>
-                </Confirmation>
+                <form onSubmit={(e: FormEvent) => { e.preventDefault(); updateComment(); }}>
+                  <Confirmation
+                    confirmAction={updateComment}
+                    confirmBtnClass="bg-blue-400 hover:bg-blue-500 text-white border border-blue-400"
+                    isOpen={editingComment}
+                    setIsOpen={setEditingComment}
+                    confirmMessage="Atualizar"
+                    loadingConfirmation={loadingUpdateComment}
+                    loadingColor="white"
+                    loadingDiameter={18}
+                  >
+                    <span className="text-sm text-center font-medium">Edite seu comentário</span>
+
+                    <textarea
+                      onKeyDown={(e: KeyboardEvent<HTMLTextAreaElement>) => {
+                        if (e.key === 'Enter' && !e.altKey) {
+                          e.preventDefault();
+                          updateComment();
+                        }
+                      }}
+                      name="comment"
+                      className="resize-none border rounded-md outline-none text-xs p-2 h-52 focus:border-blue-400"
+                      placeholder="Digite seu comentário atualizado..."
+                      value={commentEdit}
+                      onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setCommentEdit(e.target.value)}
+                    ></textarea>
+                  </Confirmation>
+                </form>
 
                 <button
                   className="p-1 transition-all hover:scale-110 duration-300 text-gray-700 hover:text-red-500"
@@ -179,6 +205,9 @@ const PostCommentCard = ({ actualComment, postId, deleteCommentFromPost }: PostC
                   isOpen={deletingComment}
                   message="Tem certeza que deseja apagar o comentário? Essa ação não poderá ser desfeita"
                   confirmMessage="Apagar"
+                  loadingColor="white"
+                  loadingDiameter={18}
+                  loadingConfirmation={loadingDeleteComment}
                 />
               </div>
 
@@ -188,7 +217,7 @@ const PostCommentCard = ({ actualComment, postId, deleteCommentFromPost }: PostC
             </div>
           }
 
-          <p className="ml-auto text-xs mt-1 absolute left-2 bottom-0 mb-2">
+          <p className="ml-auto text-xs mt-1 absolute left-3 bottom-1 sm:left-2 sm:bottom-0 mb-2">
             {dateFormatter.inFullWithTime(comment.createdAt)}
           </p>
         </div>
@@ -204,9 +233,11 @@ const PostCommentCard = ({ actualComment, postId, deleteCommentFromPost }: PostC
           onClick={likeComment}
           type="button"
         >
-          {(user && user.commentsLikesIds.indexOf(comment.id) !== -1)
-            ? <IconLikeFill width={24} height={24} className="text-blue-500" />
-            : <IconLike width={24} height={24} />
+          {loadingLikeComment
+            ? <Loading diameter={24} />
+            :(user && user.commentsLikesIds.indexOf(comment.id) !== -1)
+              ? <IconLikeFill width={24} height={24} className="text-blue-500" />
+              : <IconLike width={24} height={24} />
           }
         </button>
 
@@ -217,9 +248,11 @@ const PostCommentCard = ({ actualComment, postId, deleteCommentFromPost }: PostC
           onClick={dislikeComment}
           type="button"
         >
-          {(user && user.commentsDislikesIds.indexOf(comment.id) !== -1)
-            ? <IconDislikeFill width={24} height={24} className="text-red-500" />
-            : <IconDislike width={24} height={24} />
+          {loadingDislikeComment
+            ? <Loading diameter={24} color="rgb(239 68 68)" />
+            : (user && user.commentsDislikesIds.indexOf(comment.id) !== -1)
+              ? <IconDislikeFill width={24} height={24} className="text-red-500" />
+              : <IconDislike width={24} height={24} />
           }
         </button>
       </div>

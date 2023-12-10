@@ -14,6 +14,7 @@ import { RegisterServerError, RegisterSuccess, RegisterValidationErrors } from '
 import api from '@/api/api';
 import UserContext from '@/contexts/UserContext';
 import ProfileImageInput from './ProfileImageInput';
+import Loading from '../Loading';
 
 const registerDefault: RegisterRequest = { profileImg: '', email: '', firstName: '', lastName: '', password: '', repeatPassword: '' };
 const loginDefault: LoginRequest = { email: '', password: '' };
@@ -30,6 +31,7 @@ const AuthForm = () => {
     passwordErrors: [],
   });
   const [data, setData] = useState<LoginRequest | RegisterRequest | RecoverRequest>({ email: '', password: '' });
+  const [loadingSubmit, setLoadingSubmit] = useState<boolean>(false);
 
   useEffect(() => {
     setData(
@@ -64,8 +66,11 @@ const AuthForm = () => {
 
     if (validationErrors !== null) return setErrors({ ...validationErrors });
 
+    setLoadingSubmit(true);
+
     if (formStyle === 'register') {
       const register = await api.register(data as RegisterRequest);
+      setLoadingSubmit(false);
 
       const { success } = register as RegisterSuccess;
       const { errors } = register as RegisterValidationErrors;
@@ -79,6 +84,7 @@ const AuthForm = () => {
 
     if (formStyle === 'login') {
       const login = await api.login(data as LoginRequest);
+      setLoadingSubmit(false);
 
       const { success } = login as LoginSuccess;
       const { errors } = login as LoginValidationErrors;
@@ -95,6 +101,7 @@ const AuthForm = () => {
 
     if (formStyle === 'recover') {
       const recover = await api.recover(data as RecoverRequest);
+      setLoadingSubmit(false);
 
       const { success } = recover as RecoverSuccess;
       const { errors } = recover as RecoverValidationErrors;
@@ -197,13 +204,18 @@ const AuthForm = () => {
       {errorMessage && <p className="text-center text-sm text-red-500">{errorMessage}</p>}
 
       <button
-        className="bg-blue-400 rounded-md p-3 text-white
+        className="bg-blue-400 rounded-md p-3 text-white flex justify-center items-center
           hover:opacity-90 font-medium active:opacity-100"
         type="submit"
       >
-        {formStyle === 'login' && 'Entrar'}
-        {formStyle === 'register' && 'Registrar-se'}
-        {formStyle === 'recover' && 'Enviar e-mail'}
+        {loadingSubmit
+          ? <Loading diameter={20} color="white" />
+          : <span>
+            {formStyle === 'login' && 'Entrar'}
+            {formStyle === 'register' && 'Registrar-se'}
+            {formStyle === 'recover' && 'Enviar e-mail'}
+          </span>
+        }
       </button>
 
       <div className="text-center">

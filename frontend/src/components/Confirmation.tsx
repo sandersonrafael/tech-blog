@@ -1,6 +1,7 @@
 import { Dispatch, ReactNode, SetStateAction } from 'react';
 
 import Modal from './Modal';
+import Loading from './Loading';
 
 type ConfirmationTypes = {
   children?: ReactNode;
@@ -10,9 +11,23 @@ type ConfirmationTypes = {
   message?: string
   confirmMessage: string;
   confirmBtnClass: string;
+  loadingConfirmation?: boolean;
+  loadingColor?: string;
+  loadingDiameter?: number;
 };
 
-const Confirmation = ({ children, isOpen, setIsOpen, confirmAction, message, confirmMessage, confirmBtnClass }: ConfirmationTypes) => {
+const Confirmation = ({
+  children,
+  isOpen,
+  setIsOpen,
+  confirmAction,
+  message,
+  confirmMessage,
+  confirmBtnClass,
+  loadingConfirmation = false,
+  loadingColor,
+  loadingDiameter,
+}: ConfirmationTypes) => {
   return(
     <Modal showModal={isOpen} setShowModal={setIsOpen} className="w-full">
       <div className="flex flex-col w-80 gap-6">
@@ -30,7 +45,10 @@ const Confirmation = ({ children, isOpen, setIsOpen, confirmAction, message, con
             type="button"
             onClick={confirmAction}
           >
-            <span>{confirmMessage}</span>
+            {loadingConfirmation
+              ? <Loading diameter={loadingDiameter} color={loadingColor} />
+              : <span>{confirmMessage}</span>
+            }
           </button>
 
           <button
