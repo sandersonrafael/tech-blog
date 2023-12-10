@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, { FormEventHandler, useContext, useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 
@@ -49,6 +49,11 @@ const PostPage = () => {
         setPosts((allPosts) => allPosts.map((thisPost) => thisPost.id === updatedPost.id ? updatedPost : thisPost));
       }
     }
+  };
+
+  const handleAddComment: FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+    if (!user) return;
   };
 
   const deleteCommentFromPost = (commentId: number) => {
@@ -135,6 +140,36 @@ const PostPage = () => {
                   postId={comment.postId}
                   deleteCommentFromPost={deleteCommentFromPost} />
               ))}
+            </div>
+
+            <div className="pb-3 max-w-2xl mx-auto">
+              <h2 className="text-sm pb-2">Deixe seu comentário</h2>
+
+              <hr className="w-12 border-black border-2"/>
+              <hr className="mb-6"/>
+
+              <form className="flex flex-col pb-12" onSubmit={handleAddComment}>
+                <textarea
+                  className={`
+                    w-full h-36 sm:h-24 px-3 py-2 text-sm resize-none outline-none transition-all focus:shadow rounded-md
+                    mb-3 border-blue-400 focus:border ${user ? 'cursor-text' : 'cursor-not-allowed bg-gray-200'}
+                  `}
+                  placeholder="Conte-nos sua opinião, dúvida ou sugestão..."
+                  name="new_comment"
+                  disabled={(!user)}
+                ></textarea>
+                <button
+                  className={`
+                    rounded text-white h-9 transition-colors duration-300
+                    ${user ? 'bg-blue-400 hover:bg-blue-500 cursor-pointer' : 'cursor-not-allowed bg-gray-400'}
+                  `}
+                  type="submit"
+                  disabled={(!!user)}
+                >
+                  {user && 'Enviar'}
+                  {!user && 'Entre para comentar'}
+                </button>
+              </form>
             </div>
           </div>
         </section>
