@@ -6,7 +6,7 @@ Fazer lógica para ao alterar a imagem de usuário para uma nula ou vazia, fazer
 
 Criar validações para novas postagens e para edições de posts
 
-remover o localhost:3000 do corst da aplicação hospedada
+remover o localhost:3000 do cors da aplicação hospedada
 
 Documentar com o Swagger(?)
 

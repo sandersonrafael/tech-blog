@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 import quickLinks from '@/static/quickLinks';
 import footerTags from '@/static/footerTags';
-import FooterForm from './FooterForm';
+import NewsletterForm from './NewsletterForm';
 
 const footerTitle = (name: string) => <>
   <h2 className="font-medium">{name}</h2>
@@ -92,7 +92,7 @@ const LayoutFooter = () => {
           <p className="pb-6">
             Inscreva-se na nossa newsletter para ser informado sobre as nossas atualizações!
           </p>
-          <FooterForm />
+          <NewsletterForm />
         </div>
       </div>
 

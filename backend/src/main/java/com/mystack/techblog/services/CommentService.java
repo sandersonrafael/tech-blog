@@ -55,11 +55,14 @@ public class CommentService {
 
         var post = postRepository.findById(dto.getPostId()).orElse(null);
         if (post == null) throw new ResourceNotFoundException("Post não encontrado");
-        if (dto.getContent() == "") throw new BadRequestException("Não é permitido adicionar comentários em branco");
+        if (dto.getContent().isBlank() || dto.getContent() == null) {
+            throw new BadRequestException("Não é permitido adicionar comentários em branco");
+        }
 
         Date now = new Date();
         dto.setCreatedAt(now);
         dto.setUpdatedAt(now);
+        dto.setContent(dto.getContent().trim());
 
         Comment comment = Mapper.dtoToComment(dto, post, dbUser, null, null);
 
@@ -75,11 +78,20 @@ public class CommentService {
 
         User dbUser = validateTokenReceived(token);
 
-        if (dbComment.getUser().getId() != dbUser.getId() || dbUser.getRole() == Role.ADMIN)
+        if (dbUser.getRole() != Role.ADMIN && dbComment.getUser().getId() != dbUser.getId()) {
             throw new BadRequestException("Comentário não pertence ao usuário");
+        }
 
-        if (dto.getContent() != null && !dto.getContent().isBlank()) {
-            dbComment.setContent(dto.getContent());
+        if (dbComment.getContent() == dto.getContent().trim()) {
+            throw new BadRequestException("Novo texto do comentário é igual ao anterior");
+        }
+
+        if (dto.getContent().isBlank() || dto.getContent() == null) {
+            throw new BadRequestException("Não é permitido adicionar comentários em branco");
+        }
+
+        if (dto.getContent() != null && !dto.getContent().isBlank() || dbUser.getRole() == Role.ADMIN) {
+            dbComment.setContent(dto.getContent().trim());
             dbComment.setUpdatedAt(new Date());
             dbComment = repository.save(dbComment);
 

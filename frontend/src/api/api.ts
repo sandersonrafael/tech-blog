@@ -206,6 +206,16 @@ class Api {
       return { error: { message: 'Erro no servidor' } } as UserDetailsServerError;
     }
   }
+
+  public async subscribeNewsletter(email: string): Promise<{ success: string }> {
+    await fetch(`${apiHost}/api/newsletter`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+
+    return { success: 'Sucesso na operação' };
+  }
 }
 
 const api = new Api();

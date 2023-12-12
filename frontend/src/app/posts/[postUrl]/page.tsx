@@ -20,6 +20,7 @@ import Post from '@/types/entities/Post';
 import './PostContent.css';
 import Comment from '@/types/entities/Comment';
 import Loading from '@/components/Loading';
+import Modal from '@/components/Modal';
 
 const getJwt = () => localStorage.getItem('jwt') as string;
 
@@ -28,6 +29,8 @@ const PostPage = () => {
   const { posts, setPosts } = useContext(PostsContext);
   const [post, setPost] = useState<Post>();
   const [newComment, setNewComment] = useState<string>('');
+  const [newCommentError, setNewCommentError] = useState<string>();
+  const [showRequestLogin, setShowRequestLogin] = useState<boolean>(false);
 
   const [loadingPost, setLoadingPost] = useState<boolean>(true);
   const [loadingLikePost, setLoadingLikePost] = useState<boolean>(false);
@@ -37,10 +40,9 @@ const PostPage = () => {
   const postId = posts.find((post) => post.postUrl === postUrl)?.id;
 
   const handleLikePost = async () => {
-    if (!user || !post) return;
-    const thisUser = { id: user.id, firstName: user.firstName, lastName: user.lastName, profileImg: user.profileImg };
+    if (!user || !post) return setShowRequestLogin(true);
 
-    // TODO: Lógica para se não tiver logado, abrir modal informado que é necessário estar logado para completar a ação
+    const thisUser = { id: user.id, firstName: user.firstName, lastName: user.lastName, profileImg: user.profileImg };
 
     const userHasLike = post.usersLikes.map(({ id }) => id).indexOf(user.id) !== -1;
 
@@ -65,12 +67,21 @@ const PostPage = () => {
     e.preventDefault();
     if (!user) return;
 
+    if (newComment === '' || newComment.trim() === '') {
+      setNewComment('');
+      return setNewCommentError('Não é permitido adicionar comentários em branco');
+    }
+
     setLoadingAddComment(true);
 
     if (getJwt()) {
-      const response = await api.createComment(postId as number, newComment, getJwt());
+      const response = await api.createComment(postId as number, newComment.trim(), getJwt());
       const { error } = response as { error: string };
-      if (error) return; // TODO: Fazer lógica para avisar erro ao tentar enviar
+      if (error) {
+        setNewCommentError(error);
+        setLoadingAddComment(false);
+        return;
+      }
 
       const comment = { ...response } as Comment;
       const updatedPost = { ...post } as Post;
@@ -110,6 +121,13 @@ const PostPage = () => {
 
   return (
     <>
+      <Modal showModal={showRequestLogin} setShowModal={setShowRequestLogin}>
+        <div className="text-center text-sm">
+          <p className="mb-1">É necessário estar logado para curtir o Post</p>
+          <p>Faça login ou cadastre-se e tente novamente</p>
+        </div>
+      </Modal>
+
       {post &&
         <>
           <div className="container mx-auto xl:max-w-4xl px-3 md:px-6 mt-12 mb-10">
@@ -163,6 +181,7 @@ const PostPage = () => {
             <div className="container mx-auto xl:max-w-4xl px-3 md:px-6">
               <h2 className="text-center font-medium text-2xl py-8">Comentários</h2>
 
+              {/* TODO: Fazer Lógica para exibir só até 10 comentários e carregar mais comentários */}
               <div className="mx-auto max-w-2xl flex flex-col gap-1 pb-12">
                 {sortAsc(post.comments, 'createdAt').map((comment) => (
                   <PostCommentCard
@@ -191,17 +210,24 @@ const PostPage = () => {
                   <textarea
                     className={`
                       w-full h-36 sm:h-24 px-3 py-2 text-sm resize-none focus:shadow rounded-md
-                      mb-3 border focus:border-blue-400 outline-none transition-all
+                      border focus:border-blue-400 outline-none transition-all
                     `}
                     placeholder="Conte-nos sua opinião, dúvida ou sugestão..."
                     name="new_comment"
                     value={newComment}
-                    onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setNewComment(e.target.value)}
+                    onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
+                      if (newCommentError !== '') setNewCommentError('');
+                      setNewComment(e.target.value);
+                    }}
                   ></textarea>
+
+                  {newCommentError &&
+                    <span className="text-xs text-center text-red-500">{newCommentError}</span>
+                  }
 
                   <button
                     className={`
-                      rounded text-white h-9 transition-colors duration-300 flex items-center justify-center
+                      rounded text-white h-9 transition-colors duration-300 flex items-center justify-center mt-3
                       ${user ? 'bg-blue-400 hover:bg-blue-500 cursor-pointer' : 'cursor-not-allowed bg-gray-400'}
                     `}
                     type="submit"
@@ -212,7 +238,7 @@ const PostPage = () => {
                       : <span>
                         {user && 'Enviar'}
                         {!user && 'Entre ou registre-se para enviar'}
-                      </span>
+                      </span> // TODO: Fazer validação desse formulário para informar se estiver vazio ou se der erro
                     }
                   </button>
                 </form>

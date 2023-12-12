@@ -36,7 +36,7 @@ const MiniaturePostCard = ({
 
       <div>
         <Link href={`${appUrl}/posts/${postUrl || ''}`}>
-          <h3 className="font-medium text-sm hover:text-blue-400 pb-3">
+          <h3 className="font-medium text-sm hover:text-blue-400 pb-3 transition-colors duration-300">
             {title.length > 42 ? title.slice(0, 42) + '...' : title}
           </h3>
         </Link>

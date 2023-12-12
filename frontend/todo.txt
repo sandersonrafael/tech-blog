@@ -8,11 +8,15 @@ Fazer um ColorsContext para propagar o modo Claro/Escuro por toda a aplicação 
      useEffect(() => {}, [dark: boolean]);
 }
 
+remover o localhost:3000 do cors da aplicação hospedada
+
+REVER O TODO DO BACKEND
+
 Fazer modo escuro / claro com localstorage que salva opção do usuário
 
 Fazer respostas melhores para confirmação de login / registro / recuperação
 
-Fazer um loading na home page que carrega até os posts serem carregados. Ele tem seu carregamento interrompido assim que a API dá a resposta, mesmo que com erro
+Fazer mensagem de erro durante o carregamento inicial de todos os Posts com aviso e botão para atualizar a página
 
 Implementar sistema de likes para todos usuários logados na home page, para todos os posts
 
@@ -23,6 +27,8 @@ ORGANIZAR AS LETRAS DO FEATURED POST QUE ESTÃO BRANCAS E SEM SOMBRA
 utilizar a tag pre quando for salvar post na base de dados que envolve linha de código para manter formatação digitada
 
 cookies
+
+Diminuir arredondamento das bordas de todas as imagens horizontais para resoluções menores
 
 CRIAR LOADING PAGE QUE É COM FUNDO BRANCO E COMPONENTE LOADING CARREGANDO ATÉ BUSCAR POSTS | USAR NO COMPONENTE DE CONTEXTO DOS POSTS
 

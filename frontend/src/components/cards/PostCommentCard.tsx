@@ -20,6 +20,7 @@ import Post from '@/types/entities/Post';
 import User from '@/types/entities/User';
 import UserDetails from '@/types/entities/UserDetails';
 import Loading from '../Loading';
+import Modal from '../Modal';
 
 const getJwt = () => localStorage.getItem('jwt') as string;
 
@@ -47,6 +48,8 @@ const PostCommentCard = ({ actualComment, postId, deleteCommentFromPost }: PostC
   const [loadingDeleteComment, setLoadingDeleteComment] = useState<boolean>(false);
   const [loadingUpdateComment, setLoadingUpdateComment] = useState<boolean>(false);
 
+  const [showRequestLogin, setShowRequestLogin] = useState<boolean>(false);
+
   const optionsView = () => {
     if (interval) clearInterval(interval);
     setViewOptions(!viewOptions);
@@ -65,7 +68,7 @@ const PostCommentCard = ({ actualComment, postId, deleteCommentFromPost }: PostC
   };
 
   const likeComment = async () => {
-    if (!user) return; // TODO: Lógica para avisar que usuário precisa estar logado para curtir comentários
+    if (!user) return setShowRequestLogin(true);
 
     setLoadingLikeComment(true);
     if (getJwt()) {
@@ -76,7 +79,7 @@ const PostCommentCard = ({ actualComment, postId, deleteCommentFromPost }: PostC
   };
 
   const dislikeComment = async () => {
-    if (!user) return; // TODO: Lógica para avisar que usuário precisa estar logado para curtir comentários
+    if (!user) return setShowRequestLogin(true);
 
     setLoadingDislikeComment(true);
     if (getJwt()) {
@@ -87,7 +90,8 @@ const PostCommentCard = ({ actualComment, postId, deleteCommentFromPost }: PostC
   };
 
   const updateComment = async () => {
-    if (!user) return;
+    if (!user) return setShowRequestLogin(true);
+    if (commentEdit.trim() === comment.content || commentEdit.trim() === '') return setEditingComment(false);
 
     setLoadingUpdateComment(true);
     if (getJwt()) {
@@ -102,7 +106,10 @@ const PostCommentCard = ({ actualComment, postId, deleteCommentFromPost }: PostC
   };
 
   const deleteComment = async () => {
-    if (!user) return setDeletingComment(false);
+    if (!user) {
+      setShowRequestLogin(true);
+      return setDeletingComment(false);
+    }
 
     setLoadingDeleteComment(true);
     if (getJwt()) {
@@ -130,22 +137,30 @@ const PostCommentCard = ({ actualComment, postId, deleteCommentFromPost }: PostC
   useEffect(() => setCommentEdit(comment.content), [editingComment, comment]);
 
   return (
-    <div className="p-6 relative flex border shadow">
-      <div className="overflow-hidden mr-5 h-full shrink-0">
-        <Image
-          className="rounded-full w-16 hover:scale-110 transition-all duration-500"
-          src={author.profileImg}
-          alt={`${author.firstName} ${author.lastName}`}
-          width={240}
-          height={240}
-        />
-      </div>
+    <>
+      <Modal showModal={showRequestLogin} setShowModal={setShowRequestLogin}>
+        <div className="text-sm text-center">
+          <p className="mb-1">É necessário estar logado para realizar esta ação</p>
+          <p>Faça login ou cadastre-se e tente novamente</p>
+        </div>
+      </Modal>
 
-      <div className="w-full h-full">
-        <div className="flex justify-between flex-wrap">
-          <h3 className="font-bold mb-3">{author.firstName}</h3>
+      <div className="p-6 relative flex border shadow">
+        <div className="overflow-hidden mr-5 h-full shrink-0">
+          <Image
+            className="rounded-full w-16 hover:scale-110 transition-all duration-500"
+            src={author.profileImg}
+            alt={`${author.firstName} ${author.lastName}`}
+            width={240}
+            height={240}
+          />
+        </div>
 
-          {(user && (user.commentsIds.indexOf(comment.id) !== -1 || user.role === 'ADMIN')) &&
+        <div className="w-full h-full">
+          <div className="flex justify-between flex-wrap">
+            <h3 className="font-bold mb-3">{author.firstName}</h3>
+
+            {(user && (user.commentsIds.indexOf(comment.id) !== -1 || user.role === 'ADMIN')) &&
             <div className="absolute top-0 right-0 mr-2 mt-2" >
               <div
                 className={`
@@ -215,48 +230,50 @@ const PostCommentCard = ({ actualComment, postId, deleteCommentFromPost }: PostC
                 <IconThreeDots width={18} height={18} className="text-gray-600" onClick={optionsView} />
               </button>
             </div>
-          }
+            }
 
-          <p className="ml-auto text-xs mt-1 absolute left-3 bottom-1 sm:left-2 sm:bottom-0 mb-2">
-            {dateFormatter.inFullWithTime(comment.createdAt)}
-          </p>
+            <p className="ml-auto text-xs mt-1 absolute left-3 bottom-1 sm:left-2 sm:bottom-0 mb-2">
+              {dateFormatter.inFullWithTime(comment.createdAt)}
+            </p>
+          </div>
+
+          <p className="text-xs mb-8">{comment.content}</p>
         </div>
 
-        <p className="text-xs mb-8">{comment.content}</p>
+        <div className="flex items-end gap-1 absolute bottom-0 right-0 mb-3 mr-4">
+          <span className="text-xs">{comment.usersLikesIds.length}</span>
+
+          <button
+            className="mr-2 flex transition-all duration-300 hover:scale-110 hover:text-blue-500"
+            onClick={likeComment}
+            type="button"
+          >
+            {loadingLikeComment
+              ? <Loading diameter={24} />
+              :(user && user.commentsLikesIds.indexOf(comment.id) !== -1)
+                ? <IconLikeFill width={24} height={24} className="text-blue-500" />
+                : <IconLike width={24} height={24} />
+            }
+          </button>
+
+          <span className="text-xs">{comment.usersDislikesIds.length}</span>
+
+          <button
+            className="mr-2 flex transition-all duration-300 hover:scale-110 hover:text-red-500"
+            onClick={dislikeComment}
+            type="button"
+          >
+            {loadingDislikeComment
+              ? <Loading diameter={24} color="rgb(239 68 68)" />
+              : (user && user.commentsDislikesIds.indexOf(comment.id) !== -1)
+                ? <IconDislikeFill width={24} height={24} className="text-red-500" />
+                : <IconDislike width={24} height={24} />
+            }
+          </button>
+        </div>
       </div>
+    </>
 
-      <div className="flex items-end gap-1 absolute bottom-0 right-0 mb-3 mr-4">
-        <span className="text-xs">{comment.usersLikesIds.length}</span>
-
-        <button
-          className="mr-2 flex transition-all duration-300 hover:scale-110 hover:text-blue-500"
-          onClick={likeComment}
-          type="button"
-        >
-          {loadingLikeComment
-            ? <Loading diameter={24} />
-            :(user && user.commentsLikesIds.indexOf(comment.id) !== -1)
-              ? <IconLikeFill width={24} height={24} className="text-blue-500" />
-              : <IconLike width={24} height={24} />
-          }
-        </button>
-
-        <span className="text-xs">{comment.usersDislikesIds.length}</span>
-
-        <button
-          className="mr-2 flex transition-all duration-300 hover:scale-110 hover:text-red-500"
-          onClick={dislikeComment}
-          type="button"
-        >
-          {loadingDislikeComment
-            ? <Loading diameter={24} color="rgb(239 68 68)" />
-            : (user && user.commentsDislikesIds.indexOf(comment.id) !== -1)
-              ? <IconDislikeFill width={24} height={24} className="text-red-500" />
-              : <IconDislike width={24} height={24} />
-          }
-        </button>
-      </div>
-    </div>
   );
 };
 

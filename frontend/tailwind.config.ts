@@ -15,7 +15,11 @@ const config: Config = {
       },
     },
   },
-  safelist: ['max-sm:-left-full', 'max-sm:left-0', 'max-sm:transparent', 'max-sm:bg-black', '-mr-96', 'hidden'],
+  safelist: [
+    'max-sm:-left-full', 'max-sm:left-0', 'max-sm:transparent', 'max-sm:bg-black', '-mr-96', 'hidden',
+    'w-0', '-ml-0', '-z-50', 'z-20', 'mr-0', 'cursor-not-allowed', 'bg-gray-400', 'cursor-pointer',
+    'hover:bg-blue-500', 'w-16', '-ml-16', 'opacity-0',
+  ],
   plugins: [],
 };
 export default config;

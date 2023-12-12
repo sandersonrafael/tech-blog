@@ -3,7 +3,6 @@ package com.mystack.techblog.controllers.auth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -47,8 +46,8 @@ public class AuthenticationController {
         return ResponseEntity.ok(auth);
     }
 
-    @PostMapping("/first-login/{confirmationToken}")
-    public ResponseEntity<?> firstLogin(@RequestBody LoginRequest request, @PathVariable String confirmationToken) {
+    @PostMapping("/first-login")
+    public ResponseEntity<?> firstLogin(@RequestBody LoginRequest request, @RequestHeader("Authorization") String confirmationToken) {
         ValidationErrors errors = ApplicationValidator.validateLoginRequest(request);
         if (errors != null) return ResponseEntity.badRequest().body(errors);
 
@@ -71,7 +70,7 @@ public class AuthenticationController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/recover")
+    @PostMapping("/request-recover")
     public ResponseEntity<?> requestRecoverPassword(@RequestBody RecoverRequest request) {
         ValidationErrors errors = ApplicationValidator.validateRecoverPasswordRequest(request);
         if (errors != null) return ResponseEntity.badRequest().body(errors);
@@ -80,9 +79,12 @@ public class AuthenticationController {
 
         return ResponseEntity.ok().build();
     }
-    // TODO -> mudar isso para um RequestHeader("Authorization") em vez de PathVariable e mudar a route para /recover e o de cima para /recover/request -> mudar no insomnia também e na aplicação frontend
-    @PostMapping("/recover/{recoveryToken}")
-    public ResponseEntity<?> recoverPassword(@RequestBody LoginRequest request, @PathVariable String recoveryToken) {
+
+    @PostMapping("/recover")
+    public ResponseEntity<?> recoverPassword(
+        @RequestBody LoginRequest request,
+        @RequestHeader("Authorization") String recoveryToken
+    ) {
         ValidationErrors errors = ApplicationValidator.validateLoginRequest(request);
         if (errors != null) return ResponseEntity.badRequest().body(errors);
 
