@@ -1,6 +1,6 @@
 import ApiError from '@/types/api/ApiError';
-import { LoginServerError, LoginSuccess, LoginValidationErrors, RecoverServerError, RecoverSuccess, RecoverValidationErrors, RegisterServerError, RegisterSuccess, RegisterValidationErrors } from '@/types/api/AuthResponses';
-import { LoginRequest, RecoverRequest, RegisterRequest } from '@/types/api/AuthRequests';
+import { LoginServerError, LoginSuccess, LoginValidationErrors, NewPasswordServerError, NewPasswordSuccess, NewPasswordValidationErrors, RecoverServerError, RecoverSuccess, RecoverValidationErrors, RegisterServerError, RegisterSuccess, RegisterValidationErrors } from '@/types/api/AuthResponses';
+import { LoginRequest, NewPasswordRequest, RecoverRequest, RegisterRequest } from '@/types/api/AuthRequests';
 import Comment from '@/types/entities/Comment';
 import Post from '@/types/entities/Post';
 import UserDetails from '@/types/entities/UserDetails';
@@ -163,7 +163,35 @@ class Api {
     }
   }
 
-  public async recover(recoverRequest: RecoverRequest):
+  public async firstLogin(firstLoginRequest: LoginRequest, confirmationToken: string):
+      Promise<LoginSuccess | LoginValidationErrors | LoginServerError> {
+    try {
+      const res = await fetch(`${apiHost}/auth/first-login/${confirmationToken}`, {
+        method: 'POST',
+        body: JSON.stringify(firstLoginRequest),
+      });
+
+      const resJson: { token: string } | LoginValidationErrors | ApiError = await res.json();
+
+      if (res.status === 200) {
+        const { token } = resJson as { token: string };
+        localStorage.setItem('jwt', token);
+        return { success: 'Login realizado com sucesso!' };
+      }
+
+      const { errors } = resJson as LoginValidationErrors;
+      if (errors) return { errors };
+
+      const { message } = resJson as ApiError;
+      if (message) return { error: { message } } as LoginServerError;
+
+      return { error: resJson } as LoginServerError;
+    } catch(e) {
+      return { error: { message: 'Erro no servidor' } } as LoginServerError;
+    }
+  }
+
+  public async recoverRequest(recoverRequest: RecoverRequest):
       Promise<RecoverSuccess | RecoverValidationErrors | RecoverServerError> {
     try {
       const res = await fetch(`${apiHost}/auth/recover`, {
@@ -187,6 +215,37 @@ class Api {
     }
   }
 
+  public async recoverPassword(newPasswordRequest: NewPasswordRequest, recoveryToken: string):
+      Promise<NewPasswordSuccess | NewPasswordValidationErrors | NewPasswordServerError> {
+    try {
+      const request = { ...newPasswordRequest };
+      delete request.repeatPassword;
+
+      const res = await fetch(`${apiHost}/auth/recover/${recoveryToken}`, {
+        method: 'POST',
+        body: JSON.stringify(request),
+      });
+
+      const resJson: { token: string } | NewPasswordValidationErrors | ApiError = await res.json();
+
+      if (res.status === 200) {
+        const { token } = resJson as { token: string };
+        localStorage.setItem('jwt', token);
+        return { success: 'Senha alterada com sucesso!' };
+      }
+
+      const { errors } = resJson as NewPasswordValidationErrors;
+      if (errors) return { errors };
+
+      const { message } = resJson as ApiError;
+      if (message) return { error: { message } } as NewPasswordServerError;
+
+      return { error: resJson } as NewPasswordServerError;
+    } catch(e) {
+      return { error: { message: 'Erro no servidor' } } as NewPasswordServerError;
+    }
+  }
+
   public async getUserDetails(token: string): Promise<UserDetails | UserDetailsServerError> {
     try {
       const res = await fetch(`${apiHost}/api/users/details`, {
@@ -207,7 +266,7 @@ class Api {
     }
   }
 
-  public async subscribeNewsletter(email: string): Promise<{ success: string }> {
+  public async newsletterSubscribe(email: string): Promise<{ success: string }> {
     await fetch(`${apiHost}/api/newsletter`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

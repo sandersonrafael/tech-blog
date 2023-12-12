@@ -3,6 +3,7 @@ package com.mystack.techblog.controllers.auth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -46,8 +47,11 @@ public class AuthenticationController {
         return ResponseEntity.ok(auth);
     }
 
-    @PostMapping("/first-login")
-    public ResponseEntity<?> firstLogin(@RequestBody LoginRequest request, @RequestHeader("Authorization") String confirmationToken) {
+    @PostMapping("/first-login/{confirmationToken}")
+    public ResponseEntity<?> firstLogin(
+        @RequestBody LoginRequest request,
+        @PathVariable String confirmationToken
+    ) {
         ValidationErrors errors = ApplicationValidator.validateLoginRequest(request);
         if (errors != null) return ResponseEntity.badRequest().body(errors);
 
@@ -80,11 +84,8 @@ public class AuthenticationController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/recover")
-    public ResponseEntity<?> recoverPassword(
-        @RequestBody LoginRequest request,
-        @RequestHeader("Authorization") String recoveryToken
-    ) {
+    @PostMapping("/recover/{recoveryToken}")
+    public ResponseEntity<?> recoverPassword( @RequestBody LoginRequest request, @PathVariable String recoveryToken) {
         ValidationErrors errors = ApplicationValidator.validateLoginRequest(request);
         if (errors != null) return ResponseEntity.badRequest().body(errors);
 

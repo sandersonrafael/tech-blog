@@ -15,3 +15,9 @@ export type RegisterRequest = {
 export type RecoverRequest = {
   email: string;
 };
+
+export type NewPasswordRequest = {
+  email: string;
+  password: string;
+  repeatPassword?: string;
+};

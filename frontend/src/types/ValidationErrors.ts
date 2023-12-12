@@ -15,3 +15,9 @@ export type RegistrationErrors = {
 export type RecoverPasswordErrors = {
   emailErrors: string[];
 };
+
+export type NewPasswordErrors = {
+  emailErrors: string[];
+  passwordErrors: string[];
+  repeatPasswordErrors?: string[];
+};

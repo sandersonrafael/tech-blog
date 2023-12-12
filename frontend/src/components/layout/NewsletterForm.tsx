@@ -27,7 +27,7 @@ const NewsletterForm = () => {
     }
 
     setLoading(true);
-    await api.subscribeNewsletter(email);
+    await api.newsletterSubscribe(email);
 
     setLoading(false);
     setEmail('');

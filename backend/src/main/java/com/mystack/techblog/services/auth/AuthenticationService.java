@@ -101,7 +101,9 @@ public class AuthenticationService {
 
         User dbUser = repository.findEmailToConfirm(userEmail).orElse(null);
         if (dbUser == null) throw new ResourceNotFoundException("Usuário não encontrado");
-        if (dbUser.getEmail() != request.email()) throw new BadRequestException("Credenciais inválidas");
+        if (!dbUser.getEmail().equals(request.email().toLowerCase())) {
+            throw new BadRequestException("Credenciais inválidas");
+        }
         if (dbUser.getEnabled() == true) throw new BadRequestException("Solicitação inválida");
 
         Boolean passwordMatches = passwordEncoder.matches(request.password(), dbUser.getPasswordHash());

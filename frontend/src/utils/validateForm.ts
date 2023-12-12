@@ -1,6 +1,6 @@
-import { LoginErrors, RecoverPasswordErrors, RegistrationErrors } from '@/types/ValidationErrors';
+import { LoginErrors, NewPasswordErrors, RecoverPasswordErrors, RegistrationErrors } from '@/types/ValidationErrors';
 import validations from './validations';
-import { LoginRequest, RecoverRequest, RegisterRequest } from '@/types/api/AuthRequests';
+import { LoginRequest, NewPasswordRequest, RecoverRequest, RegisterRequest } from '@/types/api/AuthRequests';
 
 class ValidateForm {
   public login(userLogin: LoginRequest): LoginErrors | null {
@@ -36,6 +36,19 @@ class ValidateForm {
     };
 
     return errors.emailErrors.length > 0 ? errors : null;
+  }
+
+  public newPassword(userNewPassword: NewPasswordRequest): NewPasswordErrors | null {
+
+    const errors: NewPasswordErrors = {
+      emailErrors: validations.email(userNewPassword.email),
+      passwordErrors: validations.password(userNewPassword.password, 'Senha'),
+      repeatPasswordErrors: validations.confirmPassword(
+        userNewPassword.password, userNewPassword.repeatPassword, 'Senha', 'Repetição de senha',
+      ),
+    };
+
+    return Object.values(errors).find((value) => value.length > 0) ? errors : null;
   }
 }
 

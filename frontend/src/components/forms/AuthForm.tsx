@@ -100,7 +100,7 @@ const AuthForm = () => {
     }
 
     if (formStyle === 'recover') {
-      const recover = await api.recover(data as RecoverRequest);
+      const recover = await api.recoverRequest(data as RecoverRequest);
       setLoadingSubmit(false);
 
       const { success } = recover as RecoverSuccess;
