@@ -1,4 +1,4 @@
-/* import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import FormInput from './forms/FormInput';
@@ -7,27 +7,32 @@ import { RecoverRequest as UnsubscribeRequest, LoginRequest, NewPasswordRequest 
 import Loading from './Loading';
 import Modal from './Modal';
 import IconCheck from '@/icons/IconCheck';
-import { LoginErrors, RecoverPasswordErrors as UnsubscribeErrors, NewPasswordErrors, RecoverPasswordErrors } from '@/types/ValidationErrors';
+import { LoginErrors, RecoverPasswordErrors as UnsubscribeErrors, NewPasswordErrors } from '@/types/ValidationErrors';
 import validateForm from '@/utils/validateForm';
+import api from '@/api/api';
+import { LoginServerError, LoginSuccess, LoginValidationErrors, NewPasswordServerError, NewPasswordSuccess, NewPasswordValidationErrors } from '@/types/api/AuthResponses';
+import UserContext from '@/contexts/UserContext';
 
 type UserConfirmationtypes = {
-  formStyle: 'first-login' | 'password-recover' | 'newsletter-unsubscribe';
+  formStyle: 'first-login' | 'new-password' | 'newsletter-unsubscribe';
   token: string;
 };
-// TODO: Fazer as 3 páginas, de recover, confirmation e unsubscribe
-// /newsletter/unsubscribe
 
 const UserConfirmationForm = ({ formStyle, token }: UserConfirmationtypes) => {
+  const { updateUserData } = useContext(UserContext);
+
   const [data, setData] = useState<LoginRequest | NewPasswordRequest | UnsubscribeRequest>({ email: '' });
   const [errors, setErrors] = useState<LoginErrors | UnsubscribeErrors | NewPasswordErrors>({ emailErrors: [] });
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const [loading, setLoading] = useState<boolean>(false);
 
-  const [showUnsubscribeConfirm, setShowUnsubscribeConfirm] = useState<boolean>(false);
+  const [showUnsubscribeSuccess, setShowUnsubscribeSuccess] = useState<boolean>(false);
 
   const { push } = useRouter();
 
-  const submit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const validationErrors = formStyle === 'newsletter-unsubscribe'
@@ -36,37 +41,76 @@ const UserConfirmationForm = ({ formStyle, token }: UserConfirmationtypes) => {
         ? validateForm.login(data as LoginRequest)
         : validateForm.newPassword(data as NewPasswordRequest);
 
-    if (validateForm !== null) return setErrors({ ...validationErrors });
-
-    const validationErrors = formStyle === 'login'
-      ? validateForm.login(data as LoginRequest)
-      : formStyle === 'register'
-        ? validateForm.register(data as RegisterRequest)
-        : validateForm.recover(data as RecoverRequest);
-
     if (validationErrors !== null) return setErrors({ ...validationErrors });
 
+    setLoading(true);
+
+    if (formStyle === 'first-login') {
+      const firstLogin = await api.firstLogin(data as LoginRequest, token);
+      setLoading(false);
+
+      const { success } = firstLogin as LoginSuccess;
+      const { errors } = firstLogin as LoginValidationErrors;
+      const { error } = firstLogin as LoginServerError;
+
+      if (success) {
+        setSuccessMessage(success);
+        await updateUserData();
+        return push('/');
+      }
+
+      if (errors) return setErrors({ ...errors });
+      if (error) return setErrorMessage(error.message);
+      return setErrorMessage('Erro no servidor');
+    }
+
+    if (formStyle === 'new-password') {
+      const newPassword = await api.recoverPassword(data as NewPasswordRequest, token);
+      setLoading(false);
+
+      const { success } = newPassword as NewPasswordSuccess;
+      const { errors } = newPassword as NewPasswordValidationErrors;
+      const { error } = newPassword as NewPasswordServerError;
+
+      if (success) {
+        setSuccessMessage(success);
+        await updateUserData();
+        return push('/');
+      }
+
+      if (errors) return setErrors(errors);
+      if (error) return setErrorMessage(error.message);
+      return setErrorMessage('Erro no servidor');
+    }
+
     if (formStyle === 'newsletter-unsubscribe') {
-      const unsubscribeData = data as UnsubscribeRequest;
+      await api.newsletterUnsubscribe(data.email);
+      setLoading(false);
+      setData({ email: '' });
+      return setShowUnsubscribeSuccess(true);
     }
   };
 
-  useEffect(() => setErrors({ emailErrors: [] }), [data]);
+  useEffect(() => {
+    setErrors({ emailErrors: [] });
+    setSuccessMessage('');
+    setErrorMessage('');
+  }, [data]);
 
   return (
     <>
-      <Modal showModal={showUnsubscribeConfirm} setShowModal={setShowUnsubscribeConfirm}>
+      <Modal showModal={showUnsubscribeSuccess} setShowModal={setShowUnsubscribeSuccess}>
         <div className="flex flex-col gap-2 text-center text-sm">
           <p className="py-1">Inscrição da Newsletter cancelada com sucesso</p>
           <p className="py-1">Você não receberá mais e-mails com as novidades</p>
-          <IconCheck width={48} height={48} color="green" className="mx-auto" />
+          <IconCheck width={48} height={48} color="red" className="mx-auto" />
         </div>
       </Modal>
 
-      <form className="w-full max-w-xs mx-auto my-14 sm:my-24 px-2 flex flex-col gap-3" onChange={submit}>
+      <form className="w-full max-w-xs mx-auto my-14 sm:my-24 px-2 flex flex-col gap-3" onSubmit={handleSubmit}>
         <h1 className="font-semibold text-center mb-4 text-lg">
           {formStyle === 'first-login' && 'Primeiro acesso'}
-          {formStyle === 'password-recover' && 'Recuperação de senha'}
+          {formStyle === 'new-password' && 'Recuperação de senha'}
           {formStyle === 'newsletter-unsubscribe' && 'Cancelar assinatura de e-mail'}
         </h1>
 
@@ -86,9 +130,21 @@ const UserConfirmationForm = ({ formStyle, token }: UserConfirmationtypes) => {
             type="password"
             name="password"
             placeholder={`Digite sua ${formStyle === 'first-login' ? 'senha' : 'nova senha'}`}
-            value={data.email}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => setData({ ...data, email: e.target.value })}
+            value={(data as LoginRequest | NewPasswordRequest).password}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setData({ ...data, password: e.target.value })}
             errors={(errors as LoginErrors | NewPasswordErrors).passwordErrors || []}
+          />
+        }
+
+        {formStyle === 'new-password' &&
+          <FormInput
+            title="Confirmação de senha"
+            type="password"
+            name="repeatPassword"
+            placeholder="Repita sua senha"
+            value={(data as NewPasswordRequest).repeatPassword}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setData({ ...data, repeatPassword: e.target.value })}
+            errors={(errors as NewPasswordErrors).repeatPasswordErrors || []}
           />
         }
 
@@ -106,6 +162,10 @@ const UserConfirmationForm = ({ formStyle, token }: UserConfirmationtypes) => {
           <Loading color="white" diameter={18} />
           }
         </button>
+
+        {successMessage && <p className="text-center text-sm text-green-600">{successMessage}</p>}
+
+        {errorMessage && <p className="text-center text-sm text-red-500">{errorMessage}</p>}
       </form>
     </>
 
@@ -113,4 +173,3 @@ const UserConfirmationForm = ({ formStyle, token }: UserConfirmationtypes) => {
 };
 
 export default UserConfirmationForm;
- */

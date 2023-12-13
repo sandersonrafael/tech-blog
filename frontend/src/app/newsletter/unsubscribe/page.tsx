@@ -1,4 +1,4 @@
-/* 'use client';
+'use client';
 
 import UserConfirmationForm from '@/components/UserConfirmationForm';
 
@@ -9,4 +9,3 @@ const Unsubscribe = () => {
 };
 
 export default Unsubscribe;
- */

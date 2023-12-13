@@ -92,7 +92,8 @@ const AuthForm = () => {
 
       if (success) {
         setSuccessMessage(success);
-        return updateUserData();
+        await updateUserData();
+        return;
       }
       if (errors) return setErrors({ ...errors });
       if (error.message === 'Credenciais inválidas') return setErrorMessage(error.message);
@@ -183,7 +184,7 @@ const AuthForm = () => {
           title="Confirmação de senha"
           name="repeatPassword"
           type="password"
-          placeholder="Digite sua senha"
+          placeholder="Repita sua senha"
           onChange={(e) => setData({ ...data, repeatPassword: (e.target as HTMLInputElement).value })}
           value={(data as RegisterRequest).repeatPassword || ''}
           errors={(errors as RegistrationErrors).repeatPasswordErrors || []}

@@ -116,7 +116,7 @@ class Api {
       });
 
       if (res.status === 201) {
-        return { success: 'Usuário cadastrado com sucesso e e-mail de confirmação enviado!' } as RegisterSuccess;
+        return { success: 'E-mail de confirmação enviado! Verifique sua caixa de entrada' } as RegisterSuccess;
       }
 
       const resJson: RegisterValidationErrors | ApiError = await res.json();
@@ -168,6 +168,7 @@ class Api {
     try {
       const res = await fetch(`${apiHost}/auth/first-login/${confirmationToken}`, {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(firstLoginRequest),
       });
 
@@ -194,7 +195,7 @@ class Api {
   public async recoverRequest(recoverRequest: RecoverRequest):
       Promise<RecoverSuccess | RecoverValidationErrors | RecoverServerError> {
     try {
-      const res = await fetch(`${apiHost}/auth/recover`, {
+      const res = await fetch(`${apiHost}/auth/request-recover`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(recoverRequest),
@@ -223,6 +224,7 @@ class Api {
 
       const res = await fetch(`${apiHost}/auth/recover/${recoveryToken}`, {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(request),
       });
 
@@ -269,6 +271,16 @@ class Api {
   public async newsletterSubscribe(email: string): Promise<{ success: string }> {
     await fetch(`${apiHost}/api/newsletter`, {
       method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+
+    return { success: 'Sucesso na operação' };
+  }
+
+  public async newsletterUnsubscribe(email: string): Promise<{ success: string }> {
+    await fetch(`${apiHost}/api/newsletter`, {
+      method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email }),
     });
