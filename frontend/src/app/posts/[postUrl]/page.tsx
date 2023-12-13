@@ -26,7 +26,7 @@ const getJwt = () => localStorage.getItem('jwt') as string;
 
 const PostPage = () => {
   const { user, setUser } = useContext(UserContext);
-  const { posts, setPosts } = useContext(PostsContext);
+  const { posts, setPosts, setComments } = useContext(PostsContext);
   const [post, setPost] = useState<Post>();
   const [newComment, setNewComment] = useState<string>('');
   const [newCommentError, setNewCommentError] = useState<string>();
@@ -63,6 +63,14 @@ const PostPage = () => {
     }
   };
 
+  const handleChangeNewComment = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+
+    setNewComment(
+      value.length > 1000 ? value.slice(0, 1000) : value,
+    );
+  };
+
   const handleAddComment: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     if (!user) return;
@@ -88,6 +96,11 @@ const PostPage = () => {
       updatedPost.comments?.push(comment);
       setPost(updatedPost);
       setPosts((posts) => posts.map((post) => post.id === updatedPost.id ? { ...updatedPost } : post));
+
+      const updatedComments: Comment[] = [];
+      posts.forEach((post) => post.comments.forEach((comment) => updatedComments.push(comment)));
+      setComments([...updatedComments]);
+
       setUser((user) => {
         user?.commentsIds.push(comment.id);
         return user;
@@ -118,6 +131,8 @@ const PostPage = () => {
 
     getPost();
   }, [postId, setPost, setPosts]);
+
+  useEffect(() => setNewCommentError(''), [newComment]);
 
   return (
     <>
@@ -188,7 +203,8 @@ const PostPage = () => {
                     key={comment.id}
                     actualComment={comment}
                     postId={comment.postId}
-                    deleteCommentFromPost={deleteCommentFromPost} />
+                    deleteCommentFromPost={deleteCommentFromPost}
+                  />
                 ))}
 
                 {post.comments.length === 0 &&
@@ -215,10 +231,7 @@ const PostPage = () => {
                     placeholder="Conte-nos sua opinião, dúvida ou sugestão..."
                     name="new_comment"
                     value={newComment}
-                    onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
-                      if (newCommentError !== '') setNewCommentError('');
-                      setNewComment(e.target.value);
-                    }}
+                    onChange={handleChangeNewComment}
                   ></textarea>
 
                   {newCommentError &&
@@ -238,7 +251,7 @@ const PostPage = () => {
                       : <span>
                         {user && 'Enviar'}
                         {!user && 'Entre ou registre-se para enviar'}
-                      </span> // TODO: Fazer validação desse formulário para informar se estiver vazio ou se der erro
+                      </span>
                     }
                   </button>
                 </form>

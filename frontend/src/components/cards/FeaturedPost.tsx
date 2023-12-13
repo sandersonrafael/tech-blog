@@ -19,7 +19,10 @@ const FeaturedPost = ({ thumb, tags, title, postUrl, createdAt, views, usersLike
       >
         <div style={{ paddingBottom: '56.25%' }}></div>
 
-        <div className="mt-auto flex flex-col gap-2 sm:gap-3 px-7 py-5 text-2xs sm:text-sm text-gray-100">
+        <div
+          className="mt-auto flex flex-col gap-2 sm:gap-3 px-7 py-5 text-2xs sm:text-sm text-gray-100"
+          style={{ textShadow: '0 0 10px rgb(0 0 0 / .4)' }}
+        >
           <div className="flex">
             {tags && tags.map(({ id, tag }, index) => index <= 2 && (
               <div key={id}>{index > 0 ? ', ' : 'Tags: '}{tag}{index === 2 && '...'}</div>

@@ -89,6 +89,14 @@ const PostCommentCard = ({ actualComment, postId, deleteCommentFromPost }: PostC
     setLoadingDislikeComment(false);
   };
 
+  const handleChangeCommentEdit = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+
+    setCommentEdit(
+      value.length > 1000 ? value.slice(0, 1000) : value,
+    );
+  };
+
   const updateComment = async () => {
     if (!user) return setShowRequestLogin(true);
     if (commentEdit.trim() === comment.content || commentEdit.trim() === '') return setEditingComment(false);
@@ -200,7 +208,7 @@ const PostCommentCard = ({ actualComment, postId, deleteCommentFromPost }: PostC
                       className="resize-none border rounded-md outline-none text-xs p-2 h-52 focus:border-blue-400"
                       placeholder="Digite seu comentário atualizado..."
                       value={commentEdit}
-                      onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setCommentEdit(e.target.value)}
+                      onChange={handleChangeCommentEdit}
                     ></textarea>
                   </Confirmation>
                 </form>
