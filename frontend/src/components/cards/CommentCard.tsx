@@ -14,7 +14,7 @@ const CommentCard = ({ content, createdAt, author, post }: Comment & { post: Pos
   return (
     <div
       className="
-        flex rounded-lg bg-white border p-6 mb-6 shadow hover:shadow-2xl
+        flex rounded-md sm:rounded-lg bg-white border p-6 mb-6 shadow hover:shadow-2xl
         transition-all hover:-translate-y-1 duration-300 relative
       "
     >

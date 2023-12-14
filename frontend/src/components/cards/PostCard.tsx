@@ -15,7 +15,7 @@ const appUrl = process.env.NEXT_PUBLIC_APP_URL;
 const PostCard = ({ thumb, thumbAlt, tags, title, description, postUrl, createdAt, views, usersLikes, className = '' }: PostCard & { className?: string }) => {
   return (
     <div className={`
-      flex flex-col shadow-lg shadow-gray-300 rounded-2xl overflow-hidden h-full ${className}
+      flex flex-col shadow-lg shadow-gray-300 rounded-md sm:rounded-2xl overflow-hidden h-full ${className}
       transition hover:-translate-y-1 hover:shadow-2xl hover:shadow-gray-400 duration-300
     `}>
       <Link href={`${appUrl}/posts/${postUrl}`}>

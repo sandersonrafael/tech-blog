@@ -34,6 +34,8 @@ const LayoutHeader = () => {
         <hr className="bg-gray-100 -mx-1 md:-mx-3" />
 
         <HeaderNav />
+
+        <hr className="bg-gray-100 -mx-1 md:-mx-3" />
       </nav>
     </header>
   );

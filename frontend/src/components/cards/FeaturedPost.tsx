@@ -13,15 +13,18 @@ const FeaturedPost = ({ thumb, tags, title, postUrl, createdAt, views, usersLike
       <div
         style={{ backgroundImage: `url(${thumb})`, backgroundSize: 'cover' }}
         className={`
-          flex rounded-2xl text-white shadow-lg shadow-gray-300 h-full w-full
+          flex rounded-md sm:rounded-2xl text-white shadow-lg shadow-gray-300 h-full w-full
           transition hover:-translate-y-1 hover:shadow-2xl hover:shadow-gray-400 duration-300
         `}
       >
         <div style={{ paddingBottom: '56.25%' }}></div>
 
         <div
-          className="mt-auto flex flex-col gap-2 sm:gap-3 px-7 py-5 text-2xs sm:text-sm text-gray-100"
-          style={{ textShadow: '0 0 10px rgb(0 0 0 / .4)' }}
+          className="
+            mt-auto flex flex-col gap-1 sm:gap-3 px-3 py-1 sm:px-7 sm:py-5 text-2xs sm:text-sm text-gray-100 w-full
+            rounded-b-md sm:rounded-b-2xl
+          "
+          style={{ textShadow: '0 0 5px rgb(0 0 0 / .5)', backgroundColor: 'rgb(0 0 0 / .15)' }}
         >
           <div className="flex">
             {tags && tags.map(({ id, tag }, index) => index <= 2 && (
@@ -30,7 +33,7 @@ const FeaturedPost = ({ thumb, tags, title, postUrl, createdAt, views, usersLike
           </div>
 
           <div className="flex">
-            <h3 className="text-xs sm:text-base md:text-2xl font-black">
+            <h3 className="text-sm sm:text-base md:text-2xl font-black">
               {title && title.length > 80 ? title.slice(0, 80) + '...' : title}
             </h3>
           </div>
