@@ -26,8 +26,6 @@ page 404
 Links rápidos do footer ->
 Fazer página de Entre em contato e impelementar o Backend com um serviço de e-mail que mande e-mail para o próprio AllTech
 
-comentários limitados a 10 e carregar mais
-
 menu de usuário para editar informações (botar para exibir e-mail)
-
 popular com 3 comentários com contas fakes -> pegar imagens de sites de imagens thispeople no exists
+Implementar dark theme com context (ou deixar em standBy)

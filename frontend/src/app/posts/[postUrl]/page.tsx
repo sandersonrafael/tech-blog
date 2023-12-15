@@ -39,6 +39,14 @@ const PostPage = () => {
   const postUrl = useParams().postUrl as string;
   const postId = posts.find((post) => post.postUrl === postUrl)?.id;
 
+  const [commentsExpands, setCommentsExpands] = useState<number>(1);
+  const [commentsLength, setCommentsLength] = useState<number>(4);
+
+  const handleLoadMoreComments = () => {
+    if (commentsLength === 10) setCommentsExpands((expand) => expand + 1);
+    if (commentsLength === 4) setCommentsLength(10);
+  };
+
   const handleLikePost = async () => {
     if (!user || !post) return setShowRequestLogin(true);
 
@@ -100,6 +108,8 @@ const PostPage = () => {
       const updatedComments: Comment[] = [];
       posts.forEach((post) => post.comments.forEach((comment) => updatedComments.push(comment)));
       setComments([...updatedComments]);
+
+      if (post && post.comments.length > (commentsExpands * commentsLength)) handleLoadMoreComments();
 
       setUser((user) => {
         user?.commentsIds.push(comment.id);
@@ -196,19 +206,39 @@ const PostPage = () => {
             <div className="container mx-auto xl:max-w-4xl px-3 md:px-6">
               <h2 className="text-center font-medium text-2xl py-8">Comentários</h2>
 
-              {/* TODO: Fazer Lógica para exibir só até 10 comentários e carregar mais comentários */}
               <div className="mx-auto max-w-2xl flex flex-col gap-1 pb-12">
-                {sortAsc(post.comments, 'createdAt').map((comment) => (
-                  <PostCommentCard
-                    key={comment.id}
-                    actualComment={comment}
-                    postId={comment.postId}
-                    deleteCommentFromPost={deleteCommentFromPost}
-                  />
-                ))}
+                {post.comments.length > 0 &&
+                  <span className="text-xs px-1 mb-1">
+                    Exibindo {(commentsExpands * commentsLength) >= post.comments.length
+                      ? post.comments.length
+                      : (commentsExpands * commentsLength)
+                    } de {post.comments.length} comentário{post.comments.length !== 1 && 's'}
+                  </span>
+                }
+
+                {sortAsc(post.comments, 'createdAt').map((comment, index) => {
+                  if (index < (commentsExpands * commentsLength))
+                    return (
+                      <PostCommentCard
+                        key={comment.id}
+                        actualComment={comment}
+                        postId={comment.postId}
+                        deleteCommentFromPost={deleteCommentFromPost}
+                      />
+                    ); })}
+
+                {post.comments.length > commentsLength * commentsExpands &&
+                  <button
+                    className="mt-6 border-b-4 border-black py-1 bg-gray-900 rounded-sm text-white
+                      opacity-50 hover:opacity-60 transition-all duration-300"
+                    type="button"
+                    onClick={handleLoadMoreComments}>
+                    Carregar mais...
+                  </button>
+                }
 
                 {post.comments.length === 0 &&
-                <p className="text-center">Ainda não há comentários. Seja o primeiro a comentar...</p>
+                  <p className="text-center">Ainda não há comentários. Seja o primeiro a comentar...</p>
                 }
               </div>
 
