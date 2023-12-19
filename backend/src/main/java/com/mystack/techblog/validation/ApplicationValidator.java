@@ -57,10 +57,11 @@ public class ApplicationValidator {
     public static ValidationErrors validateUserUpdate(UserDTO dto) {
         ValidationErrors errors = new ValidationErrors();
 
-        List<String> firstNameErrors = validateName(dto.getFirstName());
-        List<String> lastNameErrors = validateName(dto.getLastName());
+        List<String> firstNameErrors = dto.getFirstName() != null ? validateName(dto.getFirstName()) : null;
+        List<String> lastNameErrors = dto.getLastName() != null ? validateName(dto.getLastName()) : null;
         List<String> profileImgErrors = dto.getProfileImg() != null && !dto.getProfileImg().isBlank()
-            ? validateUserImg(dto.getProfileImg()) : null;
+            ? validateUserImg(dto.getProfileImg())
+            : null;
 
         if (firstNameErrors != null) errors.addErrors("firstNameErrors", firstNameErrors);
         if (lastNameErrors != null) errors.addErrors("lastNameErrors", lastNameErrors);

@@ -10,6 +10,8 @@ remover o localhost:3000 do cors da aplicação hospedada
 
 Documentar com o Swagger(?)
 
+Atualizar o update do UserService, para que ele só atualize os dados que forem informados, mantendo inalterados os que estiverem null em vez de tentar atualizar tudo
+
 ## IMPLEMENTAR TESTES PARA A APLICAÇÃO E NOS TESTES DE INTEGRAÇÃO CONFIGURAR VARIÁVEIS DE AMBIENTE NO TEST CONTAINERS DOCKER SIMILARES ÀS DA APLICAÇÃO, COM VALORES DIFERENTES
 
 Fazer README.md para o Back-end ao final do projeto, além do README.md para o Front-end e para o repositório em geral

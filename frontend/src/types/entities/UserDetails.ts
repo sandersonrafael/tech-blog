@@ -3,6 +3,7 @@ type UserDetails = {
   firstName: string;
   lastName: string;
   profileImg: string;
+  email: string;
   createdAt: Date;
   role: 'ADMIN' | 'USER';
   commentsIds: number[];
