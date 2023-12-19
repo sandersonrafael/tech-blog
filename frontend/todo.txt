@@ -18,8 +18,6 @@ cookies
 
 Fazer menu de usuário onde o usuário tem acesso aos seus últimos comentários e postagens que curtiu
 
-page 404
-
 
 ### RESTANDO - PRINCIPAL ###
 
@@ -27,5 +25,7 @@ Links rápidos do footer ->
 Fazer página de Entre em contato e impelementar o Backend com um serviço de e-mail que mande e-mail para o próprio AllTech
 
 menu de usuário para editar informações (botar para exibir e-mail)
+deixar somente possíveis alterações no menu de usuário, como atualizar nome, sobrenome, senha, imagem, etc
+
 popular com 3 comentários com contas fakes -> pegar imagens de sites de imagens thispeople no exists
 Implementar dark theme com context (ou deixar em standBy)

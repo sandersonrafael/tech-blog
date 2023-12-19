@@ -5,6 +5,8 @@ import Comment from '@/types/entities/Comment';
 import Post from '@/types/entities/Post';
 import UserDetails from '@/types/entities/UserDetails';
 import { UserDetailsServerError } from '@/types/api/UserResponse';
+import ContactForm from '@/types/entities/ContactForm';
+import { ContactServerError, ContactSuccess, ContactValidationErrors } from '@/types/api/ContactResponse';
 
 const apiHost = process.env.NEXT_PUBLIC_API_DATABASE_HOST as string;
 
@@ -286,6 +288,30 @@ class Api {
     });
 
     return { success: 'Sucesso na operação' };
+  }
+
+  public async requestContact(contactForm: ContactForm):
+      Promise<ContactSuccess | ContactValidationErrors | ContactServerError> {
+    try {
+      const res = await fetch(`${apiHost}/api/mail/request-contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...contactForm }),
+      });
+
+      if (res.status === 200) return { success: 'Sucesso ao enviar a mensagem' };
+
+      const resJson: ContactValidationErrors | ApiError = await res.json();
+      const { errors } = resJson as ContactValidationErrors;
+      const { message } = resJson as ApiError;
+
+      if (errors) return { errors };
+      if (message) return { error: { message } } as ContactServerError;
+
+      return { error: resJson } as ContactServerError;
+    } catch(e) {
+      return { error: { message: 'Falha ao enviar mensagem' } } as ContactServerError;
+    }
   }
 }
 

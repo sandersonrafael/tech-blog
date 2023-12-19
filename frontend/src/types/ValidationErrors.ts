@@ -21,3 +21,10 @@ export type NewPasswordErrors = {
   passwordErrors: string[];
   repeatPasswordErrors?: string[];
 };
+
+export type ContactErrors = {
+  emailErrors: string[];
+  phoneErrors: string[];
+  nameErrors: string[];
+  messageErrors: string[];
+};

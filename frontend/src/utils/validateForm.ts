@@ -1,6 +1,7 @@
-import { LoginErrors, NewPasswordErrors, RecoverPasswordErrors, RegistrationErrors } from '@/types/ValidationErrors';
+import { ContactErrors, LoginErrors, NewPasswordErrors, RecoverPasswordErrors, RegistrationErrors } from '@/types/ValidationErrors';
 import validations from './validations';
 import { LoginRequest, NewPasswordRequest, RecoverRequest, RegisterRequest } from '@/types/api/AuthRequests';
+import ContactForm from '@/types/entities/ContactForm';
 
 class ValidateForm {
   public login(userLogin: LoginRequest): LoginErrors | null {
@@ -46,6 +47,18 @@ class ValidateForm {
       repeatPasswordErrors: validations.confirmPassword(
         userNewPassword.password, userNewPassword.repeatPassword, 'Senha', 'Repetição de senha',
       ),
+    };
+
+    return Object.values(errors).find((value) => value.length > 0) ? errors : null;
+  }
+
+  public contact(contactForm: ContactForm): ContactErrors | null {
+
+    const errors: ContactErrors = {
+      emailErrors: validations.email(contactForm.email),
+      phoneErrors: validations.phone(contactForm.phone),
+      nameErrors: validations.name(contactForm.name, 'Nome'),
+      messageErrors: validations.message(contactForm.message),
     };
 
     return Object.values(errors).find((value) => value.length > 0) ? errors : null;

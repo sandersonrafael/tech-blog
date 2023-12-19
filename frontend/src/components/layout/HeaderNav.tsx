@@ -37,13 +37,13 @@ const HeaderNav = () => {
     <div className="flex content-center justify-between py-3">
       <HeaderHamburgerBtn handleClick={handleMenuView} btnType="hamburger" />
       <div className={`
-          max-sm:fixed max-sm:top-0 max-sm:-bottom-20 max-sm:right-0 max-sm:w-full
+          max-sm:fixed max-sm:top-0 max-sm:-bottom-20 max-sm:right-0 max-sm:w-full z-10
           max-sm:bg-opacity-50 ${menuVisibility} ${navBg} transition-all duration-500
         `}
       ref={div}
       onClick={(e) => handleClickOutside(e)}
       >
-        <ul className="flex gap-4 flex-row h-full items-center relative
+        <ul className="flex gap-4 flex-row h-full items-center relative z-10
           max-sm:flex-col max-sm:text-xl max-sm:bg-white max-sm:pt-16 max-sm:gap-8 max-sm:max-w-xs
         ">
           <Link href="/" className="">

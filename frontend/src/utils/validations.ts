@@ -37,6 +37,7 @@ class Validations {
     const errors: string[] = [];
 
     if (name.length < 2) errors.push(`${denomination} não pode conter menos de 2 caracteres`);
+    if (name.match(/[0-9]/g)) errors.push(`${denomination} não pode conter números`);
     if (name !== name.trim())
       errors.push(`${denomination} não pode iniciar ou finalizar com espaços em branco`);
 
@@ -62,6 +63,36 @@ class Validations {
     if (repeatPassword.length === 0)
       errors.push(`${secondTerm} não pode estar em branco`);
     else if (repeatPassword !== password) errors.push(`${firstTerm} e ${secondTerm.toLowerCase()} não conferem`);
+
+    return errors;
+  }
+
+  public phone(phone: string = ''): string[] {
+    const errors: string[] = [];
+
+    if (phone.length === 0) {
+      errors.push('Número não pode estar vazio');
+      return errors;
+    }
+    if (phone.length !== 11) {
+      errors.push('Número inválido');
+      return errors;
+    }
+    if (Number(phone.slice(0, 2)) <= 10) errors.push('DDD inválido');
+    if (phone.charAt(2) !== '9') errors.push('Dígito 9 faltando');
+
+    return errors;
+  }
+
+  public message(message: string = ''): string[] {
+    const errors: string[] = [];
+
+    if (message.length < 20) errors.push('Mensagem precisa conter ao menos 20 caracteres');
+    if (message.length > 0 && message.trim() === '') errors.push('Mensagem não pode conter apenas espaços em branco');
+    else if (message.trim() !== message) errors.push('Mensagem não pode iniciar ou finalizar com espaços em branco');
+    if (message.match(/[0-9]/g) && message.replaceAll(/[0-9]/g, '') === '') {
+      errors.push('Não é permitido informar somente números');
+    }
 
     return errors;
   }

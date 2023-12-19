@@ -7,6 +7,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.mystack.techblog.entities.email.ContactRequest;
 import com.mystack.techblog.repositories.NewsletterSubscriberRepository;
 import com.mystack.techblog.services.auth.TokenService;
 
@@ -27,6 +28,21 @@ public class MailService {
 
     @Value("${spring.mail.username}")
     private String applicationEmail;
+
+    public void requestEmailContact(ContactRequest data) {
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        message.setFrom(applicationEmail);
+        message.setTo(applicationEmail);
+        message.setSubject("Um usuário mandou uma nova mensagem!");
+        message.setText("Nome: " + data.name() + "\nE-mail: " + data.email() + "\nCelular: (" + data.phone().substring(0, 2) + ") " + data.phone().substring(2, 7) + '-' + data.phone().substring(7) + "\nMensagem: " + data.message());
+
+        try {
+            mailSender.send(message);
+        } catch(MailException e) {
+            throw new RuntimeException("Falha ao enviar e-mail");
+        }
+    }
 
     public void sendConfirmationEmail(String email, String firstName) {
         SimpleMailMessage message = new SimpleMailMessage();
