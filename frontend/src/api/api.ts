@@ -4,9 +4,10 @@ import { LoginRequest, NewPasswordRequest, RecoverRequest, RegisterRequest } fro
 import Comment from '@/types/entities/Comment';
 import Post from '@/types/entities/Post';
 import UserDetails from '@/types/entities/UserDetails';
-import { UserDetailsServerError } from '@/types/api/UserResponse';
+import { UserDetailsServerError, UserServerError, UserValidationErrors } from '@/types/api/UserResponses';
 import ContactForm from '@/types/entities/ContactForm';
 import { ContactServerError, ContactSuccess, ContactValidationErrors } from '@/types/api/ContactResponse';
+import User from '@/types/entities/User';
 
 const apiHost = process.env.NEXT_PUBLIC_API_DATABASE_HOST as string;
 
@@ -267,6 +268,31 @@ class Api {
       return { error: resJson } as UserDetailsServerError;
     } catch (e) {
       return { error: { message: 'Erro no servidor' } } as UserDetailsServerError;
+    }
+  }
+
+  public async updateUser(firstName: string | null, lastName: string | null, profileImg: string | null, token: string):
+      Promise<User | UserValidationErrors | UserServerError> {
+    try {
+      const res = await fetch(`${apiHost}/api/users`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ firstName, lastName, profileImg }),
+      });
+
+      if (res.status === 200) return await res.json() as User;
+      if (res.status === 404) return { error: { message: 'Usuário não encontrado' } } as UserServerError;
+
+      const resJson = await res.json() as UserValidationErrors;
+      const { errors } = resJson;
+      if (errors) return { errors };
+
+      return { error: { message: 'Erro no servidor' } } as UserServerError;
+    } catch (e) {
+      return { error: { message: 'Erro no servidor' } } as UserServerError;
     }
   }
 

@@ -28,3 +28,9 @@ export type ContactErrors = {
   nameErrors: string[];
   messageErrors: string[];
 };
+
+export type UserErrors = {
+  firstNameErrors: string[];
+  lastNameErrors: string[];
+  profileImgErrors: string[];
+};

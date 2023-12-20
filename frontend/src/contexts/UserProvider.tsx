@@ -5,7 +5,7 @@ import UserContext from './UserContext';
 import UserDetails from '@/types/entities/UserDetails';
 import UserContextTypes from '@/types/contexts/UserContextTypes';
 import api from '@/api/api';
-import { UserDetailsServerError } from '@/types/api/UserResponse';
+import { UserDetailsServerError } from '@/types/api/UserResponses';
 
 const getJwt = (): string | null => localStorage.getItem('jwt');
 

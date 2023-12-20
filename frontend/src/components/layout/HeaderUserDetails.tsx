@@ -1,14 +1,16 @@
-import UserContext from '@/contexts/UserContext';
-import IconImgEdit from '@/icons/IconImgEdit';
+import { useContext, useState } from 'react';
 import Image from 'next/image';
-import { useContext/*, useState */ } from 'react';
-// import HeaderEditUserImg from './HeaderEditUserImg';
+
+import IconImgEdit from '@/icons/IconImgEdit';
+import HeaderEditUserImg from './HeaderEditUserImg';
+
+import UserContext from '@/contexts/UserContext';
 
 // TODO: Lógica para atualizar dados de usuário como nome, senha, etc
 
 const HeaderUserDetails = () => {
   const { user, setUser } = useContext(UserContext);
-  // const [showEditImage, setShowEditImage] = useState<boolean>(true);
+  const [showEditImage, setShowEditImage] = useState<boolean>(false);
 
   const handleLogout = () => {
     localStorage.removeItem('jwt');
@@ -25,11 +27,14 @@ const HeaderUserDetails = () => {
         Logout
       </button>
 
-      {/* <HeaderEditUserImg showEdition={showEditImage} setShowEdition={setShowEditImage} /> */}
+      <HeaderEditUserImg showEdition={showEditImage} setShowEdition={setShowEditImage} />
 
       <div className="relative w-fit mt-4">
-        <button className="absolute bottom-0 right-0">
-          <IconImgEdit width={32} height={32} className="text-gray-800" />
+        <button
+          className="absolute bottom-0 right-0 transition-all duration-300 hover:scale-110"
+          onClick={() => setShowEditImage(true)}
+        >
+          <IconImgEdit width={32} height={32} className="text-gray-600" />
         </button>
 
         <Image
