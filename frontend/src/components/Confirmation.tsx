@@ -53,7 +53,7 @@ const Confirmation = ({
 
           <button
             className="transition-colors duration-300 rounded-md border border-black
-              flex items-center justify-center w-full h-10 hover:border-gray-400
+              flex items-center justify-center w-full h-10 hover:border-gray-400 hover:text-gray-400
             "
             type="button"
             onClick={() => setIsOpen(false)}

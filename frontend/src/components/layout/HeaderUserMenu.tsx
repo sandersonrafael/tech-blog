@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 
 import IconPerson from '@/icons/IconPerson';
 import IconClose from '@/icons/IconClose';
@@ -15,8 +15,6 @@ const HeaderUserMenu = () => {
   const changeMenuView = () => {
     setMenuView(!menuView);
   };
-
-  useEffect(() => setMenuView(false), [user]);
 
   return (
     <>
@@ -50,10 +48,12 @@ const HeaderUserMenu = () => {
               height={36}
             ></IconClose>
           </button>
-          {<div className="p-5">
+
+          <div className="p-5">
             {user && <HeaderUserDetails />}
+
             {!user && <AuthForm />}
-          </div>}
+          </div>
         </div>
       </aside>
     </>

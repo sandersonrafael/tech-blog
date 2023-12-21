@@ -8,6 +8,8 @@ Ver como arrumar melhor o cropper para se encaixar bem no vertical e horizontal 
 
 Analisar TODO tree
 
+Modal de confirmar logout com um componente <Confirmation />
+
 remover o localhost:3000 do cors da aplicação hospedada
 
 Fazer mensagem de erro durante o carregamento inicial de todos os Posts com aviso e botão para atualizar a página

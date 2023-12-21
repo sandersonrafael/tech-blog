@@ -66,7 +66,7 @@ const AboutMePage = () => {
 
       <p>
         As tecnologias que mais utilizo atualmente, são: Java (Spring Boot) | JavaScript (TypeScript) | React (Next)
-        | Node (Express) | MongoDB | MySQL. Porém, acredito nas linguagens, frameworks e bibliotecas como somente
+        | Node (Express) | Git (GitHub) | MongoDB | MySQL. Porém, acredito nas linguagens, frameworks e bibliotecas como somente
         ferramentas para solucionar problemas, me colocando sempre em busca de novos conhecimentos e aprendizados.
       </p>
 

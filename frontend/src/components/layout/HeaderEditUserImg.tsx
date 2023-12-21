@@ -86,18 +86,22 @@ const HeaderEditUserImg = ({ showEdition, setShowEdition }: EditImgTypes) => {
   return (
     <Modal showModal={showEdition} setShowModal={setShowEdition}>
       {!imageSrc &&
-        <FormInput
-          title="Foto de Perfil"
-          name="image"
-          type="file"
-          classInput="cursor-pointer"
-          classLabel="cursor-pointer"
-          value={fileValue}
-          onChange={handleChangeFile}
-          placeholder="Fazer uploa"
-          errors={imgErrors || []}
-          onClick={() => resetAll()}
-        />
+        <div className="flex flex-col gap-6">
+          <h1 className="text-center font-medium text-lg">Selecione uma imagem</h1>
+
+          <FormInput
+            title="Foto de Perfil"
+            name="image"
+            type="file"
+            classInput="cursor-pointer"
+            classLabel="cursor-pointer"
+            value={fileValue}
+            onChange={handleChangeFile}
+            placeholder="Fazer uploa"
+            errors={imgErrors || []}
+            onClick={() => resetAll()}
+          />
+        </div>
       }
 
       {imageSrc &&

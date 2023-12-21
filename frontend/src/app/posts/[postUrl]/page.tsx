@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ChangeEvent, FormEventHandler, KeyboardEvent, useContext, useEffect, useState } from 'react';
+import React, { ChangeEvent, FormEventHandler, useContext, useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 
@@ -248,11 +248,7 @@ const PostPage = () => {
                 <hr className="w-12 border-black border-2"/>
                 <hr className="mb-6"/>
 
-                <form
-                  className="flex flex-col pb-12"
-                  onSubmit={handleAddComment}
-                  onKeyDown={(e: KeyboardEvent<HTMLFormElement>) => { if (e.key === 'Enter' && !e.shiftKey) handleAddComment(e); }}
-                >
+                <form className="flex flex-col pb-12" onSubmit={handleAddComment}>
                   <textarea
                     className={`
                       w-full h-36 sm:h-24 px-3 py-2 text-sm resize-none focus:shadow rounded-md

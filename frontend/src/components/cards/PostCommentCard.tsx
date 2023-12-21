@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, KeyboardEvent, useContext, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
 import Image from 'next/image';
 
 import IconLikeFill from '@/icons/IconLikeFill';
@@ -198,12 +198,6 @@ const PostCommentCard = ({ actualComment, postId, deleteCommentFromPost }: PostC
                     <span className="text-sm text-center font-medium">Edite seu comentário</span>
 
                     <textarea
-                      onKeyDown={(e: KeyboardEvent<HTMLTextAreaElement>) => {
-                        if (e.key === 'Enter' && !e.altKey) {
-                          e.preventDefault();
-                          updateComment();
-                        }
-                      }}
                       name="comment"
                       className="resize-none border rounded-md outline-none text-xs p-2 h-52 focus:border-blue-400"
                       placeholder="Digite seu comentário atualizado..."
