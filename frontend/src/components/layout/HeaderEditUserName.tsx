@@ -27,15 +27,15 @@ const HeaderEditUserName = ({ className, showEditUserName, setShowEditUserName }
   const [lastName, setLastName] = useState<string>(user?.lastName || '');
   const [firstNameErrors, setFirstNameErrors] = useState<string[]>([]);
   const [lastNameErrors, setLastNameErrors] = useState<string[]>([]);
-  const [apiError, setApiError] = useState<string>('');
-  const [apiSuccess, setApiSuccess] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [successMessage, setSuccessMessage] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
 
   const clearErrors = () => {
     setFirstNameErrors([]);
     setLastNameErrors([]);
-    setApiSuccess('');
-    setApiError('');
+    setSuccessMessage('');
+    setErrorMessage('');
   };
 
   const submit: FormEventHandler<HTMLFormElement> = async (e) => {
@@ -75,7 +75,7 @@ const HeaderEditUserName = ({ className, showEditUserName, setShowEditUserName }
 
         setPosts([...posts]);
         setComments([...comments]);
-        setApiSuccess('Operação realizada com sucesso');
+        setSuccessMessage('Operação realizada com sucesso');
         setShowEditUserName(false);
       }
 
@@ -85,7 +85,7 @@ const HeaderEditUserName = ({ className, showEditUserName, setShowEditUserName }
       }
 
       if (error) {
-        setApiError(error.message || 'Erro no servidor');
+        setErrorMessage(error.message || 'Erro no servidor');
       }
     } finally {
       setLoading(false);
@@ -98,8 +98,8 @@ const HeaderEditUserName = ({ className, showEditUserName, setShowEditUserName }
     setFirstNameErrors([]);
     setLastNameErrors([]);
     setLoading(false);
-    setApiSuccess('');
-    setApiError('');
+    setSuccessMessage('');
+    setErrorMessage('');
   }, [showEditUserName, user?.firstName, user?.lastName]);
 
   return (
@@ -141,12 +141,12 @@ const HeaderEditUserName = ({ className, showEditUserName, setShowEditUserName }
           }
         </button>
 
-        {apiError &&
-          <span className="text-red-500 text-sm text-center">{apiError}</span>
+        {errorMessage &&
+          <span className="text-red-500 text-xs text-center">{errorMessage}</span>
         }
 
-        {apiSuccess &&
-          <span className="text-green-500 text-sm text-center">{apiSuccess}</span>
+        {successMessage &&
+          <span className="text-green-500 text-xs text-center">{successMessage}</span>
         }
       </form>
     </Modal>

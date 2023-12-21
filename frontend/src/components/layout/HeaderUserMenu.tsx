@@ -52,7 +52,7 @@ const HeaderUserMenu = () => {
           <div className="p-5">
             {user && <HeaderUserDetails />}
 
-            {!user && <AuthForm />}
+            {!user && <AuthForm setShowMenu={setMenuView} />}
           </div>
         </div>
       </aside>

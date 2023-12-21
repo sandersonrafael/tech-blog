@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import HeaderNav from './HeaderNav';
-import IconMoon from '@/icons/IconMoon';
+// import IconMoon from '@/icons/IconMoon'; TODO -> Finalizar funcionalidade de Claro/Escuro aqui
 import SearchBar from './SearchBar';
 import HeaderUserMenu from './HeaderUserMenu';
 
@@ -19,13 +19,13 @@ const LayoutHeader = () => {
           <div className="my-auto flex gap-6">
             <SearchBar className="max-sm:hidden text-xs w-44" />
 
-            <button>
+            {/* <button>
               <IconMoon
                 className="hover:scale-110 transition-all duration-300"
                 width={20}
                 height={20}
               />
-            </button>
+            </button> */}
 
             <HeaderUserMenu />
           </div>

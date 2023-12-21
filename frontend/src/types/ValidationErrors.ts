@@ -34,3 +34,9 @@ export type UserErrors = {
   lastNameErrors: string[];
   profileImgErrors: string[];
 };
+
+export type ChangePasswordErrors = {
+  emailErrors: string[];
+  oldPasswordErrors: string[];
+  newPasswordErrors: string[];
+};

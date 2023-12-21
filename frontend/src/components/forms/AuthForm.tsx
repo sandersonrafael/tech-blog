@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useEffect, useState, useContext } from 'react';
+import { FormEvent, useEffect, useState, useContext, Dispatch, SetStateAction } from 'react';
 
 import FormInput from './FormInput';
 import validateForm from '@/utils/validateForm';
@@ -20,7 +20,7 @@ const registerDefault: RegisterRequest = { profileImg: '', email: '', firstName:
 const loginDefault: LoginRequest = { email: '', password: '' };
 const recoverDefault: RecoverRequest = { email: '' };
 
-const AuthForm = () => {
+const AuthForm = ({ setShowMenu }: { setShowMenu?: Dispatch<SetStateAction<boolean>> }) => {
   const { updateUserData } = useContext(UserContext);
 
   const [formStyle, setFormStyle] = useState<'login' | 'register' | 'recover'>('login');
@@ -93,6 +93,7 @@ const AuthForm = () => {
       if (success) {
         setSuccessMessage(success);
         await updateUserData();
+        setShowMenu && setShowMenu(false);
         return;
       }
       if (errors) return setErrors({ ...errors });

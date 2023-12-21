@@ -1,4 +1,4 @@
-import { RegistrationErrors, LoginErrors, RecoverPasswordErrors, NewPasswordErrors } from '../ValidationErrors';
+import { RegistrationErrors, LoginErrors, RecoverPasswordErrors, NewPasswordErrors, ChangePasswordErrors } from '../ValidationErrors';
 import ApiError from './ApiError';
 
 export type RegisterSuccess = {
@@ -46,5 +46,17 @@ export type NewPasswordValidationErrors = {
 };
 
 export type NewPasswordServerError = {
+  error: ApiError;
+};
+
+export type ChangePasswordSuccess = {
+  success: string;
+};
+
+export type ChangePasswordValidationErrors = {
+  errors: ChangePasswordErrors;
+};
+
+export type ChangePasswordServerError = {
   error: ApiError;
 };

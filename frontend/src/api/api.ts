@@ -1,6 +1,6 @@
 import ApiError from '@/types/api/ApiError';
-import { LoginServerError, LoginSuccess, LoginValidationErrors, NewPasswordServerError, NewPasswordSuccess, NewPasswordValidationErrors, RecoverServerError, RecoverSuccess, RecoverValidationErrors, RegisterServerError, RegisterSuccess, RegisterValidationErrors } from '@/types/api/AuthResponses';
-import { LoginRequest, NewPasswordRequest, RecoverRequest, RegisterRequest } from '@/types/api/AuthRequests';
+import { ChangePasswordServerError, ChangePasswordSuccess, ChangePasswordValidationErrors, LoginServerError, LoginSuccess, LoginValidationErrors, NewPasswordServerError, NewPasswordSuccess, NewPasswordValidationErrors, RecoverServerError, RecoverSuccess, RecoverValidationErrors, RegisterServerError, RegisterSuccess, RegisterValidationErrors } from '@/types/api/AuthResponses';
+import { ChangePasswordRequest, LoginRequest, NewPasswordRequest, RecoverRequest, RegisterRequest } from '@/types/api/AuthRequests';
 import Comment from '@/types/entities/Comment';
 import Post from '@/types/entities/Post';
 import UserDetails from '@/types/entities/UserDetails';
@@ -293,6 +293,33 @@ class Api {
       return { error: { message: 'Erro no servidor' } } as UserServerError;
     } catch (e) {
       return { error: { message: 'Erro no servidor' } } as UserServerError;
+    }
+  }
+
+  public async changePassword(changePasswordRequest: ChangePasswordRequest, token: string):
+      Promise<ChangePasswordSuccess | ChangePasswordValidationErrors | ChangePasswordServerError> {
+    try {
+      const res = await fetch(`${apiHost}/auth/change-password`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ...changePasswordRequest }),
+      });
+
+      if (res.status === 200) return { success: 'Senha alterada com sucesso!' };
+
+      const resJson = await res.json() as ChangePasswordValidationErrors | ApiError;
+      const { errors } = resJson as ChangePasswordValidationErrors;
+      if (errors) return { errors };
+
+      const { message } = resJson as ApiError;
+      if (message) return { error: { message } } as ChangePasswordServerError;
+
+      return { error: { message: 'Erro no servidor' } } as ChangePasswordServerError;
+    } catch (e) {
+      return { error: { message: 'Erro no servidor' } } as ChangePasswordServerError;
     }
   }
 

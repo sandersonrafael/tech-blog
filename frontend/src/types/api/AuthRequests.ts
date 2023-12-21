@@ -21,3 +21,9 @@ export type NewPasswordRequest = {
   password: string;
   repeatPassword?: string;
 };
+
+export type ChangePasswordRequest = {
+  email: string;
+  oldPassword: string;
+  newPassword: string;
+};

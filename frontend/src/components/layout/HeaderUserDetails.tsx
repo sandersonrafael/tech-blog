@@ -7,13 +7,13 @@ import HeaderEditUserImg from './HeaderEditUserImg';
 import UserContext from '@/contexts/UserContext';
 import Confirmation from '../Confirmation';
 import HeaderEditUserName from './HeaderEditUserName';
-
-// TODO: Lógica para atualizar dados de usuário como nome, senha, etc
+import HeaderChangeUserPassword from './HeaderChangeUserPassword';
 
 const HeaderUserDetails = () => {
   const { user, setUser } = useContext(UserContext);
   const [showEditImage, setShowEditImage] = useState<boolean>(false);
   const [showEditName, setShowEditName] = useState<boolean>(false);
+  const [showChangeUserPassword, setShowChangeUserPassword] = useState<boolean>(false);
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
 
   const handleLogout = () => {
@@ -65,9 +65,15 @@ const HeaderUserDetails = () => {
           <button
             className="bg-blue-400 w-full rounded p-2 text-center text-white transition-all duration-300 hover:bg-blue-500"
             type="button"
+            onClick={() => setShowChangeUserPassword(true)}
           >
             Alterar senha
           </button>
+
+          <HeaderChangeUserPassword
+            showChangeUserPassword={showChangeUserPassword}
+            setShowChangeUserPassword={setShowChangeUserPassword}
+          />
         </div>
 
         <button
@@ -84,8 +90,9 @@ const HeaderUserDetails = () => {
           isOpen={isLoggingOut}
           setIsOpen={setIsLoggingOut}
           confirmMessage="Confirmar"
-          message="Tem certeza que deseja realizar logout?"
-        />
+        >
+          <h1 className="text-center font-medium">Tem certeza que deseja fazer logout?</h1>
+        </Confirmation>
       </div>
     </div>
   );
