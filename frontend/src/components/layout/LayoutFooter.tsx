@@ -100,7 +100,7 @@ const LayoutFooter = () => {
         <hr className="border-gray-300 col-span-4 mt-12" />
 
         <div className="pt-6 text-xs flex flex-col sm:flex-row items-center justify-between text-gray-500 text-center">
-          <span className="my-1">© 2023 - All Tech Blog - Todos os Direitos Reservados</span>
+          <span className="my-1">© 2024 - All Tech Blog - Todos os Direitos Reservados</span>
           <span className="my-1">
             Desenvolvido por{' '}
             <a
